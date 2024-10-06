@@ -1,0 +1,30 @@
+#root {
+  height: 100svh;
+
+  background-image: url("./mainCat.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  display: grid;
+  grid-template-areas:
+    "main main main"
+    "footer footer footer";
+
+    grid-template-rows: auto 20%;
+
+   
+}
+
+body{
+    margin:0;
+}
+
+main {
+  background-color: rgba(0, 128, 0, 0.527);
+  grid-area: main;
+}
+
+footer {
+  background-color: rgba(0, 255, 255, 0.527);
+  grid-area: footer;
+}
