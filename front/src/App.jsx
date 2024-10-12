@@ -1,5 +1,6 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "./App.css";
+import LoginRegister from "./routes/LoginRegister";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <main>Register/Login si esta logueado o no</main>,
+        element: <LoginRegister />,
       },
       {
         path: "/atencion",
