@@ -1,20 +1,35 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "./App.css";
-import LoginRegister from "./routes/LoginRegister";
+
+import Nav from "./components/Nav";
+import Aside from "./components/Aside";
+import Home from "./routes/Home";
+import Register from "./routes/Register";
+import Login from "./routes/Login";
+
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <>
-        <nav>nav</nav>
-        <aside>aside</aside>
+        <Nav />
+        <Aside />
         <Outlet />
       </>
     ),
     children: [
       {
         path: "/",
-        element: <LoginRegister />,
+        element: <Home />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
       {
         path: "/atencion",

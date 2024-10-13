@@ -5,7 +5,7 @@ main {
   flex-direction: column;
 }
 
-#registerForm {
+form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,7 +23,7 @@ main {
   font-size: 1.1rem; /* Aumenta un poco el tamaño de la fuente */
 }
 
-#registerForm input {
+form input {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   padding: 0.5rem;
@@ -37,32 +37,32 @@ main {
   font-size: 1.1rem; /* Aumenta un poco el tamaño de la fuente */
 }
 
-#registerForm input:focus {
+form input:focus {
   background-color: rgb(34, 34, 34);
   transform: scale(1.05);
 }
 
-#registerForm button {
+form button {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   padding: 0.5rem;
   border: 1px solid #444;
   border-radius: 0.5rem;
   width: 50%;
-  background-color: rgba(68, 68, 68, 0.8); /* Ajuste de transparencia */
+  background-color: rgba(0, 0, 0, 0.8); /* Ajuste de transparencia */
   color: #fff;
   transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 
   font-size: 1.1rem; /* Aumenta un poco el tamaño de la fuente */
 }
 
-#registerForm button:hover {
-  background-color: rgba(85, 85, 85, 0.8); /* Ajuste de transparencia */
+form button:hover {
+  background-color: rgba(187, 187, 187, 0.8); /* Ajuste de transparencia */
   color: #fff;
   transform: scale(1.1);
 }
 
-#registerForm #registerButton {
+form #registerButton {
   margin-top: 1rem;
   margin-bottom: 1rem;
   padding: 0.5rem;
@@ -76,12 +76,12 @@ main {
   font-size: 1.1rem; /* Aumenta un poco el tamaño de la fuente */
 }
 
-#registerForm #registerButton:hover {
+form #registerButton:hover {
   background-color: rgba(255, 0, 212, 0.8); /* Ajuste de transparencia */
   transform: scale(1.1);
 }
 
-#registerForm #cancelButton {
+form #cancelButton {
   margin-top: 1rem;
   margin-bottom: 1rem;
   padding: 0.5rem;
@@ -95,7 +95,7 @@ main {
   font-size: 1.1rem; /* Aumenta un poco el tamaño de la fuente */
 }
 
-#registerForm #cancelButton:hover {
+form #cancelButton:hover {
   background-color: rgba(163, 20, 20, 0.8); /* Ajuste de transparencia */
   transform: scale(1.1);
 }
@@ -109,4 +109,10 @@ main {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+form section {
+  text-align: center;
+  display: flex;
+  gap: 5rem;
 }

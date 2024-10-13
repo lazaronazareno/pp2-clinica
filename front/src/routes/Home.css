@@ -1,0 +1,26 @@
+#homeMain{
+    display: grid;
+    text-decoration: none;
+}
+
+section {
+    display: flex;
+    text-align: center;
+    display: flex;
+    gap: 5rem;
+}
+
+
+#homeMain button{
+
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  width: 10rem;
+  height: 3rem;
+  background-color: rgba(0, 0, 0, 0.8); /* Ajuste de transparencia */
+  color: #fff;
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+  font-size: 1.1rem; 
+  
+}

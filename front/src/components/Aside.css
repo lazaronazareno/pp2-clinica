@@ -1,0 +1,12 @@
+aside {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+aside a {
+  text-decoration: none;
+  color: black;
+}
