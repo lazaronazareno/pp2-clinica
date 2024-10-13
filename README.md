@@ -5,7 +5,7 @@
 1. Install requirements
 
 ```bash
-pip install -r <paht/path>requirements.txt
+pip install -r requirements.txt
 ```
 
 2. Configure database credentials in a new .env file
@@ -21,5 +21,5 @@ MYSQL_PORT=3306
 3. Run application
 
 ```bash
-uvicorn Backend.main:main_app --reload
+uvicorn main:app --reload
 ```
