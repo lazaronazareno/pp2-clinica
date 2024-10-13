@@ -7,12 +7,11 @@
 
   display: grid;
   grid-template-areas:
-    "main main main"
-    "footer footer footer";
-
-    grid-template-rows: auto 20%;
-
-   
+    "aside nav nav"
+    "aside main main";
+    grid-template-rows: 10% auto;
+    grid-template-columns: 15% auto auto;
+  
 }
 
 body{
@@ -24,7 +23,14 @@ main {
   grid-area: main;
 }
 
-footer {
-  background-color: rgba(0, 255, 255, 0.527);
-  grid-area: footer;
+nav{
+  background-color: rgba(0, 45, 128, 0.527);
+  grid-area: nav;
 }
+
+aside{
+  background-color: rgba(100, 128, 0, 0.527);
+  grid-area: aside;
+}
+
+
