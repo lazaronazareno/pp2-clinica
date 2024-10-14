@@ -6,6 +6,7 @@
   background-image: url("./mainCat.jpg");
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
   font-size: x-large;
   display: grid;
   grid-template-areas:
