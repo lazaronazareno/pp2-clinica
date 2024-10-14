@@ -1,6 +1,5 @@
 main {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
 }
@@ -25,7 +24,7 @@ form {
 
 form a {
   text-decoration: none;
-  color: orange;
+  color: rgb(194, 177, 255);
 }
 
 form input {
@@ -82,7 +81,7 @@ form #registerButton {
 }
 
 form #registerButton:hover {
-  background-color: rgba(255, 0, 212, 0.8); /* Ajuste de transparencia */
+  background-color: rgba(46, 255, 185, 0.8); /* Ajuste de transparencia */
   transform: scale(1.1);
 }
 
@@ -120,4 +119,8 @@ form section {
   text-align: center;
   display: flex;
   gap: 5rem;
+}
+
+h2{
+  margin-top: 5rem;
 }

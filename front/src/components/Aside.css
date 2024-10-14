@@ -8,5 +8,6 @@ aside {
 
 aside a {
   text-decoration: none;
-  color: black;
+  color: rgb(211, 235, 255);  
+  font-size: 1.2rem;
 }

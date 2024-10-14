@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const LoginForm = () => {
     return (
         <main>
-            <h2>Logueate capo</h2>
+            <h2>Ingrese aqui</h2>
 
             <form id="LoginForm">
                 <label htmlFor="dni">DNI</label>
@@ -21,7 +21,7 @@ const LoginForm = () => {
                         Cancelar
                     </button>
                 </section>
-                <Link to="/register">¿No te registraste aun, GATO? Ingresa aqui.</Link>
+                <Link to="/register">¿Aun no te registraste? Ingresa aqui.</Link>
             </form>
         </main>
     );
