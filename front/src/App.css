@@ -3,7 +3,7 @@
 #root {
   height: 100svh;
   font-family: "Poppins", sans-serif;
-  background-image: url("./mainCat.jpg");
+  background-image: url("/mainCat.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
