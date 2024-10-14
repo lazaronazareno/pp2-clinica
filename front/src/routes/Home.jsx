@@ -22,7 +22,7 @@ const Home = () => {
                 Ya sea que necesites una consulta rutinaria, un estudio especializado o atención médica de urgencia, nuestro equipo está aquí para apoyarte en cada paso. ¡Tu salud es nuestra misión!
             </p>
             <h3>Clínica SePrise
-                Cuidamos de ti, porque tu bienestar es lo primero.
+                Cuidamos de usted, porque tu bienestar es lo primero.
             </h3>
 
         </main>

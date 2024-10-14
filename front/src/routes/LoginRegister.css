@@ -44,6 +44,11 @@ form input {
   font-size: 1.1rem; /* Aumenta un poco el tamaño de la fuente */
 }
 
+form input::placeholder{
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 form input:focus {
   background-color: rgb(34, 34, 34);
   transform: scale(1.05);

@@ -8,10 +8,10 @@ const LoginForm = () => {
 
             <form id="LoginForm">
                 <label htmlFor="dni">DNI</label>
-                <input id="dni" name="dni" type="text" />
+                <input id="dni" name="dni" type="text" placeholder="Ingrese su DNI sin puntos" />
 
                 <label htmlFor="password">Password</label>
-                <input id="password" name="password" type="password" />
+                <input id="password" name="password" type="password" placeholder="Ingrese aqui su password" />
 
                 <section>
                     <button type="submit" id="accessButton">
