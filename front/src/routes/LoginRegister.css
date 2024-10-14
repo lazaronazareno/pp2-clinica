@@ -23,6 +23,11 @@ form {
   font-size: 1.1rem; /* Aumenta un poco el tamaño de la fuente */
 }
 
+form a {
+  text-decoration: none;
+  color: orange;
+}
+
 form input {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;

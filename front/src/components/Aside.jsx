@@ -7,7 +7,7 @@ const Aside = () => {
             <Link to="/">
                 <p>Inicio 🤓</p>
             </Link>
-            <Link to="/atencion">
+            <Link to="/turnos">
                 <p>Turnos 🔜</p>
             </Link>
             <Link to="/estudios">

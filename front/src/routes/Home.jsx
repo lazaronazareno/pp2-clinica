@@ -14,7 +14,7 @@ const Home = () => {
                 </Link>
             </section>
 
-            <h2>Donde los pacientes vienen a morir</h2>
+            <h2>Creado por 4 personas no 5.</h2>
         </main>
     );
 };

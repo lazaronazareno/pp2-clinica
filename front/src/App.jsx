@@ -6,7 +6,7 @@ import Aside from "./components/Aside";
 import Home from "./routes/Home";
 import Register from "./routes/Register";
 import Login from "./routes/Login";
-
+import Dashboard from "./components/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -32,8 +32,8 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "/atencion",
-        element: <main>Dashboard de turnos</main>,
+        path: "/turnos",
+        element: <Dashboard />,
       },
       {
         path: "/estudios",
