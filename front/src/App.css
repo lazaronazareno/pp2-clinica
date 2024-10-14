@@ -12,7 +12,7 @@
     "aside nav nav"
     "aside main main";
   grid-template-rows: 10% auto;
-  grid-template-columns: 15% auto auto;
+  grid-template-columns: 15% auto ;
 }
 
 body {
