@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 const LoginForm = () => {
     return (
         <main>
-            <h2>Logueate capo</h2>
+            <h2>Ingrese aqui</h2>
 
             <form id="LoginForm">
                 <label htmlFor="dni">DNI</label>
-                <input id="dni" name="dni" type="text" />
+                <input id="dni" name="dni" type="text" placeholder="Ingrese su DNI sin puntos" />
 
                 <label htmlFor="password">Password</label>
-                <input id="password" name="password" type="password" />
+                <input id="password" name="password" type="password" placeholder="Ingrese aqui su password" />
 
                 <section>
                     <button type="submit" id="accessButton">
@@ -21,7 +21,7 @@ const LoginForm = () => {
                         Cancelar
                     </button>
                 </section>
-                <Link to="/register">¿No te registraste aun, GATO? Ingresa aqui.</Link>
+                <Link to="/register">¿Aun no te registraste? Ingresa aqui.</Link>
             </form>
         </main>
     );

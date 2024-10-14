@@ -5,19 +5,19 @@ const Aside = () => {
     return (
         <aside>
             <Link to="/">
-                <p>Inicio 🤓</p>
+                <p>Inicio 🏥</p>
             </Link>
             <Link to="/turnos">
-                <p>Turnos 🔜</p>
+                <p>Turnos 🗓️</p>
             </Link>
             <Link to="/estudios">
-                <p>Estudios ♿</p>
+                <p>Estudios 🪦</p>
             </Link>
             <Link to="/insumos">
-                <p>Insumos ♻️</p>
+                <p>Insumos 💊</p>
             </Link>
             <Link to="/admin">
-                <p>Admin Central 🆘</p>
+                <p>Admin 🔐</p>
             </Link>
         </aside>
     );

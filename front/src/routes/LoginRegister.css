@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
 main {
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
 }
@@ -25,7 +27,7 @@ form {
 
 form a {
   text-decoration: none;
-  color: orange;
+  color: rgb(194, 177, 255);
 }
 
 form input {
@@ -40,6 +42,11 @@ form input {
   transition: transform 0.3s ease-in-out;
 
   font-size: 1.1rem; /* Aumenta un poco el tamaño de la fuente */
+}
+
+form input::placeholder{
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 form input:focus {
@@ -82,7 +89,7 @@ form #registerButton {
 }
 
 form #registerButton:hover {
-  background-color: rgba(255, 0, 212, 0.8); /* Ajuste de transparencia */
+  background-color: rgba(46, 255, 185, 0.8); /* Ajuste de transparencia */
   transform: scale(1.1);
 }
 
@@ -120,4 +127,11 @@ form section {
   text-align: center;
   display: flex;
   gap: 5rem;
+}
+
+h2{
+  margin-top: 3rem;
+  font-family: "Poppis";
+  font-weight: 500;
+  font-size: 2.5rem;
 }
