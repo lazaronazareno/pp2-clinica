@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import "./Nav.css";
 
 const Nav = () => {
+    const bla = new Audio("./bla.mp3");
+
+    bla.play();
   return (
     <nav>
       <ul>
