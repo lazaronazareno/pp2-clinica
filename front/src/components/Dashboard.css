@@ -1,15 +1,22 @@
 #dashboardMain {
   display: grid;
   grid-template-columns: 1fr;
+  padding-top: 15%;
+  display: flex;
+  justify-content: flex-start;
 }
 
 table {
   width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
   border-collapse: collapse;
   border: 1px solid rgb(180, 180, 180);
   font-family: sans-serif;
   font-size: 0.8rem;
   letter-spacing: 1px;
+  table-layout: fixed;
+  font-size: x-small;
 }
 
 thead,
@@ -21,7 +28,6 @@ th,
 td {
   border: 1px solid rgb(160, 160, 160);
   word-wrap: break-word;
-  padding: 8px;
 }
 
 td:last-of-type {
@@ -38,4 +44,8 @@ tfoot th {
 
 tfoot td {
   font-weight: bold;
+}
+
+tbody tr {
+  background-color: rgb(146, 127, 255);
 }

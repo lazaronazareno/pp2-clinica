@@ -1,11 +1,16 @@
+import { Link } from "react-router-dom";
+import "./Nav.css";
 
 const Nav = () => {
-    return (
-        <nav>
+  return (
+    <nav>
+      <ul>
+        <li>
+          <Link to="/logout">logout 👻</Link>
+        </li>
+      </ul>
+    </nav>
+  );
+};
 
-        </nav>
-    )
-}
-
-
-export default Nav
+export default Nav;
