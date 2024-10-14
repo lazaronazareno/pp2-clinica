@@ -4,12 +4,11 @@ import "./Nav.css";
 const Nav = () => {
     const bla = new Audio("./bla.mp3");
 
-    bla.play();
   return (
     <nav>
       <ul>
         <li>
-          <Link to="/logout">logout 👻</Link>
+          <Link onClick={bla.play()}to="/logout">logout 👻</Link>
         </li>
       </ul>
     </nav>
