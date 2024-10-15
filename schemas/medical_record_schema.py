@@ -1,20 +1,16 @@
 from pydantic import BaseModel
 from datetime import date
+from typing import Optional
 
 class MedicalRecordCreate(BaseModel):
     usuario_id: int
-    created_at: date
-    updated_at: date = None
     informe: str
     especialidad_id: int
 
-class MedicalRecordResponse(BaseModel):
+class MedicalRecordResponse(MedicalRecordCreate):
     id: int
-    usuario_id: int
     created_at: date
-    updated_at: date = None
-    informe: str
-    especialidad_id: int
+    updated_at: Optional[date]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
