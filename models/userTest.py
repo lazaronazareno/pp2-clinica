@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, String, Date, Boolean
+from sqlalchemy.orm import relationship
 from db.database import base
+from models.medical_record import MedicalRecord
 
 class User(base):
     __tablename__ = 'usuario'
@@ -13,3 +15,5 @@ class User(base):
     mail = Column(String(80), nullable=False)
     telefono = Column(String(45))
     fecha_nacimiento = Column(Date, nullable=False)
+
+    medical_record = relationship(MedicalRecord, back_populates="user")
