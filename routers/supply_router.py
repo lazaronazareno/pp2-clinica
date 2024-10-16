@@ -1,10 +1,11 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
+from models import supply
 from models.supply import Supply
 from schemas.supply_schema import SupplyCreate, SupplyResponse
 from db.database import engine, localsesion
 
-Supply.base.metadata.create_all(bind=engine)
+supply.base.metadata.create_all(bind=engine)
 
 def get_db():
     db = localsesion()

@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
-from db.database import Base
+from db.database import base
 
-class Supply(Base):
+class Supply(base):
     __tablename__ = 'insumo'
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
