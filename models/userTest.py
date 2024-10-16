@@ -10,6 +10,7 @@ class User(base):
     dni = Column(Integer, unique=True, nullable=False)
     nombre = Column(String(45), nullable=False)
     apellido = Column(String(45), nullable=False)
+    contraseña = Column(String(120), nullable=False)
     is_admin = Column(Boolean, default=False)
     is_empleado = Column(Boolean, default=False)
     mail = Column(String(80), nullable=False)
