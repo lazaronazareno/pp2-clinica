@@ -2,7 +2,7 @@ import "./LoginRegister.css";
 import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     /*
    {
@@ -16,12 +16,32 @@ const RegisterForm = () => {
   "is_empleado": false
     }
    */
+    console.log(event);
     const formData = new FormData(event.target);
     const formEntries = Object.fromEntries(formData.entries());
 
     for (const [key, value] of Object.entries(formEntries)) {
       console.log(`${key}: ${value}`);
     }
+    console.log(formEntries);
+
+    await fetch("http://127.0.0.1:8000/users", {
+      method: "POST",
+      body: JSON.stringify(formEntries),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -47,6 +67,13 @@ const RegisterForm = () => {
           name="apellido"
           type="text"
           placeholder="Ingrese su apellido..."
+        />
+        <label htmlFor="contraseña">Contraseña</label>
+        <input
+          id="contraseña"
+          name="contraseña"
+          type="password"
+          placeholder="Ingrese su contraseña..."
         />
         <label htmlFor="dni">DNI</label>
         <input
