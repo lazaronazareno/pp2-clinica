@@ -1,12 +1,13 @@
-class Appointment():
-    def __init__(self, date, id_s, active) -> None:
-        self.date = date
-        self.id_s = id_s
-        self.active = active
-        self.id = None
+from sqlalchemy import Column, Integer, Date, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
+from db.database import base
 
-    def set_id(self, id):
-        self.id = id
+class Appointment(base):
+    __tablename__ = 'turno'
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    fecha = Column(Date, nullable=False)
+    active = Column(Boolean, default=False)
 
-    def add_appointment(self):
-        pass
+    estudio_id = Column(Integer, ForeignKey('estudio.id'), nullable=False)
+    medical_record = relationship("MedicalRecord", back_populates="appointments")

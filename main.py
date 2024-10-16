@@ -1,16 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers.user_router import user_root
+from routers.appointment_router import appointment_router
+from routers.department_router import department_root
+from routers.medical_record_router import medical_record_router
 
 app = FastAPI()
 
-# Configuración de CORS
 origins = [
-    "http://localhost",
-    "http://localhost:8000",
+    "http://localhost:3000",
     "http://localhost:5173",
-    "http://localhost:3306",
-    # Agrega aquí los orígenes permitidos
 ]
 
 app.add_middleware(
@@ -21,4 +20,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(user_root)
+app.include_router(appointment_router)
+app.include_router(department_root)
+app.include_router(medical_record_router)
 app.include_router(user_root)
