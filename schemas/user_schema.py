@@ -6,11 +6,12 @@ class UserBase(BaseModel):
     dni: int
     nombre: str
     apellido: str
+    contraseña: str
     mail: str
     telefono: Optional[str]
     fecha_nacimiento: date
-    is_admin: bool = False
-    is_empleado: bool = False
+    is_admin: Optional[bool] = False
+    is_empleado: Optional[bool] = False
 
 class UserCreate(UserBase):
     pass
