@@ -13,7 +13,7 @@ class User(base):
     contraseña = Column(String(120), nullable=False)
     is_admin = Column(Boolean, default=False)
     is_empleado = Column(Boolean, default=False)
-    mail = Column(String(80), nullable=False)
+    mail = Column(String(80), unique=True, nullable=False)
     telefono = Column(String(45))
     fecha_nacimiento = Column(Date, nullable=False)
 

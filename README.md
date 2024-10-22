@@ -21,5 +21,5 @@ MYSQL_PORT=3306
 3. Run application
 
 ```bash
-uvicorn main:main --reload
+uvicorn main:app --reload
 ```
