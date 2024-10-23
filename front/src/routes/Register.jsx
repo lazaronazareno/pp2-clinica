@@ -1,33 +1,18 @@
-import "./LoginRegister.css";
+import React from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    /*
-   {
-  "dni": 0,
-  "nombre": "string",
-  "apellido": "string",
-  "mail": "string",
-  "telefono": "string",
-  "fecha_nacimiento": "2024-10-16",
-  "is_admin": false,
-  "is_empleado": false
-    }
-   */
-    console.log(event);
-    const formData = new FormData(event.target);
-    const formEntries = Object.fromEntries(formData.entries());
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-    for (const [key, value] of Object.entries(formEntries)) {
-      console.log(`${key}: ${value}`);
-    }
-    console.log(formEntries);
-
+  const onSubmit = async (data) => {
     await fetch("http://127.0.0.1:8000/users", {
       method: "POST",
-      body: JSON.stringify(formEntries),
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
@@ -46,58 +31,108 @@ const RegisterForm = () => {
 
   return (
     <main>
-      <h2>Registrese</h2>
-
-      <form
-        action="http://127.0.0.1:8000/users"
-        method="post"
-        id="registerForm"
-        onSubmit={handleSubmit}
-      >
+      <h1>Registro</h1>
+      <form id="registerForm" onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="nombre">Nombre</label>
         <input
           id="nombre"
-          name="nombre"
-          type="text"
-          placeholder="Ingrese su nombre..."
+          {...register("nombre", { required: "Nombre es requerido" })}
         />
+        {errors.nombre && (
+          <span className="errorMessage">{errors.nombre.message}</span>
+        )}
+
         <label htmlFor="apellido">Apellido</label>
         <input
           id="apellido"
-          name="apellido"
-          type="text"
-          placeholder="Ingrese su apellido..."
+          {...register("apellido", { required: "Apellido es requerido" })}
         />
-        <label htmlFor="contraseña">Contraseña</label>
+        {errors.apellido && (
+          <span className="errorMessage">{errors.apellido.message}</span>
+        )}
+
+        <label htmlFor="telefono">Teléfono</label>
+        <input
+          id="telefono"
+          {...register("telefono", {
+            required: "Teléfono es requerido",
+            pattern: {
+              value: /^(?:\+54|54)?(?:11|[2368]\d)\d{8}$/,
+              message: "Formato de teléfono inválido",
+            },
+          })}
+          placeholder="Ej: 1123456789"
+        />
+
+        {errors.telefono && (
+          <span className="errorMessage">{errors.telefono.message}</span>
+        )}
+
+        <label htmlFor="mail">Mail</label>
+        <input
+          id="mail"
+          {...register("mail", {
+            required: "Mail es requerido",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              message: "Formato de Mail inválido",
+            },
+          })}
+        />
+        {errors.mail && (
+          <span className="errorMessage">{errors.mail.message}</span>
+        )}
+
+        <label htmlFor="contraseña">Password</label>
         <input
           id="contraseña"
-          name="contraseña"
           type="password"
-          placeholder="Ingrese su contraseña..."
+          {...register("contraseña", {
+            required: "Contraseña es requerida",
+            minLength: {
+              value: 6,
+              message: "La contraseña debe tener al menos 6 caracteres",
+            },
+          })}
         />
+        {errors.contraseña && (
+          <span className="errorMessage">{errors.contraseña.message}</span>
+        )}
+
         <label htmlFor="dni">DNI</label>
         <input
           id="dni"
-          name="dni"
-          type="text"
-          placeholder="Ingrese su DNI sin puntos"
+          {...register("dni", {
+            required: "DNI es requerido",
+            pattern: {
+              value: /^\d+$/,
+              message: "DNI debe ser un número",
+            },
+          })}
         />
+        {errors.dni && (
+          <span className="errorMessage">{errors.dni.message}</span>
+        )}
+
         <label htmlFor="fecha_nacimiento">Fecha de Nacimiento</label>
-        <input id="fecha_nacimiento" name="fecha_nacimiento" type="date" />
-        <label htmlFor="mail">Email</label>
         <input
-          id="mail"
-          name="mail"
-          type="text"
-          placeholder="Ingrese su mail..."
+          type="date"
+          id="fecha_nacimiento"
+          {...register("fecha_nacimiento", {
+            required: "Fecha de nacimiento es requerida",
+            validate: {
+              minYear: (value) => {
+                const year = new Date(value).getFullYear();
+                return year >= 1900 || "El año debe ser mayor a 1900";
+              },
+            },
+          })}
         />
-        <label htmlFor="telefono">Telefono</label>
-        <input
-          id="telefono"
-          name="telefono"
-          type="text"
-          placeholder="Ingrese su telefono..."
-        />
+        {errors.fecha_nacimiento && (
+          <span className="errorMessage">
+            {errors.fecha_nacimiento.message}
+          </span>
+        )}
 
         <section>
           <button type="submit" id="registerButton">
@@ -107,7 +142,7 @@ const RegisterForm = () => {
             Cancelar
           </button>
         </section>
-        <Link to="/login">Si ya esta registado, ingresa aca.</Link>
+        <Link to="/login">Si ya está registrado, ingrese acá.</Link>
       </form>
     </main>
   );
