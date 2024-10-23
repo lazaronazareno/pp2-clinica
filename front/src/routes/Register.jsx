@@ -12,7 +12,7 @@ const RegisterForm = () => {
   const onSubmit = async (data) => {
     await fetch("http://127.0.0.1:8000/users", {
       method: "POST",
-      body: JSON.stringify(formEntries),
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
@@ -49,6 +49,23 @@ const RegisterForm = () => {
         />
         {errors.apellido && (
           <span className="errorMessage">{errors.apellido.message}</span>
+        )}
+
+        <label htmlFor="telefono">Teléfono</label>
+        <input
+          id="telefono"
+          {...register("telefono", {
+            required: "Teléfono es requerido",
+            pattern: {
+              value: /^(?:\+54|54)?(?:11|[2368]\d)\d{8}$/,
+              message: "Formato de teléfono inválido",
+            },
+          })}
+          placeholder="Ej: 1123456789"
+        />
+
+        {errors.telefono && (
+          <span className="errorMessage">{errors.telefono.message}</span>
         )}
 
         <label htmlFor="mail">Mail</label>
