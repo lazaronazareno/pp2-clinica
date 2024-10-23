@@ -1,7 +1,5 @@
 .venv
 .env
-.venv
-.env
 node_modules
 dist
 dist-ssr

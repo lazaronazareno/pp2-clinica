@@ -1,0 +1,47 @@
+#dashboardMain {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding-top: 15%;
+  display: flex;
+  justify-content: flex-start;
+}
+table {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  border: 1px solid rgb(255, 208, 208);
+  font-family: sans-serif;
+  font-size:small;
+  letter-spacing: 0.2px;
+
+ 
+
+}
+
+thead,
+tfoot {
+  background-color: rgba(55, 183, 238, 0.671);
+}
+
+th,
+td {
+  border: 1px solid rgb(148, 148, 148);
+  word-wrap: break-word;
+  text-align: center;
+}
+tbody{
+  background-color: rgb(208, 211, 207);
+}
+td:last-of-type {
+  text-align: center;
+
+}
+
+tbody > tr:nth-of-type(even) {
+  background-color: rgb(192, 96, 96);
+}
+
+tbody tr {
+  background-color: rgb(146, 127, 255);
+}
