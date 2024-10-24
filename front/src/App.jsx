@@ -39,15 +39,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/estudios",
-        element: <main>Dashboard de estudios</main>,
+        element: <Dashboard />,
       },
       {
         path: "/insumos",
-        element: <main>Dashboard de insumos</main>,
+        element: <Dashboard />,
       },
       {
         path: "/admin",
-        element: <main>Dashboard de adm</main>,
+        element: <Dashboard />,
       },
     ],
   },

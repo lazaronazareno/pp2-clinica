@@ -1,39 +1,38 @@
-#homeMain{
-    display: grid;
-    text-decoration: none;
-    justify-items: center;
+#homeMain {
+  display: grid;
+  text-decoration: none;
+  justify-items: center;
 }
 
 section {
-    display: flex;
-    text-align: center;
-    display: flex;
-    gap: 5rem;
+  display: flex;
+  text-align: center;
+  display: flex;
+  gap: 5rem;
 }
 
-
-#homeMain button{
-    margin-top: 5rem;
-    border: 1px solid #444;
-    border-radius: 0.5rem;
-    width: 10rem;
-    height: 3rem;
-    background-color: rgba(0, 0, 0, 0.8); /* Ajuste de transparencia */
-    color: #fff;
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-    font-size: 1.1rem;  
+#homeMain button {
+  margin-top: 5rem;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  width: 10rem;
+  height: 3rem;
+  background-color: rgba(0, 0, 0, 0.8); /* Ajuste de transparencia */
+  color: #fff;
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  font-size: 1.1rem;
 }
 
-h2{
-    margin-top: 10rem;
-    font-size: x-large;
+h2 {
+  margin-top: 10rem;
+  font-size: x-large;
 }
 
-#greeting{
-    font-size: small;
-    padding: 1rem;
+#greeting {
+  font-size: small;
+  padding: 1rem;
 }
 
-h3{
-    font-size: large;
+h3 {
+  font-size: large;
 }
