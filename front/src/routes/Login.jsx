@@ -1,8 +1,10 @@
 import "./LoginRegister.css";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
+import { useCookies } from "react-cookie";
 const LoginForm = () => {
+  const [cookies, setCookie] = useCookies(["user"]);
+
   const {
     register,
     handleSubmit,
@@ -22,6 +24,9 @@ const LoginForm = () => {
         return response.json();
       })
       .then((data) => {
+        Object.keys(data).forEach((key) => {
+          setCookie(key, data[key]);
+        });
         console.log(data);
       })
       .catch((error) => {
@@ -30,8 +35,6 @@ const LoginForm = () => {
   };
 
   return (
-
-
     <main>
       <h2>Ingrese aqui</h2>
 

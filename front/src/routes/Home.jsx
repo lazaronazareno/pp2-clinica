@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 const Home = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
+  const [cookies, setCookie] = useCookies(["user"]);
 
   useEffect(() => {
     const endpoints = [
@@ -62,8 +64,16 @@ const Home = () => {
   return (
     <main id="homeMain">
       {showDialog && <dialog open>{dialogMessage}</dialog>}
+   
       <h1>Clinica SePrise</h1>
+
+
       <section>
+      {cookies.user && (
+        <h2>
+          Bienvenido {cookies.user} {cookies.user}
+        </h2>
+      )}
         <Link to="/register">
           <button id="register">Registrarse </button>
         </Link>
