@@ -1,13 +1,30 @@
-import { Link } from "react-router-dom";
 import "./Nav.css";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const Nav = () => {
+  const [cookies, setCookie] = useCookies(["user"]);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    Object.keys(cookies).forEach((key) => {
+      setCookie(key, "", { path: "/" });
+    });
+    navigate("/");
+  };
+
   return (
     <nav>
       <ul>
-        <li>
-          <Link to="/logout">logout 👻</Link>
-        </li>
+        {cookies.user && (
+          <>
+            <li>
+              <p>Bienvenido {cookies.user}</p>{" "}
+            </li>
+            <li>
+              <button onClick={handleLogout}>logout 👻</button>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   );
