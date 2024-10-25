@@ -1,11 +1,11 @@
 from pydantic import BaseModel
 
 class DepartmentCreate(BaseModel):
-    nombre: str
+    name: str
 
 class DepartmentResponse(BaseModel):
     id: int
-    nombre: str
+    name: str
 
     class Config:
         from_attributes = True

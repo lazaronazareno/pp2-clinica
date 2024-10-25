@@ -3,9 +3,9 @@ from datetime import date
 from typing import Optional
 
 class MedicalRecordCreate(BaseModel):
-    usuario_id: int
-    informe: str
-    especialidad_id: int
+    user_id: int
+    report: str
+    department_id: int
 
 class MedicalRecordResponse(MedicalRecordCreate):
     id: int

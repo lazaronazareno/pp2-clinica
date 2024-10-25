@@ -2,15 +2,15 @@ from pydantic import BaseModel
 from datetime import date
 
 class AppointmentCreate(BaseModel):
-    fecha: date
+    date: date
     active: bool = False
-    estudio_id: int
+    medical_record_id: int
 
 class AppointmentResponse(BaseModel):
     id: int
-    fecha: date
+    date: date
     active: bool
-    estudio_id: int
+    medical_record_id: int
 
     class Config:
         from_attributes = True
