@@ -7,6 +7,7 @@ import Home from "./routes/Home";
 import Register from "./routes/Register";
 import Login from "./routes/Login";
 import Dashboard from "./components/Dashboard";
+import Dashboard2 from "./components/Dashboard2";
 import BackgroundMusic from "./components/BackgroundMusic";
 
 const router = createBrowserRouter([
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/turnos",
-        element: <Dashboard />,
+        element: <Dashboard2 />,
       },
       {
         path: "/estudios",
