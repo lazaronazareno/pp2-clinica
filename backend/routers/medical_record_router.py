@@ -29,18 +29,18 @@ def post_medical_record(db: Session, medical_record: MedicalRecordCreate):
     db.refresh(db_medical_record)
     return db_medical_record
 
-@medical_record_router.post("/medical-record", response_model=MedicalRecordResponse)
+@medical_record_router.post("/medical-records", response_model=MedicalRecordResponse)
 def create_medical_record(medical_record: MedicalRecordCreate, db: Session = Depends(get_db)):
     return post_medical_record(db=db, medical_record=medical_record)
 
-@medical_record_router.get("/medical-record/{medical_record_id}", response_model=MedicalRecordResponse)
+@medical_record_router.get("/medical-records/{medical_record_id}", response_model=MedicalRecordResponse)
 def read_medical_record(medical_record_id: int, db: Session = Depends(get_db)):
     db_medical_record = get_medical_record_by_id(db, medical_record_id=medical_record_id)
     if db_medical_record is None:
         raise HTTPException(status_code=404, detail="Registro médico no encontrado")
     return db_medical_record
 
-@medical_record_router.get("/medical-record")
+@medical_record_router.get("/medical-records")
 def get_medical_records(db: Session = Depends(get_db)):
     db_medical_records = get_all_medical_records(db)
     return db_medical_records
