@@ -44,3 +44,14 @@ def read_supply(supply_id: int, db: Session = Depends(get_db)):
 def get_supplies(db: Session = Depends(get_db)):
     db_supplies = get_all_supplies(db)
     return db_supplies
+
+@supply_router.put("/supplies/{supply_id}", response_model=SupplyResponse)
+def update_supply(supply_id: int, supply: SupplyCreate, db: Session = Depends(get_db)):
+    db_supply = get_supply_by_id(db, supply_id=supply_id)
+    if db_supply is None:
+        raise HTTPException(status_code=404, detail="Insumo no encontrado")
+    db_supply.name = supply.name
+    db_supply.stock = supply.stock
+    db.commit()
+    db.refresh(db_supply)
+    return db_supply

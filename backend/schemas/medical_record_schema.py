@@ -14,3 +14,6 @@ class MedicalRecordResponse(MedicalRecordCreate):
 
     class Config:
         from_attributes = True
+
+class MedicalRecordUpdate(BaseModel):
+    report: str

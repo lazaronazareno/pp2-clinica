@@ -108,3 +108,15 @@ def login_for_access_token(user: UserLogin, db: Session = Depends(get_db)):
 def get_doctors(db: Session = Depends(get_db)):
     db_users = get_user_doctor(db)
     return db_users
+
+@user_root.put("/users/{user_id}", response_model=UserResponse)
+def update_user(user_id: int, user: UserCreate, db: Session = Depends(get_db)):
+    db_user = get_user_by_id(db, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    db_user.name = user.name
+    db_user.mail = user.mail
+    db_user.password = user.password
+    db.commit()
+    db.refresh(db_user)
+    return db_user

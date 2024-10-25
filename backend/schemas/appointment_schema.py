@@ -14,3 +14,10 @@ class AppointmentResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class AppointmentEdit(BaseModel):
+    date: date
+    active: bool
+
+    class Config:
+        from_attributes = True

@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from models import medical_record
 from models.medical_record import MedicalRecord
-from schemas.medical_record_schema import MedicalRecordCreate, MedicalRecordResponse
+from schemas.medical_record_schema import MedicalRecordCreate, MedicalRecordResponse, MedicalRecordUpdate
 from db.database import engine, localsesion
 
 medical_record.base.metadata.create_all(bind=engine)
@@ -44,3 +44,13 @@ def read_medical_record(medical_record_id: int, db: Session = Depends(get_db)):
 def get_medical_records(db: Session = Depends(get_db)):
     db_medical_records = get_all_medical_records(db)
     return db_medical_records
+
+@medical_record_router.put("/medical-records/{medical_record_id}", response_model=MedicalRecordResponse)
+def update_medical_record(medical_record_id: int, medical_record: MedicalRecordUpdate, db: Session = Depends(get_db)):
+    db_medical_record = get_medical_record_by_id(db, medical_record_id=medical_record_id)
+    if db_medical_record is None:
+        raise HTTPException(status_code=404, detail="Registro médico no encontrado")
+    db_medical_record.report = medical_record.report
+    db.commit()
+    db.refresh(db_medical_record)
+    return db_medical_record
