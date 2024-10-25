@@ -1,10 +1,11 @@
 import "./LoginRegister.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
 const LoginForm = () => {
   const [cookies, setCookie] = useCookies(["user"]);
 
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -24,9 +25,11 @@ const LoginForm = () => {
         return response.json();
       })
       .then((data) => {
+        console.dir(data);
         Object.keys(data).forEach((key) => {
-          setCookie(key, data[key]);
+          if (key != "detail") setCookie(key, data[key]);
         });
+        navigate("/");
         console.log(data);
       })
       .catch((error) => {
