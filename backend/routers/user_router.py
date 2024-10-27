@@ -119,3 +119,12 @@ def update_user(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+@user_root.delete("/users/{user_id}")
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    db_user = get_user_by_id(db, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    db.delete(db_user)
+    db.commit()
+    return {"message": "Usuario eliminado"}
