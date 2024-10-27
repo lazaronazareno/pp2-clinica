@@ -1,3 +1,9 @@
+dist
+dist-ssr
+*.local
+__pycache__
+front/node_modules
+backend/env
 .venv
 .env
 node_modules

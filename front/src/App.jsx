@@ -7,6 +7,7 @@ import Home from "./routes/Home";
 import Register from "./routes/Register";
 import Login from "./routes/Login";
 import Dashboard from "./components/Dashboard";
+import Dashboard2 from "./components/Dashboard2";
 import BackgroundMusic from "./components/BackgroundMusic";
 
 const router = createBrowserRouter([
@@ -35,19 +36,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/turnos",
-        element: <Dashboard />,
+        element: <Dashboard2 />,
       },
       {
         path: "/estudios",
-        element: <main>Dashboard de estudios</main>,
+        element: <Dashboard />,
       },
       {
         path: "/insumos",
-        element: <main>Dashboard de insumos</main>,
+        element: <Dashboard />,
       },
       {
         path: "/admin",
-        element: <main>Dashboard de adm</main>,
+        element: <Dashboard />,
       },
     ],
   },
