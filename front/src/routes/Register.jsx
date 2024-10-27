@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 const RegisterForm = () => {
   const {
     register,
@@ -9,6 +9,7 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm();
 
+  const navigate = useNavigate();
   const onSubmit = async (data) => {
     await fetch("http://127.0.0.1:8000/users", {
       method: "POST",
@@ -23,6 +24,7 @@ const RegisterForm = () => {
       })
       .then((data) => {
         console.log(data);
+        navigate("/login");
       })
       .catch((error) => {
         console.error("Error:", error);

@@ -1,75 +1,24 @@
-import React, { useEffect, useState } from "react";
 import "./Home.css";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { useCookies } from "react-cookie";
 const Home = () => {
-  const [showDialog, setShowDialog] = useState(false);
-  const [dialogMessage, setDialogMessage] = useState("");
-
-  useEffect(() => {
-    const endpoints = [
-      "users",
-      "appointments",
-      "supplies",
-      "department",
-      "medical-record",
-    ];
-
-    const checkServerStatus = async () => {
-      try {
-        const results = await Promise.all(
-          endpoints.map((endpoint) =>
-            axios
-              .get(`http://127.0.0.1:8000/${endpoint}`)
-              .then((response) => ({ endpoint, status: response.status }))
-              .catch(() => ({ endpoint, status: "error" }))
-          )
-        );
-
-        const successfulEndpoints = results
-          .filter((result) => result.status === 200)
-          .map((result) => result.endpoint);
-        const failedEndpoints = results
-          .filter((result) => result.status !== 200)
-          .map((result) => result.endpoint);
-
-        if (failedEndpoints.length === 0) {
-          setDialogMessage(
-            `All endpoints are up and running! ${successfulEndpoints.join(
-              ", "
-            )}`
-          );
-        } else {
-          setDialogMessage(
-            `The following endpoints are not responding as expected: ${failedEndpoints.join(
-              ", "
-            )}`
-          );
-        }
-      } catch (error) {
-        setDialogMessage("Failed to reach the server.");
-      } finally {
-        setShowDialog(true);
-        setTimeout(() => {
-          setShowDialog(false);
-        }, 3000);
-      }
-    };
-
-    checkServerStatus();
-  }, []);
+  const [cookies, setCookie] = useCookies(["user"]);
 
   return (
     <main id="homeMain">
-      {showDialog && <dialog open>{dialogMessage}</dialog>}
       <h1>Clinica SePrise</h1>
+
       <section>
-        <Link to="/register">
-          <button id="register">Registrarse </button>
-        </Link>
-        <Link to="/login">
-          <button id="login">Ingresar </button>
-        </Link>
+        {cookies.user && (
+          <>
+            <Link to="/register">
+              <button id="register">Registrarse </button>
+            </Link>
+            <Link to="/login">
+              <button id="login">Ingresar </button>
+            </Link>
+          </>
+        )}
       </section>
 
       <h2>¡Bienvenidos a SePrise!</h2>

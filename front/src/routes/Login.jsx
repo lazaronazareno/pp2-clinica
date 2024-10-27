@@ -1,37 +1,77 @@
 import "./LoginRegister.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useCookies } from "react-cookie";
 const LoginForm = () => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const [cookies, setCookie] = useCookies(["user"]);
 
-    const formData = new FormData(event.target);
-    const formEntries = Object.fromEntries(formData.entries());
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-    for (const [key, value] of Object.entries(formEntries)) {
-      console.log(`${key}: ${value}`);
-    }
+  const onSubmit = async (data) => {
+    await fetch("http://127.0.0.1:8000/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => {
+        console.dir(data);
+        Object.keys(data).forEach((key) => {
+          if (key != "detail") setCookie(key, data[key]);
+        });
+        navigate("/");
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
     <main>
       <h2>Ingrese aqui</h2>
 
-      <form id="LoginForm" onSubmit={handleSubmit}>
-        <label htmlFor="dni">DNI</label>
+      <form id="LoginForm" onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="mail">Mail</label>
         <input
-          id="dni"
-          name="dni"
-          type="text"
-          placeholder="Ingrese su DNI sin puntos"
+          id="mail"
+          {...register("mail", {
+            required: "Mail es requerido",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              message: "Formato de Mail inválido",
+            },
+          })}
         />
+        {errors.mail && (
+          <span className="errorMessage">{errors.mail.message}</span>
+        )}
 
-        <label htmlFor="password">Password</label>
+        <label htmlFor="contraseña">Password</label>
         <input
-          id="password"
-          name="password"
+          id="contraseña"
           type="password"
-          placeholder="Ingrese aqui su password"
+          {...register("contraseña", {
+            required: "Contraseña es requerida",
+            minLength: {
+              value: 6,
+              message: "La contraseña debe tener al menos 6 caracteres",
+            },
+          })}
         />
+        {errors.contraseña && (
+          <span className="errorMessage">{errors.contraseña.message}</span>
+        )}
 
         <section>
           <button type="submit" id="accessButton">

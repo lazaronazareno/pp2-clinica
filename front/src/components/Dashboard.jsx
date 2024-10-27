@@ -1,48 +1,48 @@
-import axios from "axios";
+import DASHBOARD_ENDPOINTS from "../constants/endpoints";
 import "./Dashboard.css";
-import { useEffect, useState } from "react";
-
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 const Dashboard = () => {
-  const [dashboardData, setDashboardData] = useState([]);
-  const [dashboardColumns, setDashboardColumns] = useState([]);
+  const section = window.location.pathname.replace("/", "").toUpperCase();
+  const { isPending, error, data } = useQuery({
+    queryKey: ["getDashboardData", section],
+    queryFn: async () => {
+      const res = await axios.get(
+        `http://localhost:8000/${DASHBOARD_ENDPOINTS[section]}`
+      );
+      return res.data;
+    },
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get("http://localhost:8000/users");
-        setDashboardData(data);
+  if (isPending) return `Loading ${DASHBOARD_ENDPOINTS[section]} data...`;
 
-        const columns = Object.keys(data[0] || {});
-
-        setDashboardColumns(columns);
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-
-    fetchData();
-  }, []);
+  if (error) return "An error has occurred: " + error.message;
 
   return (
     <main id="dashboardMain">
-      <table>
-        <thead>
-          <tr>
-            {dashboardColumns.map((columna, index) => (
-              <th key={index}>{columna}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {dashboardData.map((row, index) => (
-            <tr key={index}>
-              {dashboardColumns.map((columna, index) => (
-                <td key={index}>{row[columna]}</td>
+      Dashboard de {section}
+      {data && data.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              {Object.keys(data[0]).map((key, index) => (
+                <th key={key + index}>{key}</th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map((row) => (
+              <tr key={row.id}>
+                {Object.values(row).map((value, index) => (
+                  <td key={value + index}>{value}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No hay data bro 😲</p>
+      )}
     </main>
   );
 };
