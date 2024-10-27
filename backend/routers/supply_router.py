@@ -55,3 +55,12 @@ def update_supply(supply_id: int, supply: SupplyCreate, db: Session = Depends(ge
     db.commit()
     db.refresh(db_supply)
     return db_supply
+
+@supply_router.delete("/supplies/{supply_id}")
+def delete_supply(supply_id: int, db: Session = Depends(get_db)):
+    db_supply = get_supply_by_id(db, supply_id=supply_id)
+    if db_supply is None:
+        raise HTTPException(status_code=404, detail="Insumo no encontrado")
+    db.delete(db_supply)
+    db.commit()
+    return {"message": "Insumo eliminado"}
