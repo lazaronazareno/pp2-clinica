@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import date
 from typing import Optional
 
+
 class UserBase(BaseModel):
     dni: int
     name: str
@@ -13,9 +14,20 @@ class UserBase(BaseModel):
     is_admin: Optional[bool] = False
     is_doctor: Optional[bool] = False
 
+
 class UserCreate(UserBase):
     pass
 
+class UserUpdate(BaseModel):
+    dni: int
+    name: str
+    lastname: str
+    password: Optional[str] = None
+    mail: str
+    phone: Optional[str]
+    date_birth: date
+    is_admin: Optional[bool] = False
+    is_doctor: Optional[bool] = False
 class UserResponse(BaseModel):
     id: int
     dni: int
@@ -30,9 +42,11 @@ class UserResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
 class UserLogin(BaseModel):
     mail: str
     password: str
+
 
 class Token(BaseModel):
     access_token: str

@@ -57,20 +57,20 @@ const LoginForm = () => {
           <span className="errorMessage">{errors.mail.message}</span>
         )}
 
-        <label htmlFor="contraseña">Password</label>
+        <label htmlFor="password">Password</label>
         <input
-          id="contraseña"
+          id="password"
           type="password"
-          {...register("contraseña", {
-            required: "Contraseña es requerida",
+          {...register("password", {
+            required: "password es requerida",
             minLength: {
               value: 6,
-              message: "La contraseña debe tener al menos 6 caracteres",
+              message: "La password debe tener al menos 6 caracteres",
             },
           })}
         />
-        {errors.contraseña && (
-          <span className="errorMessage">{errors.contraseña.message}</span>
+        {errors.password && (
+          <span className="errorMessage">{errors.password.message}</span>
         )}
 
         <section>
