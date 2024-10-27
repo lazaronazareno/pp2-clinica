@@ -1,11 +1,9 @@
-class Supply():
-    def __init__(self, id, name, stock) -> None:
-        self.id = id
-        self.name = name
-        self.stock = stock
+from sqlalchemy import Column, Integer, String
+from db.database import base
 
-    def set_stock(self, id, new_stock):
-        pass
+class Supply(base):
+    __tablename__ = 'supply'
 
-    def add_supply(self):
-        pass
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(80), nullable=False)
+    stock = Column(Integer, nullable=False)

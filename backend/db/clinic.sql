@@ -11,15 +11,15 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema clinica
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `clinica` DEFAULT CHARACTER SET utf8 ;
-USE `clinica` ;
+CREATE SCHEMA IF NOT EXISTS `clinic` DEFAULT CHARACTER SET utf8 ;
+USE `clinic` ;
 
 -- -----------------------------------------------------
 -- Table `clinica`.`especialidad`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `clinica`.`especialidad` (
+CREATE TABLE IF NOT EXISTS `clinic`.`department` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -27,17 +27,17 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `clinica`.`usuario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `clinica`.`usuario` (
+CREATE TABLE IF NOT EXISTS `clinic`.`user` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `dni` INT NOT NULL,
-  `nombre` VARCHAR(45) NOT NULL,
-  `apellido` VARCHAR(45) NOT NULL,
-  `contraseña` VARCHAR(120) NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `lastname` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(120) NOT NULL,
   `is_admin` TINYINT NOT NULL DEFAULT 0,
-  `is_empleado` TINYINT NOT NULL DEFAULT 0,
+  `is_doctor` TINYINT NOT NULL DEFAULT 0,
   `mail` VARCHAR(80) NOT NULL,
-  `telefono` VARCHAR(45) NULL,
-  `fecha_nacimiento` DATE NOT NULL,
+  `phone` VARCHAR(45) NULL,
+  `date_birth` DATE NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `dni_UNIQUE` (`dni` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -46,24 +46,24 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `clinica`.`estudio`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `clinica`.`estudio` (
+CREATE TABLE IF NOT EXISTS `clinic`.`medical_record` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATE NOT NULL,
   `updated_at` DATE NULL,
-  `informe` VARCHAR(200) NULL,
-  `especialidad_id` INT NOT NULL,
-  `usuario_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `usuario_id`),
-  INDEX `fk_estudio_especialidad_idx` (`especialidad_id` ASC) VISIBLE,
-  INDEX `fk_estudio_usuario1_idx` (`usuario_id` ASC) VISIBLE,
-  CONSTRAINT `fk_estudio_especialidad`
-    FOREIGN KEY (`especialidad_id`)
-    REFERENCES `clinica`.`especialidad` (`id`)
+  `report` VARCHAR(200) NULL,
+  `department_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `user_id`),
+  INDEX `fk_medical_record_department_idx` (`department_id` ASC) VISIBLE,
+  INDEX `fk_department_user1_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_medical_record_department`
+    FOREIGN KEY (`department_id`)
+    REFERENCES `clinic`.`department` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_estudio_usuario1`
-    FOREIGN KEY (`usuario_id`)
-    REFERENCES `clinica`.`usuario` (`id`)
+  CONSTRAINT `fk_medical_record_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `clinic`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -72,16 +72,16 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `clinica`.`turno`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `clinica`.`turno` (
+CREATE TABLE IF NOT EXISTS `clinic`.`appointment` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `fecha` DATE NOT NULL,
+  `date` DATE NOT NULL,
   `active` TINYINT NOT NULL DEFAULT 0,
-  `estudio_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `estudio_id`),
-  INDEX `fk_turno_estudio1_idx` (`estudio_id` ASC) VISIBLE,
-  CONSTRAINT `fk_turno_estudio1`
-    FOREIGN KEY (`estudio_id`)
-    REFERENCES `clinica`.`estudio` (`id`)
+  `medical_record_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `medical_record_id`),
+  INDEX `fk_appointment_medical_record1_idx` (`medical_record_id` ASC) VISIBLE,
+  CONSTRAINT `fk_appointment_medical_record1`
+    FOREIGN KEY (`medical_record_id`)
+    REFERENCES `clinic`.`medical_record` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -90,9 +90,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `clinica`.`insumo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `clinica`.`insumo` (
-  `id` INT NOT NULL,
-  `nombre` VARCHAR(80) NOT NULL,
+CREATE TABLE IF NOT EXISTS `clinic`.`supply` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(80) NOT NULL,
   `stock` INT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;

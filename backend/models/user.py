@@ -1,4 +1,4 @@
-class User():
+class UserBase():
     def __init__(self, dni, name, lastname, is_admin, is_internal, date, mail) -> None:
         self.dni = dni
         self.name = name

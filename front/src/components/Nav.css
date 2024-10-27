@@ -1,0 +1,21 @@
+nav ul {
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+  justify-content: flex-start;
+}
+
+nav ul li {
+  text-decoration: none;
+  list-style: none;
+}
+
+nav ul li:last-child {
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
+nav a{
+    text-decoration: none;
+    color: black;
+}

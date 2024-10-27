@@ -1,36 +1,54 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "./App.css";
-import LoginRegister from "./routes/LoginRegister";
+
+import Nav from "./components/Nav";
+import Aside from "./components/Aside";
+import Home from "./routes/Home";
+import Register from "./routes/Register";
+import Login from "./routes/Login";
+import Dashboard from "./components/Dashboard";
+import Dashboard2 from "./components/Dashboard2";
+import BackgroundMusic from "./components/BackgroundMusic";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <>
-        <nav>nav</nav>
-        <aside>aside</aside>
+        <Nav />
+        <Aside />
         <Outlet />
+        <BackgroundMusic />
       </>
     ),
     children: [
       {
         path: "/",
-        element: <LoginRegister />,
+        element: <Home />,
       },
       {
-        path: "/atencion",
-        element: <main>Dashboard de turnos</main>,
+        path: "/register",
+        element: <Register />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/turnos",
+        element: <Dashboard2 />,
       },
       {
         path: "/estudios",
-        element: <main>Dashboard de estudios</main>,
+        element: <Dashboard />,
       },
       {
         path: "/insumos",
-        element: <main>Dashboard de insumos</main>,
+        element: <Dashboard />,
       },
       {
         path: "/admin",
-        element: <main>Dashboard de adm</main>,
+        element: <Dashboard />,
       },
     ],
   },
