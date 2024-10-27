@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+#root {
+  height: 100svh;
+  font-family: "Poppins", sans-serif;
+  background-image: url("/mainCat.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  font-size: x-large;
+  display: grid;
+  grid-template-areas:
+    "aside nav nav"
+    "aside main main";
+  grid-template-rows: 10% auto;
+  grid-template-columns: 15% auto auto;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  background-color: rgba(0, 128, 0, 0.527);
+  grid-area: main;
+}
+
+nav {
+  background-color: rgba(0, 45, 128, 0.527);
+  grid-area: nav;
+}
+
+aside {
+  background-color: rgba(100, 128, 0, 0.527);
+  grid-area: aside;
+}

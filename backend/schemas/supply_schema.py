@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class SupplyBase(BaseModel):
-    nombre: str
+    name: str
     stock: int
 
 class SupplyCreate(SupplyBase):

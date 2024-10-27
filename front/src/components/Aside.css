@@ -1,0 +1,13 @@
+aside {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+aside a {
+  text-decoration: none;
+  color: rgb(211, 235, 255);  
+  font-size: 1.2rem;
+}
