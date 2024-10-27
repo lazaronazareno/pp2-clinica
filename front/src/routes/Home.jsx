@@ -9,7 +9,7 @@ const Home = () => {
       <h1>Clinica SePrise</h1>
 
       <section>
-        {cookies.user && (
+        {!cookies.user && (
           <>
             <Link to="/register">
               <button id="register">Registrarse </button>
