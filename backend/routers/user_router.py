@@ -120,4 +120,3 @@ def update_user(user_id: int, user: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_user)
     return db_user
-
