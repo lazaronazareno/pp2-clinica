@@ -18,7 +18,7 @@ const Nav = () => {
         {cookies.user && (
           <>
             <li>
-              <p>Bienvenido {cookies.user}</p>{" "}
+              <p>Bienvenido {cookies.user.name}</p>{" "}
             </li>
             <li>
               <button onClick={handleLogout}>logout 👻</button>
