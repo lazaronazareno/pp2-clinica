@@ -15,7 +15,7 @@ const Nav = () => {
   return (
     <nav>
       <ul>
-        {cookies.user && (
+        {cookies.user.id && (
           <>
             <li>
               <p>Bienvenido {cookies.user.name}</p>{" "}

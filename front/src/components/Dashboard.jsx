@@ -6,12 +6,15 @@ import { useCookies } from "react-cookie"; // Importar useCookies
 import DASHBOARD_ENDPOINTS from "../constants/endpoints";
 import "./Dashboard.css";
 
+
 const Dashboard = () => {
+
   const section = window.location.pathname.replace("/", "").toUpperCase();
   const queryClient = useQueryClient();
   const [editRow, setEditRow] = useState(null);
   const { register, handleSubmit, setValue, reset } = useForm();
-  const [cookies, setCookie] = useCookies(["token"]); // Manejar cookies
+  const [cookies, setCookie] = useCookies(["user"]); // Manejar cookies
+  const userId = cookies.user?.id; // Obtener el ID del usuario de la cookie
   const { isPending, error, data } = useQuery({
     queryKey: ["getDashboardData", section],
     queryFn: async () => {
@@ -41,22 +44,40 @@ const Dashboard = () => {
     Object.keys(row).forEach((key) => setValue(key, row[key]));
   };
 
+  const handleDeleteClick = async (row) => {
+    const response = await axios.delete(`http://localhost:8000/users/${row.id}`); // Asegúrate de tener el endpoint correcto
+    alert(response.data)
+  };
+
   const onSubmit = (updatedRow) => {
     mutation.mutate(updatedRow);
   };
 
   // Actualizar cookies en cada renderizado
   useEffect(() => {
-    // Aquí puedes hacer una solicitud para actualizar la cookie
-    const fetchToken = async () => {
-      const response = await axios.get('http://localhost:8000/users/1'); // Asegúrate de tener el endpoint correcto
-      const tokenData = response.data; // Ajusta esto según la respuesta de tu API
-      setCookie(["user"], tokenData, { path: '/' }); // Guardar en la cookie
-    };
 
-    fetchToken();
-  }, [setCookie]); // Dependencia en setCookie
+    // Verificar si el ID del usuario está disponible
+    if (userId) {
+      const fetchToken = async () => {
+        try {
+          const response = await axios.get(`http://localhost:8000/users/${userId}`); // Usar el ID de la cookie
+          const tokenData = response.data; // Ajusta esto según la respuesta de tu API
+          setCookie("user", tokenData, { path: '/' }); // Guardar en la cookie
+          console.log(tokenData);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          // Limpiar todas las cookies
+          Object.keys(cookies).forEach((key) => {
+            setCookie(key, "", { path: "/" });
+          });
+        }
+      };
 
+      fetchToken();
+    } else {
+      console.warn("No user ID found in cookies.");
+    }
+  }, [userId, setCookie, cookies]);
   if (isPending) return `Loading ${DASHBOARD_ENDPOINTS[section]} data...`;
 
   if (error) return "An error has occurred: " + error.message;
@@ -95,7 +116,10 @@ const Dashboard = () => {
                   {editRow === row.id ? (
                     <button onClick={handleSubmit(onSubmit)}>Save</button>
                   ) : (
-                    <button onClick={() => handleEditClick(row)}>Edit</button>
+                    <>  <button onClick={() => handleEditClick(row)}>Edit</button>
+
+                      <button onClick={() => handleDeleteClick(row)}>Delete</button>
+                    </>
                   )}
                 </td>
               </tr>
