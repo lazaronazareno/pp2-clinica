@@ -33,7 +33,7 @@ def post_user(db: Session, user: UserCreate):
     return db_user
 
 def get_user_doctor(db: Session):
-    return db.query(User).filter(User.is_empleado == True).all()
+    return db.query(User).filter(User.is_doctor == True).all()
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
@@ -53,7 +53,7 @@ def authenticate_user(db: Session, user: UserCreate):
     db_user = db.query(User).filter(User.mail == user.mail).first()
     if db_user is None:
         return 'usuario no encontrado'
-    if db_user.contraseña != user.contraseña:
+    if db_user.password != user.password:
         return 'contraseña incorrecta'
     return db_user
 
@@ -102,9 +102,21 @@ def login_for_access_token(user: UserLogin, db: Session = Depends(get_db)):
     access_token = create_access_token(
         data={"sub": db_user.mail}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "Bearer", "id": db_user.id ,"user": db_user.nombre, "is_admin": db_user.is_admin, "is_empleado": db_user.is_empleado}
+    return {"access_token": access_token, "token_type": "Bearer", "id": db_user.id ,"user": db_user.name, "is_admin": db_user.is_admin, "is_doctor": db_user.is_doctor}
 
 @user_root.get("/doctors", response_model=list[UserResponse])
 def get_doctors(db: Session = Depends(get_db)):
     db_users = get_user_doctor(db)
     return db_users
+
+@user_root.put("/users/{user_id}", response_model=UserResponse)
+def update_user(user_id: int, user: UserCreate, db: Session = Depends(get_db)):
+    db_user = get_user_by_id(db, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    db_user.name = user.name
+    db_user.mail = user.mail
+    db_user.password = user.password
+    db.commit()
+    db.refresh(db_user)
+    return db_user

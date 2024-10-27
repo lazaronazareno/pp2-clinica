@@ -7,10 +7,13 @@ from routers.department_router import department_root
 from routers.medical_record_router import medical_record_router
 from utils.exception_handler import validation_exception_handler
 from fastapi.exceptions import RequestValidationError
+from utils.sqlalchemy_exception_handler import sqlalchemy_exception_handler
+from sqlalchemy.exc import SQLAlchemyError
 
 app = FastAPI()
 
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
+app.add_exception_handler(SQLAlchemyError, sqlalchemy_exception_handler)
 
 origins = [
     "http://localhost:3000",

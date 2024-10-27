@@ -29,18 +29,28 @@ def post_department(db: Session, department: DepartmentCreate):
     db.refresh(db_department)
     return db_department
 
-@department_root.post("/department", response_model=DepartmentResponse)
+@department_root.post("/departments", response_model=DepartmentResponse)
 def create_department(department: DepartmentCreate, db: Session = Depends(get_db)):
     return post_department(db=db, department=department)
 
-@department_root.get("/department/{department_id}", response_model=DepartmentResponse)
+@department_root.get("/departments/{department_id}", response_model=DepartmentResponse)
 def read_department(department_id: int, db: Session = Depends(get_db)):
     db_department = get_department_by_id(db, department_id=department_id)
     if db_department is None:
         raise HTTPException(status_code=404, detail="Especialidad no encontrada")
     return db_department
 
-@department_root.get("/department")
+@department_root.get("/departments")
 def get_departments(db: Session = Depends(get_db)):
     db_departments = get_all_departments(db)
     return db_departments
+
+@department_root.put("/departments/{department_id}", response_model=DepartmentResponse)
+def update_department(department_id: int, department: DepartmentCreate, db: Session = Depends(get_db)):
+    db_department = get_department_by_id(db, department_id=department_id)
+    if db_department is None:
+        raise HTTPException(status_code=404, detail="Especialidad no encontrada")
+    db_department.name = department.name
+    db.commit()
+    db.refresh(db_department)
+    return db_department
