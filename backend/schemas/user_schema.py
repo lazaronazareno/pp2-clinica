@@ -4,14 +4,14 @@ from typing import Optional
 
 class UserBase(BaseModel):
     dni: int
-    nombre: str
-    apellido: str
-    contraseña: str
+    name: str
+    lastname: str
+    password: str
     mail: str
-    telefono: Optional[str]
-    fecha_nacimiento: date
+    phone: Optional[str]
+    date_birth: date
     is_admin: Optional[bool] = False
-    is_empleado: Optional[bool] = False
+    is_doctor: Optional[bool] = False
 
 class UserCreate(UserBase):
     pass
@@ -19,20 +19,20 @@ class UserCreate(UserBase):
 class UserResponse(BaseModel):
     id: int
     dni: int
-    nombre: str
-    apellido: str
+    name: str
+    lastname: str
     mail: str
-    telefono: Optional[str]
-    fecha_nacimiento: date
+    phone: Optional[str]
+    date_birth: date
     is_admin: Optional[bool] = False
-    is_empleado: Optional[bool] = False
+    is_doctor: Optional[bool] = False
 
     class Config:
         from_attributes = True
 
 class UserLogin(BaseModel):
     mail: str
-    contraseña: str
+    password: str
 
 class Token(BaseModel):
     access_token: str
@@ -40,4 +40,4 @@ class Token(BaseModel):
     id: int
     user: str
     is_admin: bool
-    is_empleado: bool
+    is_doctor: bool
