@@ -17,4 +17,4 @@ class MedicalRecord(base):
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user = relationship("User", back_populates="medical_record")
 
-    appointments = relationship("Appointment", back_populates="medical_record")
+    appointments = relationship("Appointment", back_populates="medical_record", cascade="all, delete-orphan")

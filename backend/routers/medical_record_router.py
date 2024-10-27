@@ -54,3 +54,12 @@ def update_medical_record(medical_record_id: int, medical_record: MedicalRecordU
     db.commit()
     db.refresh(db_medical_record)
     return db_medical_record
+
+@medical_record_router.delete("/medical-records/{medical_record_id}")
+def delete_medical_record(medical_record_id: int, db: Session = Depends(get_db)):
+    db_medical_record = get_medical_record_by_id(db, medical_record_id=medical_record_id)
+    if db_medical_record is None:
+        raise HTTPException(status_code=404, detail="Registro médico no encontrado")
+    db.delete(db_medical_record)
+    db.commit()
+    return {"message": "Registro médico eliminado satisfactoriamente"}

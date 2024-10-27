@@ -54,3 +54,12 @@ def update_department(department_id: int, department: DepartmentCreate, db: Sess
     db.commit()
     db.refresh(db_department)
     return db_department
+
+@department_root.delete("/departments/{department_id}")
+def delete_department(department_id: int, db: Session = Depends(get_db)):
+    db_department = get_department_by_id(db, department_id=department_id)
+    if db_department is None:
+        raise HTTPException(status_code=404, detail="Especialidad no encontrada")
+    db.delete(db_department)
+    db.commit()
+    return {"message": "Especialidad eliminada"}
