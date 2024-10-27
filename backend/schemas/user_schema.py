@@ -41,3 +41,4 @@ class Token(BaseModel):
     user: str
     is_admin: bool
     is_doctor: bool
+
