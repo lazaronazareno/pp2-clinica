@@ -8,18 +8,20 @@ import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const section = window.location.pathname.replace("/", "").toUpperCase();
   const queryClient = useQueryClient();
   const [editRow, setEditRow] = useState(null);
   const { register, handleSubmit, setValue, reset } = useForm();
   const [cookies, setCookie] = useCookies(["user"]); // Manejar cookies
-  const userId = cookies.user?.id || cookies.id // Obtener el ID del usuario de la cookie
+  const userId = cookies.user?.id || cookies.id; // Obtener el ID del usuario de la cookie
+  const isDeploy = import.meta.env.VITE_IS_DEPLOY
+  const apiUrl = isDeploy? "https://pp2-clinica.onrender.com":"localhost"
   const { isPending, error, data } = useQuery({
     queryKey: ["getDashboardData", section],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:8000/${DASHBOARD_ENDPOINTS[section]}`
+        `http://${apiUrl}:8000/${DASHBOARD_ENDPOINTS[section]}`
       );
       return res.data;
     },
@@ -28,7 +30,7 @@ const Dashboard = () => {
   const mutation = useMutation({
     mutationFn: async (updatedRow) => {
       return axios.put(
-        `http://localhost:8000/users/${updatedRow.id}`,
+        `http://${apiUrl}/users/${updatedRow.id}`,
         updatedRow
       );
     },
@@ -36,7 +38,7 @@ const Dashboard = () => {
       queryClient.invalidateQueries(["getDashboardData", section]);
       setEditRow(null);
       reset();
-      navigate(0)
+      navigate(0);
     },
   });
 
@@ -46,8 +48,10 @@ const Dashboard = () => {
   };
 
   const handleDeleteClick = async (row) => {
-    const response = await axios.delete(`http://localhost:8000/users/${row.id}`); // Asegúrate de tener el endpoint correcto
-    alert(response.data)
+    const response = await axios.delete(
+      `http://${apiUrl}:8000/users/${row.id}`
+    ); // Asegúrate de tener el endpoint correcto
+    alert(response.data);
   };
 
   const onSubmit = (updatedRow) => {
@@ -56,15 +60,15 @@ const Dashboard = () => {
 
   // Actualizar cookies en cada renderizado
   useEffect(() => {
-
     // Verificar si el ID del usuario está disponible
     if (userId) {
       const fetchToken = async () => {
         try {
-          const response = await axios.get(`http://localhost:8000/users/${userId}`); // Usar el ID de la cookie
+          const response = await axios.get(
+            `http://${apiUrl}:8000/users/${userId}`
+          ); // Usar el ID de la cookie
           const tokenData = response.data; // Ajusta esto según la respuesta de tu API
-          setCookie("user", tokenData, { path: '/' }); // Guardar en la cookie
-
+          setCookie("user", tokenData, { path: "/" }); // Guardar en la cookie
         } catch (error) {
           console.error("Error fetching user data:", error);
           // Limpiar todas las cookies
@@ -99,27 +103,25 @@ const Dashboard = () => {
           <tbody>
             {data.map((row) => (
               <tr key={row.id}>
-                {editRow === row.id ? (
-                  Object.keys(row).map((key, index) => (
-                    <td key={key + index}>
-                      <input
-                        {...register(key)}
-                        defaultValue={row[key]}
-                      />
-                    </td>
-                  ))
-                ) : (
-                  Object.values(row).map((value, index) => (
-                    <td key={value + index}>{value}</td>
-                  ))
-                )}
+                {editRow === row.id
+                  ? Object.keys(row).map((key, index) => (
+                      <td key={key + index}>
+                        <input {...register(key)} defaultValue={row[key]} />
+                      </td>
+                    ))
+                  : Object.values(row).map((value, index) => (
+                      <td key={value + index}>{value}</td>
+                    ))}
                 <td>
                   {editRow === row.id ? (
                     <button onClick={handleSubmit(onSubmit)}>Save</button>
                   ) : (
-                    <>  <button onClick={() => handleEditClick(row)}>Edit</button>
-
-                      <button onClick={() => handleDeleteClick(row)}>Delete</button>
+                    <>
+                      {" "}
+                      <button onClick={() => handleEditClick(row)}>Edit</button>
+                      <button onClick={() => handleDeleteClick(row)}>
+                        Delete
+                      </button>
                     </>
                   )}
                 </td>
