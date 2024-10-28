@@ -23,14 +23,16 @@ const Nav = () => {
               <p>Bienvenido {cookies.user.name || cookies.user}</p>
             </li>
             <li>
-              <button id="logout_button" onClick={handleLogout}>Salir 👋</button>
+              <button id="logout_button" onClick={handleLogout}>
+                Salir 👋
+              </button>
             </li>
           </>
         ) : (
           <li>
-            {import.meta.env.VITE_IS_DEPLOY}
-            {import.meta.env.VITE_DEPLOY_URL}
-            <p id="login_status">Clinica SePrise  <img id="cat_doc" src="./cat-doc.png" /></p>
+            <p id="login_status">
+              Clinica SePrise <img id="cat_doc" src="./cat-doc.png" />
+            </p>
           </li>
         )}
       </ul>

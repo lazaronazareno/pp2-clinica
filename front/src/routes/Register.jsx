@@ -9,9 +9,11 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm();
 
+  const isDeploy = import.meta.env.VITE_IS_DEPLOY;
+  const apiUrl = isDeploy ? "https://pp2-clinica.onrender.com" : "localhost";
   const navigate = useNavigate();
   const onSubmit = async (data) => {
-    await fetch("http://127.0.0.1:8000/users", {
+    await fetch(`${apiUrl}`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -131,9 +133,7 @@ const RegisterForm = () => {
           })}
         />
         {errors.date_birth && (
-          <span className="errorMessage">
-            {errors.date_birth.message}
-          </span>
+          <span className="errorMessage">{errors.date_birth.message}</span>
         )}
 
         <section>

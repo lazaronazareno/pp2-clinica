@@ -15,25 +15,19 @@ const Dashboard = () => {
   const { register, handleSubmit, setValue, reset } = useForm();
   const [cookies, setCookie] = useCookies(["user"]); // Manejar cookies
   const userId = cookies.user?.id || cookies.id; // Obtener el ID del usuario de la cookie
-  const isDeploy = import.meta.env.VITE_IS_DEPLOY
-  const apiUrl = isDeploy? "https://pp2-clinica.onrender.com":"localhost"
-  console.dir(isDeploy)
+  const isDeploy = import.meta.env.VITE_IS_DEPLOY;
+  const apiUrl = isDeploy ? "https://pp2-clinica.onrender.com" : "localhost";
   const { isPending, error, data } = useQuery({
     queryKey: ["getDashboardData", section],
     queryFn: async () => {
-      const res = await axios.get(
-        `http://${apiUrl}:8000/${DASHBOARD_ENDPOINTS[section]}`
-      );
+      const res = await axios.get(`${apiUrl}/${DASHBOARD_ENDPOINTS[section]}`);
       return res.data;
     },
   });
 
   const mutation = useMutation({
     mutationFn: async (updatedRow) => {
-      return axios.put(
-        `http://${apiUrl}/users/${updatedRow.id}`,
-        updatedRow
-      );
+      return axios.put(`http://${apiUrl}/users/${updatedRow.id}`, updatedRow);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["getDashboardData", section]);
