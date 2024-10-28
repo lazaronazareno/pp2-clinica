@@ -13,14 +13,18 @@ section {
 
 #homeMain button {
   margin-top: 5rem;
-  border: 1px solid #444;
+  border: 2px solid #d4d8cfa6;
   border-radius: 0.5rem;
   width: 10rem;
   height: 3rem;
-  background-color: rgba(0, 0, 0, 0.8); /* Ajuste de transparencia */
+  background-color: rgba(29, 29, 29, 0.815); /* Ajuste de transparencia */
   color: #fff;
   transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 4px rgb(175, 255, 168));
+  font-family: "Lilita One";
+  letter-spacing: 2px;
+
 }
 
 h2 {
@@ -34,5 +38,37 @@ h2 {
 }
 
 h3 {
-  font-size: large;
+  font-size: 1.5rem;
+  font-family: "Lilita one";
+  letter-spacing: 2px;  
+}
+
+#greeting {
+  border-style:double;
+  border-width: 0.5rem;
+  background-color: #eef5fc69;
+  width: 80%;
+  height: 70%;
+  font-size: medium;
+  color: rgba(26, 71, 100, 0.712);
+}
+
+#greeting2 {
+  font-family: "Spicy Rice", serif;
+  font-size: 3rem;
+  filter: drop-shadow(0 0 4px rgb(205, 252, 200));
+  margin-top: 5rem;
+  margin: '0';
+  padding: '0';
+  letter-spacing: 5px;  
+}
+
+#text_in{
+  opacity: 0; 
+animation: fadeIn 4s forwards;}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1; 
+  }
 }

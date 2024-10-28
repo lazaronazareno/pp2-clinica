@@ -9,9 +9,11 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm();
 
+  const isDeploy = import.meta.env.VITE_IS_DEPLOY;
+  const apiUrl = isDeploy ? "https://pp2-clinica.onrender.com" : "localhost";
   const navigate = useNavigate();
   const onSubmit = async (data) => {
-    await fetch("http://127.0.0.1:8000/users", {
+    await fetch(`${apiUrl}`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -35,28 +37,28 @@ const RegisterForm = () => {
     <main>
       <h1>Registro</h1>
       <form id="registerForm" onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="nombre">Nombre</label>
+        <label htmlFor="name">Nombre</label>
         <input
-          id="nombre"
-          {...register("nombre", { required: "Nombre es requerido" })}
+          id="name"
+          {...register("name", { required: "name es requerido" })}
         />
-        {errors.nombre && (
-          <span className="errorMessage">{errors.nombre.message}</span>
+        {errors.name && (
+          <span className="errorMessage">{errors.name.message}</span>
         )}
 
-        <label htmlFor="apellido">Apellido</label>
+        <label htmlFor="lastname">Apellido</label>
         <input
-          id="apellido"
-          {...register("apellido", { required: "Apellido es requerido" })}
+          id="lastname"
+          {...register("lastname", { required: "lastname es requerido" })}
         />
-        {errors.apellido && (
-          <span className="errorMessage">{errors.apellido.message}</span>
+        {errors.lastname && (
+          <span className="errorMessage">{errors.lastname.message}</span>
         )}
 
-        <label htmlFor="telefono">Teléfono</label>
+        <label htmlFor="phone">Teléfono</label>
         <input
-          id="telefono"
-          {...register("telefono", {
+          id="phone"
+          {...register("phone", {
             required: "Teléfono es requerido",
             pattern: {
               value: /^(?:\+54|54)?(?:11|[2368]\d)\d{8}$/,
@@ -66,11 +68,11 @@ const RegisterForm = () => {
           placeholder="Ej: 1123456789"
         />
 
-        {errors.telefono && (
-          <span className="errorMessage">{errors.telefono.message}</span>
+        {errors.phone && (
+          <span className="errorMessage">{errors.phone.message}</span>
         )}
 
-        <label htmlFor="mail">Mail</label>
+        <label htmlFor="mail">Email</label>
         <input
           id="mail"
           {...register("mail", {
@@ -85,20 +87,20 @@ const RegisterForm = () => {
           <span className="errorMessage">{errors.mail.message}</span>
         )}
 
-        <label htmlFor="contraseña">Password</label>
+        <label htmlFor="password">Password</label>
         <input
-          id="contraseña"
+          id="password"
           type="password"
-          {...register("contraseña", {
-            required: "Contraseña es requerida",
+          {...register("password", {
+            required: "password es requerida",
             minLength: {
               value: 6,
-              message: "La contraseña debe tener al menos 6 caracteres",
+              message: "La password debe tener al menos 6 caracteres",
             },
           })}
         />
-        {errors.contraseña && (
-          <span className="errorMessage">{errors.contraseña.message}</span>
+        {errors.password && (
+          <span className="errorMessage">{errors.password.message}</span>
         )}
 
         <label htmlFor="dni">DNI</label>
@@ -116,11 +118,11 @@ const RegisterForm = () => {
           <span className="errorMessage">{errors.dni.message}</span>
         )}
 
-        <label htmlFor="fecha_nacimiento">Fecha de Nacimiento</label>
+        <label htmlFor="date_birth">Fecha de Nacimiento</label>
         <input
           type="date"
-          id="fecha_nacimiento"
-          {...register("fecha_nacimiento", {
+          id="date_birth"
+          {...register("date_birth", {
             required: "Fecha de nacimiento es requerida",
             validate: {
               minYear: (value) => {
@@ -130,10 +132,8 @@ const RegisterForm = () => {
             },
           })}
         />
-        {errors.fecha_nacimiento && (
-          <span className="errorMessage">
-            {errors.fecha_nacimiento.message}
-          </span>
+        {errors.date_birth && (
+          <span className="errorMessage">{errors.date_birth.message}</span>
         )}
 
         <section>

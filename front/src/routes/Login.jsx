@@ -3,17 +3,18 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
 const LoginForm = () => {
+  
   const [cookies, setCookie] = useCookies(["user"]);
-
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  const isDeploy = import.meta.env.VITE_IS_DEPLOY;
+  const apiUrl = isDeploy ? "https://pp2-clinica.onrender.com" : "localhost";
   const onSubmit = async (data) => {
-    await fetch("http://127.0.0.1:8000/login", {
+    await fetch(`${apiUrl}/login`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -57,20 +58,20 @@ const LoginForm = () => {
           <span className="errorMessage">{errors.mail.message}</span>
         )}
 
-        <label htmlFor="contraseña">Password</label>
+        <label htmlFor="password">Password</label>
         <input
-          id="contraseña"
+          id="password"
           type="password"
-          {...register("contraseña", {
-            required: "Contraseña es requerida",
+          {...register("password", {
+            required: "password es requerida",
             minLength: {
               value: 6,
-              message: "La contraseña debe tener al menos 6 caracteres",
+              message: "La password debe tener al menos 6 caracteres",
             },
           })}
         />
-        {errors.contraseña && (
-          <span className="errorMessage">{errors.contraseña.message}</span>
+        {errors.password && (
+          <span className="errorMessage">{errors.password.message}</span>
         )}
 
         <section>
