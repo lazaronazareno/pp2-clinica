@@ -35,7 +35,7 @@ const RegisterForm = () => {
     <main>
       <h1>Registro</h1>
       <form id="registerForm" onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="name">name</label>
+        <label htmlFor="name">Nombre</label>
         <input
           id="name"
           {...register("name", { required: "name es requerido" })}
@@ -44,7 +44,7 @@ const RegisterForm = () => {
           <span className="errorMessage">{errors.name.message}</span>
         )}
 
-        <label htmlFor="lastname">lastname</label>
+        <label htmlFor="lastname">Apellido</label>
         <input
           id="lastname"
           {...register("lastname", { required: "lastname es requerido" })}
@@ -70,7 +70,7 @@ const RegisterForm = () => {
           <span className="errorMessage">{errors.phone.message}</span>
         )}
 
-        <label htmlFor="mail">Mail</label>
+        <label htmlFor="mail">Email</label>
         <input
           id="mail"
           {...register("mail", {

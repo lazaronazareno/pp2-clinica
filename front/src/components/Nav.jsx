@@ -23,12 +23,12 @@ const Nav = () => {
               <p>Bienvenido {cookies.user.name || cookies.user}</p>
             </li>
             <li>
-              <button onClick={handleLogout}>logout 👻</button>
+              <button id="logout_button" onClick={handleLogout}>Salir 👋</button>
             </li>
           </>
         ) : (
           <li>
-            <p>No hay usuario logueado</p>
+            <p id="login_status">Clinica SePrise  <img id="cat_doc" src="./cat-doc.png" /></p>
           </li>
         )}
       </ul>
