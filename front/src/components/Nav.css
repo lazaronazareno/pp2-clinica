@@ -15,7 +15,12 @@ nav ul li:last-child {
   margin-right: 1rem;
 }
 
-nav a{
-    text-decoration: none;
-    color: black;
+nav a {
+  text-decoration: none;
+  color: black;
+}
+
+nav ul {
+  margin: 0;
+  align-items: center;
 }
