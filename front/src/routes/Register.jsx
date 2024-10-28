@@ -19,7 +19,7 @@ const RegisterForm = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      cors: "no-cors",
+      cors: "cors",
     })
       .then((response) => {
         console.log(response);
