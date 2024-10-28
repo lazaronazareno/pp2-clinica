@@ -1,3 +1,7 @@
+nav{
+  border-bottom: 3px groove #a3a3a3;
+}
+
 nav ul {
   display: flex;
   flex-direction: row;
@@ -18,4 +22,56 @@ nav ul li:last-child {
 nav a{
     text-decoration: none;
     color: black;
+
+}
+
+#login_status {
+  display: 'flex';
+  align-items: center;
+  font-size: 2rem;
+  margin: 2px;
+  padding: 2px;
+  font-family: "Poppins", sans-serif;
+  filter: drop-shadow(0 0 4px rgb(255, 255, 255));
+  opacity: 0;
+  transform: translateX(-100%);
+  animation: slideIn 4s forwards; /
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1; /* Al final de la animación, la opacidad es 1 */
+    transform: translateX(0); /* Mueve el texto a su posición original */
+  }
+}
+
+
+
+
+#cat_doc {
+width: 70px;
+height: 70px;
+margin-right: 1px;
+align-self: center;
+vertical-align: middle; /* Asegúrate de que esté alineado verticalmente */
+
+}
+
+#logout_button{
+  font-family: "Metal Mania", system-ui;
+  font-size: 1.4rem;
+  background-color: rgba(228, 81, 70, 0.205);
+  filter: drop-shadow(0 0 4px rgb(231, 31, 31));
+
+}
+
+#welcome_user{
+  font-size: 1.9rem;
+  line-height: 0rem;
+  font-family: "Lilita One", "Spicy Rice", "Metal Mania", serif;
+  display: 'flex';
+  align-items: center;
+  vertical-align: middle;
+  filter: drop-shadow(0 0 4px rgb(255, 255, 255));
+
 }

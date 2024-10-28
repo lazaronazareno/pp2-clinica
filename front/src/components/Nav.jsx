@@ -20,15 +20,15 @@ const Nav = () => {
         {cookies.user ? (
           <>
             <li>
-              <p>Bienvenido {cookies.user.name}</p>
+              <p id="welcome_user">Bienvenido {cookies.user.name}</p>
             </li>
             <li>
-              <button onClick={handleLogout}>logout 👻</button>
+              <button id="logout_button" onClick={handleLogout}>Salir 👋</button>
             </li>
           </>
         ) : (
           <li>
-            <p>No hay usuario logueado</p>
+            <p id="login_status">Clinica SePrise  <img id="cat_doc" src="./cat-doc.png" /></p>
           </li>
         )}
       </ul>
