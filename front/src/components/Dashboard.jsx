@@ -5,16 +5,16 @@ import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie"; // Importar useCookies
 import DASHBOARD_ENDPOINTS from "../constants/endpoints";
 import "./Dashboard.css";
-
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-
+  const navigate = useNavigate()
   const section = window.location.pathname.replace("/", "").toUpperCase();
   const queryClient = useQueryClient();
   const [editRow, setEditRow] = useState(null);
   const { register, handleSubmit, setValue, reset } = useForm();
   const [cookies, setCookie] = useCookies(["user"]); // Manejar cookies
-  const userId = cookies.user?.id; // Obtener el ID del usuario de la cookie
+  const userId = cookies.user?.id || cookies.id // Obtener el ID del usuario de la cookie
   const { isPending, error, data } = useQuery({
     queryKey: ["getDashboardData", section],
     queryFn: async () => {
@@ -36,6 +36,7 @@ const Dashboard = () => {
       queryClient.invalidateQueries(["getDashboardData", section]);
       setEditRow(null);
       reset();
+      navigate(0)
     },
   });
 
@@ -63,7 +64,7 @@ const Dashboard = () => {
           const response = await axios.get(`http://localhost:8000/users/${userId}`); // Usar el ID de la cookie
           const tokenData = response.data; // Ajusta esto según la respuesta de tu API
           setCookie("user", tokenData, { path: '/' }); // Guardar en la cookie
-          console.log(tokenData);
+
         } catch (error) {
           console.error("Error fetching user data:", error);
           // Limpiar todas las cookies
@@ -77,7 +78,7 @@ const Dashboard = () => {
     } else {
       console.warn("No user ID found in cookies.");
     }
-  }, [userId, setCookie, cookies]);
+  }, []);
   if (isPending) return `Loading ${DASHBOARD_ENDPOINTS[section]} data...`;
 
   if (error) return "An error has occurred: " + error.message;
