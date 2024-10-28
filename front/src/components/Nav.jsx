@@ -28,6 +28,8 @@ const Nav = () => {
           </>
         ) : (
           <li>
+            {import.meta.env.VITE_IS_DEPLOY}
+            {import.meta.env.VITE_DEPLOY_URL}
             <p id="login_status">Clinica SePrise  <img id="cat_doc" src="./cat-doc.png" /></p>
           </li>
         )}

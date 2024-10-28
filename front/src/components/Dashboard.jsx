@@ -17,6 +17,7 @@ const Dashboard = () => {
   const userId = cookies.user?.id || cookies.id; // Obtener el ID del usuario de la cookie
   const isDeploy = import.meta.env.VITE_IS_DEPLOY
   const apiUrl = isDeploy? "https://pp2-clinica.onrender.com":"localhost"
+  console.dir(isDeploy)
   const { isPending, error, data } = useQuery({
     queryKey: ["getDashboardData", section],
     queryFn: async () => {
