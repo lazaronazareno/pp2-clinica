@@ -20,6 +20,7 @@ const LoginForm = () => {
       headers: {
         "Content-Type": "application/json",
       },
+      cors: "no-cors",
     })
       .then((response) => {
         console.log(response);
