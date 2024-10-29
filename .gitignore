@@ -12,3 +12,4 @@ dist-ssr
 *.local
 __pycache__
 front/node_modules
+.vercel
