@@ -43,9 +43,7 @@ const Dashboard = () => {
   };
 
   const handleDeleteClick = async (row) => {
-    const response = await axios.delete(
-      `${apiUrl}/users${row.id}`
-    ); // Asegúrate de tener el endpoint correcto
+    const response = await axios.delete(`${apiUrl}/users${row.id}`); // Asegúrate de tener el endpoint correcto
     alert(response.data);
   };
 
@@ -60,7 +58,7 @@ const Dashboard = () => {
       const fetchToken = async () => {
         try {
           const response = await axios.get(
-            `http://${apiUrl}:8000/users/${userId}`,
+            `${apiUrl}:8000/users/${userId}`,
             { mode: "cors" } // Configurar CORS
           ); // Usar el ID de la cookie
           const tokenData = response.data; // Ajusta esto según la respuesta de tu API
