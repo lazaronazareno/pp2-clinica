@@ -27,7 +27,7 @@ const Dashboard = () => {
 
   const mutation = useMutation({
     mutationFn: async (updatedRow) => {
-      return axios.put(`http://${apiUrl}/users/${updatedRow.id}`, updatedRow);
+      return axios.put(`${apiUrl}/users/${updatedRow.id}`, updatedRow);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["getDashboardData", section]);
@@ -44,7 +44,7 @@ const Dashboard = () => {
 
   const handleDeleteClick = async (row) => {
     const response = await axios.delete(
-      `http://${apiUrl}:8000/users/${row.id}`
+      `${apiUrl}/users${row.id}`
     ); // Asegúrate de tener el endpoint correcto
     alert(response.data);
   };
