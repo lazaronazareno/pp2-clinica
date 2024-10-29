@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from models import userTest
 from models.userTest import User
-from schemas.user_schema import UserCreate, UserResponse, UserLogin, Token
+from schemas.user_schema import UserCreate, UserResponse, UserLogin, Token, UserUpdate
 from db.database import engine, localsesion
 import jwt
 from datetime import datetime, timedelta, timezone
@@ -110,13 +110,25 @@ def get_doctors(db: Session = Depends(get_db)):
     return db_users
 
 @user_root.put("/users/{user_id}", response_model=UserResponse)
-def update_user(user_id: int, user: UserCreate, db: Session = Depends(get_db)):
+def update_user(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
     db_user = get_user_by_id(db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     db_user.name = user.name
     db_user.mail = user.mail
-    db_user.password = user.password
+    db_user.phone = user.phone
+    db_user.date_birth = user.date_birth
+    db_user.is_admin = user.is_admin
+    db_user.is_doctor = user.is_doctor
     db.commit()
     db.refresh(db_user)
     return db_user
+
+@user_root.delete("/users/{user_id}")
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    db_user = get_user_by_id(db, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    db.delete(db_user)
+    db.commit()
+    return {"message": "Usuario eliminado"}

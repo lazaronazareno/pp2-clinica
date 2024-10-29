@@ -37,9 +37,18 @@ def get_all_appointments(db: Session = Depends(get_db)):
 def update_appointment(appointment_id: int, appointment: AppointmentEdit, db: Session = Depends(get_db)):
     db_appointment = db.query(Appointment).filter(Appointment.id == appointment_id).first()
     if db_appointment is None:
-        raise HTTPException(status_code=404, detail="Appointment not found")
+        raise HTTPException(status_code=404, detail="Turno no encontrado")
     db_appointment.date = appointment.date
     db_appointment.active = appointment.active
     db.commit()
     db.refresh(db_appointment)
     return db_appointment
+
+@appointment_router.delete("/appointments/{appointment_id}")
+def delete_appointment(appointment_id: int, db: Session = Depends(get_db)):
+    db_appointment = db.query(Appointment).filter(Appointment.id == appointment_id).first()
+    if db_appointment is None:
+        raise HTTPException(status_code=404, detail="Turno no encontrado")
+    db.delete(db_appointment)
+    db.commit()
+    return {"message": "Turno eliminado"}

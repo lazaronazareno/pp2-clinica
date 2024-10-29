@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Nav = () => {
   const [cookies, setCookie] = useCookies(["user"]);
   const navigate = useNavigate();
+
   const handleLogout = () => {
     Object.keys(cookies).forEach((key) => {
       setCookie(key, "", { path: "/" });
@@ -15,15 +16,24 @@ const Nav = () => {
   return (
     <nav>
       <ul>
-        {cookies.user && (
+        {/* Verifica si cookies.user y cookies.user.id existen antes de mostrarlos */}
+        {cookies.user ? (
           <>
             <li>
-              <p>Bienvenido {cookies.user}</p>{" "}
+              <p>Bienvenido {cookies.user.name || cookies.user}</p>
             </li>
             <li>
-              <button onClick={handleLogout}>logout 👻</button>
+              <button id="logout_button" onClick={handleLogout}>
+                Salir 👋
+              </button>
             </li>
           </>
+        ) : (
+          <li>
+            <p id="login_status">
+              Clinica SePrise <img id="cat_doc" src="./cat-doc.png" />
+            </p>
+          </li>
         )}
       </ul>
     </nav>

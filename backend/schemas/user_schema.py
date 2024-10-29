@@ -18,7 +18,16 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     pass
 
-
+class UserUpdate(BaseModel):
+    dni: int
+    name: str
+    lastname: str
+    password: Optional[str] = None
+    mail: str
+    phone: Optional[str]
+    date_birth: date
+    is_admin: Optional[bool] = False
+    is_doctor: Optional[bool] = False
 class UserResponse(BaseModel):
     id: int
     dni: int

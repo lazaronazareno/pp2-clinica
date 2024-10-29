@@ -1,12 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Metal+Mania&family=Spicy+Rice&display=swap');
+
+
 
 #root {
   height: 100svh;
   font-family: "Poppins", sans-serif;
   background-image: url("/mainCat.jpg");
-  background-size: cover;
+  background-size:cover;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position:center;
   font-size: x-large;
   display: grid;
   grid-template-areas:
@@ -21,16 +24,16 @@ body {
 }
 
 main {
-  background-color: rgba(0, 128, 0, 0.527);
+  background-color: rgba(97, 94, 94, 0.336);
   grid-area: main;
 }
 
 nav {
-  background-color: rgba(0, 45, 128, 0.527);
+  background-color: rgba(97, 94, 94, 0.493);
   grid-area: nav;
 }
 
 aside {
-  background-color: rgba(100, 128, 0, 0.527);
+  background-color: rgba(97, 94, 94, 0.5);
   grid-area: aside;
 }

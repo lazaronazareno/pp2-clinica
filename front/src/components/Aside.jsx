@@ -16,7 +16,7 @@ const Aside = () => {
             <p>Turnos 🗓️</p>
           </Link>
           <Link to="/estudios">
-            <p>Estudios 🪦</p>
+            <p>Estudios 🔬</p>
           </Link>
         </>
       )}

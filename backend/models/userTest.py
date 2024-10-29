@@ -17,4 +17,4 @@ class User(base):
     phone = Column(String(45))
     date_birth = Column(Date, nullable=False)
 
-    medical_record = relationship(MedicalRecord, back_populates="user")
+    medical_record = relationship(MedicalRecord, back_populates="user", cascade="all, delete-orphan")
