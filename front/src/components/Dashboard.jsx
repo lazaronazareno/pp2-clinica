@@ -60,7 +60,8 @@ const Dashboard = () => {
       const fetchToken = async () => {
         try {
           const response = await axios.get(
-            `http://${apiUrl}:8000/users/${userId}`
+            `http://${apiUrl}:8000/users/${userId}`,
+            { mode: "cors" } // Configurar CORS
           ); // Usar el ID de la cookie
           const tokenData = response.data; // Ajusta esto según la respuesta de tu API
           setCookie("user", tokenData, { path: "/" }); // Guardar en la cookie

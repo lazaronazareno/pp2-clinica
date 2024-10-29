@@ -18,7 +18,7 @@ app.add_exception_handler(SQLAlchemyError, sqlalchemy_exception_handler)
 origins = [
     "http://localhost:3000",
     "http://localhost:5173",
-    "https://front-rosy-iota.vercel.app/"
+    "https://front-rosy-iota.vercel.app"
 ]
 
 app.add_middleware(
