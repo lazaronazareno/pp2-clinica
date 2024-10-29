@@ -64,11 +64,13 @@ const Dashboard = () => {
           const tokenData = response.data; // Ajusta esto según la respuesta de tu API
           setCookie("user", tokenData, { path: "/" }); // Guardar en la cookie
         } catch (error) {
-          console.error("Error fetching user data:", error);
-          // Limpiar todas las cookies
-          Object.keys(cookies).forEach((key) => {
-            setCookie(key, "", { path: "/" });
-          });
+            console.error("Error fetching user data:", error);
+            if (error.response && error.response.status === 404) {
+            // Limpiar todas las cookies si no se encuentra el usuario
+            Object.keys(cookies).forEach((key) => {
+              setCookie(key, "", { path: "/" });
+            });
+            }
         }
       };
 
