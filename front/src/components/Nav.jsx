@@ -20,15 +20,19 @@ const Nav = () => {
         {cookies.user ? (
           <>
             <li>
-              <p id="welcome_user">Bienvenido {cookies.user.name}</p>
+              <p>Bienvenido {cookies.user.name || cookies.user}</p>
             </li>
             <li>
-              <button id="logout_button" onClick={handleLogout}>Salir 👋</button>
+              <button id="logout_button" onClick={handleLogout}>
+                Salir 👋
+              </button>
             </li>
           </>
         ) : (
           <li>
-            <p id="login_status">Clinica SePrise  <img id="cat_doc" src="./cat-doc.png" /></p>
+            <p id="login_status">
+              Clinica SePrise <img id="cat_doc" src="./cat-doc.png" />
+            </p>
           </li>
         )}
       </ul>
