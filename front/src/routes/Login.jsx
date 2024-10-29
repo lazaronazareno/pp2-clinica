@@ -23,16 +23,13 @@ const LoginForm = () => {
       cors: "cors",
     })
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
-        console.dir(data);
         Object.keys(data).forEach((key) => {
           if (key != "detail") setCookie(key, data[key]);
         });
         navigate("/");
-        console.log(data);
       })
       .catch((error) => {
         console.error("Error:", error);
