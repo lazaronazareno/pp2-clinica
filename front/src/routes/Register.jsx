@@ -13,7 +13,7 @@ const RegisterForm = () => {
   const apiUrl = isDeploy ? "https://pp2-clinica.onrender.com" : "localhost";
   const navigate = useNavigate();
   const onSubmit = async (data) => {
-    await fetch(`${apiUrl}`, {
+    await fetch(`${apiUrl}/users`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -22,11 +22,9 @@ const RegisterForm = () => {
       cors: "cors",
     })
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         navigate("/login");
       })
       .catch((error) => {

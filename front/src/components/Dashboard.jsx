@@ -27,7 +27,7 @@ const Dashboard = () => {
 
   const mutation = useMutation({
     mutationFn: async (updatedRow) => {
-      return axios.put(`http://${apiUrl}/users/${updatedRow.id}`, updatedRow);
+      return axios.put(`${apiUrl}/users/${updatedRow.id}`, updatedRow);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["getDashboardData", section]);
@@ -43,10 +43,8 @@ const Dashboard = () => {
   };
 
   const handleDeleteClick = async (row) => {
-    const response = await axios.delete(
-      `http://${apiUrl}:8000/users/${row.id}`
-    ); // Asegúrate de tener el endpoint correcto
-    alert(response.data);
+    const response = await axios.delete(`${apiUrl}/users/${row.id}`); // Asegúrate de tener el endpoint correcto
+    navigate(0);
   };
 
   const onSubmit = (updatedRow) => {
@@ -60,17 +58,19 @@ const Dashboard = () => {
       const fetchToken = async () => {
         try {
           const response = await axios.get(
-            `http://${apiUrl}:8000/users/${userId}`,
+            `${apiUrl}/users/${userId}`,
             { mode: "cors" } // Configurar CORS
           ); // Usar el ID de la cookie
           const tokenData = response.data; // Ajusta esto según la respuesta de tu API
           setCookie("user", tokenData, { path: "/" }); // Guardar en la cookie
         } catch (error) {
           console.error("Error fetching user data:", error);
-          // Limpiar todas las cookies
-          Object.keys(cookies).forEach((key) => {
-            setCookie(key, "", { path: "/" });
-          });
+          if (error.response && error.response.status === 404) {
+            // Limpiar todas las cookies si no se encuentra el usuario
+            Object.keys(cookies).forEach((key) => {
+              setCookie(key, "", { path: "/" });
+            });
+          }
         }
       };
 
@@ -90,30 +90,20 @@ const Dashboard = () => {
         <table>
           <thead>
             <tr>
+              <th>Actions</th>
               {Object.keys(data[0]).map((key, index) => (
                 <th key={key + index}>{key}</th>
               ))}
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {data.map((row) => (
               <tr key={row.id}>
-                {editRow === row.id
-                  ? Object.keys(row).map((key, index) => (
-                      <td key={key + index}>
-                        <input {...register(key)} defaultValue={row[key]} />
-                      </td>
-                    ))
-                  : Object.values(row).map((value, index) => (
-                      <td key={value + index}>{value}</td>
-                    ))}
                 <td>
                   {editRow === row.id ? (
                     <button onClick={handleSubmit(onSubmit)}>Save</button>
                   ) : (
                     <>
-                      {" "}
                       <button onClick={() => handleEditClick(row)}>Edit</button>
                       <button onClick={() => handleDeleteClick(row)}>
                         Delete
@@ -121,6 +111,41 @@ const Dashboard = () => {
                     </>
                   )}
                 </td>
+                {editRow === row.id
+                  ? Object.keys(row).map((key, index) => (
+                      <td key={key + index}>
+                        {key === "is_admin" || key === "is_doctor" ? (
+                          <input
+                            type="checkbox"
+                            {...register(key)}
+                            defaultChecked={row[key]}
+                          />
+                        ) : (
+                          <input
+                            {...register(key)}
+                            defaultValue={row[key]}
+                            type={
+                              key === "password"
+                                ? "password"
+                                : key === "date_birth"
+                                ? "date"
+                                : key === "dni"
+                                ? "number"
+                                : "text"
+                            }
+                          />
+                        )}
+                      </td>
+                    ))
+                  : Object.keys(row).map((key, index) => (
+                      <td key={key + index}>
+                        {key === "is_admin" || key === "is_doctor"
+                          ? row[key]
+                            ? "✅"
+                            : "❌"
+                          : row[key]}
+                      </td>
+                    ))}
               </tr>
             ))}
           </tbody>
