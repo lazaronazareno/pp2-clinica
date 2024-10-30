@@ -27,7 +27,10 @@ const Dashboard = () => {
 
   const mutation = useMutation({
     mutationFn: async (updatedRow) => {
-      return axios.put(`${apiUrl}/users/${updatedRow.id}`, updatedRow);
+      return axios.put(
+        `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${updatedRow.id}`,
+        updatedRow
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["getDashboardData", section]);
@@ -43,7 +46,9 @@ const Dashboard = () => {
   };
 
   const handleDeleteClick = async (row) => {
-    const response = await axios.delete(`${apiUrl}/users/${row.id}`); // Asegúrate de tener el endpoint correcto
+    const response = await axios.delete(
+      `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${row.id}`
+    ); // Asegúrate de tener el endpoint correcto
     navigate(0);
   };
 
@@ -79,25 +84,29 @@ const Dashboard = () => {
       console.warn("No user ID found in cookies.");
     }
   }, []);
+
   if (isPending) return `Loading ${DASHBOARD_ENDPOINTS[section]} data...`;
 
   if (error) return "An error has occurred: " + error.message;
 
+  const headers =
+    data && data.length > 0 ? Object.keys(data[0]) : ["id", "name", "email"]; // Default headers
+
   return (
     <main id="dashboardMain">
       <h1>Dashboard de {section}</h1>
-      {data && data.length > 0 ? (
-        <table>
-          <thead>
-            <tr>
-              <th>Actions</th>
-              {Object.keys(data[0]).map((key, index) => (
-                <th key={key + index}>{key}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row) => (
+      <table>
+        <thead>
+          <tr>
+            <th>Actions</th>
+            {headers.map((key, index) => (
+              <th key={key + index}>{key}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data && data.length > 0 ? (
+            data.map((row) => (
               <tr key={row.id}>
                 <td>
                   {editRow === row.id ? (
@@ -137,7 +146,7 @@ const Dashboard = () => {
                         )}
                       </td>
                     ))
-                  : Object.keys(row).map((key, index) => (
+                  : Object.keys(row)?.map((key, index) => (
                       <td key={key + index}>
                         {key === "is_admin" || key === "is_doctor"
                           ? row[key]
@@ -147,12 +156,35 @@ const Dashboard = () => {
                       </td>
                     ))}
               </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={headers.length + 1}>No data available</td>
+            </tr>
+          )}
+          <tr>
+            <td>
+              <button onClick={handleSubmit(onSubmit)}>Add</button>
+            </td>
+            {headers.map((key, index) => (
+              <td key={key + index}>
+                <input
+                  {...register(key)}
+                  type={
+                    key === "password"
+                      ? "password"
+                      : key === "date_birth"
+                      ? "date"
+                      : key === "dni"
+                      ? "number"
+                      : "text"
+                  }
+                />
+              </td>
             ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No hay data bro 😲</p>
-      )}
+          </tr>
+        </tbody>
+      </table>
     </main>
   );
 };
