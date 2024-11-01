@@ -4,7 +4,7 @@ from models import medical_record
 from models.medical_record import MedicalRecord
 from schemas.medical_record_schema import MedicalRecordCreate, MedicalRecordResponse, MedicalRecordUpdate
 from db.database import engine, localsesion
-from datetime import datetime
+from datetime import datetime, timezone
 
 medical_record.base.metadata.create_all(bind=engine)
 
@@ -52,7 +52,7 @@ def update_medical_record(medical_record_id: int, medical_record: MedicalRecordU
     if db_medical_record is None:
         raise HTTPException(status_code=404, detail="Registro médico no encontrado")
     db_medical_record.report = medical_record.report
-    db_medical_record.updated_at = datetime.utcnow() 
+    db_medical_record.updated_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(db_medical_record)
     return db_medical_record
