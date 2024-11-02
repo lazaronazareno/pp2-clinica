@@ -1,1 +1,49 @@
+/* 
+
+Styles for the table component in the Dashboard:
+
+- table: 
+  - Sets the table width to 100%.
+  - Collapses table borders.
+  - Adds a top margin of 20px.
+
+- th (table header):
+  - Sets the background color to a light gray (#f2f2f2).
+  - Sets the text color to dark gray (#333).
+
+- th, td (table header and table data cells):
+  - Adds a 1px solid border with a light gray color (#f2f2f2).
+  - Adds 8px padding.
+  - Centers the text.
+
+- tr:nth-child(even) (even table rows):
+  - Sets the background color to light gray (#f2f2f2).
+
+- tr:nth-child(odd) (odd table rows):
+  - Sets the background color to white (#fff).
+*/
+table{
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th{
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+th, td{
+    border: 1px solid #f2f2f2;
+    padding: 8px;
+    text-align: center;
+}
+
+tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(odd){
+    background-color: #fff;
+}
+
 
