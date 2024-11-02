@@ -11,8 +11,10 @@ import {
   HeaderCell,
   Cell,
 } from "@table-library/react-table-library/table";
-import { useCookies } from "react-cookie";  
+import { useCookies } from "react-cookie";
 import DASHBOARD_HEADERS from "../constants/headers";
+import { useTheme } from "@table-library/react-table-library/theme";
+import "./Dashboard.css";
 
 const Dashboard = () => {
   const section = window.location.pathname.replace("/", "").toUpperCase();
@@ -63,6 +65,21 @@ const Dashboard = () => {
     }
   };
 
+  const theme = useTheme({
+    HeaderRow: `
+      background-color: #eaf5fd;
+    `,
+    Row: `
+      &:nth-of-type(odd) {
+        background-color: #d2e9fb;
+      }
+
+      &:nth-of-type(even) {
+        background-color: #eaf5fd;
+      }
+    `,
+  });
+
   if (isPending) {
     return <div>Loading...</div>;
   }
@@ -73,97 +90,99 @@ const Dashboard = () => {
   }
 
   return (
-    <Table data={{ nodes: data }}>
-      {(tableList) => (
-        <>
-          <Header>
-            <HeaderRow>
-              {DASHBOARD_HEADERS[section].map((header) => (
-                <HeaderCell key={header}>{header}</HeaderCell>
-              ))}
-            </HeaderRow>
-          </Header>
-          <Body>
-            {tableList.map((item) => (
-              <Row key={item.id} item={item}>
-                {DASHBOARD_HEADERS[section].map((key) => (
-                  <Cell key={key}>
-                    {typeof item[key] === "boolean" ? (
-                      <input
-                        type="checkbox"
-                        checked={item[key]}
-                        onChange={(event) =>
-                          handleUpdate(event.target.checked, item.id, key)
-                        }
-                        onClick={async (event) => {
-                          const tableData = tableList.find(
-                            (row) => row.id === item.id
-                          );
-                          const { data } = await handleSave(tableData);
-                          alert(
-                            `${key}, ${data[key]} se actualizo a ${event.target.value}`
-                          );
-                        }}
-                      />
-                    ) : key === "date_birth" ? (
-                      <input
-                        type="date"
-                        style={{
-                          width: "100%",
-                          border: "none",
-                          fontSize: "1rem",
-                          padding: 0,
-                          margin: 0,
-                        }}
-                        value={item[key]}
-                        onChange={(event) =>
-                          handleUpdate(event.target.value, item.id, key)
-                        }
-                        onBlur={async (event) => {
-                          event.target.style.width = "100%";
-                          const tableData = tableList.find(
-                            (row) => row.id === item.id
-                          );
-                          const { data } = await handleSave(tableData);
-                          alert(
-                            `${key}, ${data[key]} se actualizo a ${event.target.value}`
-                          );
-                        }}
-                      />
-                    ) : (
-                      <input
-                        type="text"
-                        style={{
-                          width: "100%",
-                          border: "none",
-                          fontSize: "1rem",
-                          padding: 0,
-                          margin: 0,
-                        }}
-                        value={item[key]}
-                        onChange={(event) =>
-                          handleUpdate(event.target.value, item.id, key)
-                        }
-                        onBlur={async (event) => {
-                          event.target.style.width = "100%";
-                          const tableData = tableList.find(
-                            (row) => row.id === item.id
-                          );
-                          const { data } = await handleSave(tableData);
-                          alert(
-                            `${key}, ${data[key]} se actualizo a ${event.target.value}`
-                          );
-                        }}
-                      />
-                    )}
-                  </Cell>
+    <main>
+      <Table data={{ nodes: data }} theme={theme}>
+        {(tableList) => (
+          <>
+            <Header>
+              <HeaderRow>
+                {DASHBOARD_HEADERS[section].map((header) => (
+                  <HeaderCell key={header}>{header}</HeaderCell>
                 ))}
-              </Row>
-            ))}
-          </Body>
-        </>
-      )}
-    </Table>
+              </HeaderRow>
+            </Header>
+            <Body>
+              {tableList.map((item) => (
+                <Row key={item.id} item={item}>
+                  {DASHBOARD_HEADERS[section].map((key) => (
+                    <Cell key={key}>
+                      {typeof item[key] === "boolean" ? (
+                        <input
+                          type="checkbox"
+                          checked={item[key]}
+                          onChange={(event) =>
+                            handleUpdate(event.target.checked, item.id, key)
+                          }
+                          onClick={async (event) => {
+                            const tableData = tableList.find(
+                              (row) => row.id === item.id
+                            );
+                            const { data } = await handleSave(tableData);
+                            alert(
+                              `${key}, ${data[key]} se actualizo a ${event.target.value}`
+                            );
+                          }}
+                        />
+                      ) : key === "date_birth" ? (
+                        <input
+                          type="date"
+                          style={{
+                            width: "100%",
+                            border: "none",
+                            fontSize: "1rem",
+                            padding: 0,
+                            margin: 0,
+                          }}
+                          value={item[key]}
+                          onChange={(event) =>
+                            handleUpdate(event.target.value, item.id, key)
+                          }
+                          onBlur={async (event) => {
+                            event.target.style.width = "100%";
+                            const tableData = tableList.find(
+                              (row) => row.id === item.id
+                            );
+                            const { data } = await handleSave(tableData);
+                            alert(
+                              `${key}, ${data[key]} se actualizo a ${event.target.value}`
+                            );
+                          }}
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          style={{
+                            width: "100%",
+                            border: "none",
+                            fontSize: "1rem",
+                            padding: 0,
+                            margin: 0,
+                          }}
+                          value={item[key]}
+                          onChange={(event) =>
+                            handleUpdate(event.target.value, item.id, key)
+                          }
+                          onBlur={async (event) => {
+                            event.target.style.width = "100%";
+                            const tableData = tableList.find(
+                              (row) => row.id === item.id
+                            );
+                            const { data } = await handleSave(tableData);
+                            alert(
+                              `${key}, ${data[key]} se actualizo a ${event.target.value}`
+                            );
+                          }}
+                        />
+                      )}
+                    </Cell>
+                  ))}
+                </Row>
+              ))}
+            </Body>
+          </>
+        )}
+      </Table>
+    </main>
   );
 };
 
