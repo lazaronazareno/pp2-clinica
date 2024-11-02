@@ -49,12 +49,16 @@ const router = createBrowserRouter([
         path: "/admin",
         element: <Dashboard />,
       },
+      {
+        path: "/especialidades",
+        element: <Dashboard />,
+      },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return <RouterProvider  router={router} />;
 }
 
 export default App;

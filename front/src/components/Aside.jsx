@@ -21,10 +21,15 @@ const Aside = () => {
         </>
       )}
 
-      {cookies.user && cookies.is_empleado === true && (
-        <Link to="/insumos">
-          <p>Insumos 💊</p>
-        </Link>
+      {cookies.user && cookies.is_doctor === true && (
+        <>
+          <Link to="/insumos">
+            <p>Insumos 💊</p>
+          </Link>
+          <Link to="/especialidades">
+            <p>Especialidades 🏥</p>
+          </Link>
+        </>
       )}
       {cookies.user && cookies.is_admin === true && (
         <Link to="/admin">

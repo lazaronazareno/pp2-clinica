@@ -1,76 +1,190 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
-import { useCookies } from "react-cookie"; // Importar useCookies
+import * as React from "react";
 import DASHBOARD_ENDPOINTS from "../constants/endpoints";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import {
+  Table,
+  Header,
+  HeaderRow,
+  Body,
+  Row,
+  HeaderCell,
+  Cell,
+} from "@table-library/react-table-library/table";
+import { useCookies } from "react-cookie";
+import DASHBOARD_HEADERS from "../constants/headers";
+import { useTheme } from "@table-library/react-table-library/theme";
 import "./Dashboard.css";
-import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const section = window.location.pathname.replace("/", "").toUpperCase();
   const queryClient = useQueryClient();
-  const [editRow, setEditRow] = useState(null);
-  const { register, handleSubmit, setValue, reset } = useForm();
-  const [cookies, setCookie] = useCookies(["user"]); // Manejar cookies
-  const userId = cookies.user?.id || cookies.id; // Obtener el ID del usuario de la cookie
+  const section = window.location.pathname.replace("/", "").toUpperCase();
+  const [cookies, setCookie] = useCookies(["user"]);
   const isDeploy = import.meta.env.VITE_IS_DEPLOY;
-  const apiUrl = isDeploy ? "https://pp2-clinica.onrender.com" : "localhost";
-  const { isPending, error, data } = useQuery({
+  const apiUrl = isDeploy
+    ? "https://pp2-clinica.onrender.com"
+    : "http://localhost";
+
+  const [data, setData] = React.useState([]);
+  const [newRow, setNewRow] = React.useState(
+    DASHBOARD_HEADERS[section].reduce((acc, key) => {
+      acc[key] = key === "date_birth" ? "" : key === "boolean" ? false : "";
+      return acc;
+    }, {})
+  );
+  const userId = cookies.user?.id || cookies.id; // Obtener el ID del usuario de la cookie
+  const {
+    isPending,
+    error,
+    data: queryData,
+  } = useQuery({
     queryKey: ["getDashboardData", section],
     queryFn: async () => {
       const res = await axios.get(`${apiUrl}/${DASHBOARD_ENDPOINTS[section]}`);
       return res.data;
     },
-  });
-
-  const mutation = useMutation({
-    mutationFn: async (updatedRow) => {
-      return axios.put(`${apiUrl}/users/${updatedRow.id}`, updatedRow);
-    },
     onSuccess: () => {
       queryClient.invalidateQueries(["getDashboardData", section]);
       setEditRow(null);
       reset();
-      navigate(0);
     },
   });
-
-  const handleEditClick = (row) => {
-    setEditRow(row.id);
-    Object.keys(row).forEach((key) => setValue(key, row[key]));
+  const fetchPatients = async () => {
+    const url = `${apiUrl}/patients`;
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   };
+  const {
+    isPending: isPatientsPending,
+    error: patientsError,
+    data: patientsData,
+  } = useQuery({
+    queryKey: ["getPatients"],
+    queryFn: fetchPatients,
+  });
 
-  const handleDeleteClick = async (row) => {
-    const response = await axios.delete(`${apiUrl}/users${row.id}`); // Asegúrate de tener el endpoint correcto
-    alert(response.data);
+  const fetchDoctors = async () => {
+    const url = `${apiUrl}/doctors`;
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   };
+  const {
+    isPending: isDoctorsPending,
+    error: doctorsError,
+    data: doctorsData,
+  } = useQuery({
+    queryKey: ["getDoctors"],
+    queryFn: fetchDoctors,
+  });
 
-  const onSubmit = (updatedRow) => {
-    mutation.mutate(updatedRow);
+  const fetchMedicalRecords = async () => {
+    const url = `${apiUrl}/medical-records`;
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   };
+  const {
+    isPending: isMedicalRecordsPending,
+    error: medicalRecordsError,
+    data: medicalRecordsData,
+  } = useQuery({
+    queryKey: ["getMedicalRecords"],
+    queryFn: fetchMedicalRecords,
+  });
 
-  // Actualizar cookies en cada renderizado
-  useEffect(() => {
-    // Verificar si el ID del usuario está disponible
+  const fetchDepartments = async () => {
+    const url = `${apiUrl}/departments`;
+
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const {
+    isPending: isDepartmentsPending,
+    error: departmentsError,
+    data: departmentsData,
+  } = useQuery({
+    queryKey: ["getDepartments"],
+    queryFn: fetchDepartments,
+  });
+
+  const fetchSupplies = async () => {
+    const url = `${apiUrl}/supplies`;
+
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const {
+    isPending: isSuppliesPending,
+    error: suppliesError,
+    data: suppliesData,
+  } = useQuery({
+    queryKey: ["getSupplies"],
+    queryFn: fetchSupplies,
+  });
+
+  React.useEffect(() => {
+    if (queryData && section === "ADMIN") setData(queryData);
+    if (patientsData && section === "TURNOS") setData(patientsData);
+    if (doctorsData && section === "ESTUDIOS") setData(doctorsData);
+    if (medicalRecordsData && section === "ESPECIALIDADES")
+      setData(medicalRecordsData);
+    if (departmentsData && section === "INSUMOS") setData(departmentsData);
+    if (suppliesData && section === "INSUMOS") setData(suppliesData);
+
     if (userId) {
       const fetchToken = async () => {
         try {
-          const response = await axios.get(
-            `${apiUrl}/users/${userId}`,
-            { mode: "cors" } // Configurar CORS
-          ); // Usar el ID de la cookie
-          const tokenData = response.data; // Ajusta esto según la respuesta de tu API
-          setCookie("user", tokenData, { path: "/" }); // Guardar en la cookie
+          const response = await axios.get(`${apiUrl}/users/${userId}`, {
+            mode: "cors",
+          });
+          const tokenData = response.data;
+          setCookie("user", tokenData, { path: "/" });
         } catch (error) {
-            console.error("Error fetching user data:", error);
-            if (error.response && error.response.status === 404) {
-            // Limpiar todas las cookies si no se encuentra el usuario
+          console.error("Error fetching user data:", error);
+          if (error.response && error.response.status === 404) {
             Object.keys(cookies).forEach((key) => {
               setCookie(key, "", { path: "/" });
             });
-            }
+          }
         }
       };
 
@@ -78,56 +192,248 @@ const Dashboard = () => {
     } else {
       console.warn("No user ID found in cookies.");
     }
-  }, []);
-  if (isPending) return `Loading ${DASHBOARD_ENDPOINTS[section]} data...`;
+  }, [
+    queryData,
+    patientsData,
+    doctorsData,
+    medicalRecordsData,
+    departmentsData,
+    suppliesData,
+  ]);
 
-  if (error) return "An error has occurred: " + error.message;
+  const handleUpdate = (value, id, property) => {
+    setData((state) =>
+      state.map((item) =>
+        item.id === id ? { ...item, [property]: value } : item
+      )
+    );
+  };
+
+  const handleSave = async (data) => {
+    const url = `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${data.id}`;
+    try {
+      return await axios.put(url, data, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCreate = async (newData) => {
+    const url = `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}`;
+    try {
+      const response = await axios.post(url, newData, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
+      setData((prevData) => [...prevData, response.data]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleNewRowChange = (value, key) => {
+    setNewRow((prevRow) => ({ ...prevRow, [key]: value }));
+  };
+
+  const handleNewRowSave = async () => {
+    await handleCreate(newRow);
+    setNewRow(
+      DASHBOARD_HEADERS[section].reduce((acc, key) => {
+        acc[key] = key === "date_birth" ? "" : key === "boolean" ? false : "";
+        return acc;
+      }, {})
+    );
+  };
+
+  const handleDelete = async (id) => {
+    const url = `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${id}`;
+    try {
+      await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
+      setData((prevData) => prevData.filter((row) => row.id !== id));
+      alert(`Se eliminó el registro con id: ${id}`);
+      queryClient.invalidateQueries(["getDashboardData", section]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const renderCellContent = (item, key, isNewRow = false) => {
+    console.dir(isNewRow);
+    const handleChange = isNewRow
+      ? (e) =>
+          handleNewRowChange(
+            e.target.type === "checkbox" ? e.target.checked : e.target.value,
+            key
+          )
+      : (e) =>
+          handleUpdate(
+            e.target.type === "checkbox" ? e.target.checked : e.target.value,
+            item.id,
+            key
+          );
+
+    const handleBlur = isNewRow
+      ? undefined
+      : async (e) => {
+          const updatedData = data.find((row) => row.id === item.id);
+          await handleSave(updatedData);
+          queryClient.invalidateQueries(["getDashboardData", section]);
+          console.warn(`${key} actualizado a ${updatedData[key]}`);
+        };
+
+    const value = isNewRow ? newRow[key] : item[key];
+
+    const inputType =
+      typeof value === "boolean"
+        ? "checkbox"
+        : ["is_admin", "is_doctor"].includes(key)
+        ? "checkbox"
+        : ["date_birth", "date"].includes(key)
+        ? "date"
+        : ["dni", "stock"].includes(key)
+        ? "number"
+        : key === "mail"
+        ? "mail"
+        : ["user_id", "department_id", "medical_record_id"].includes(key)
+        ? "select"
+        : "text";
+
+    if (inputType === "select") {
+      return (
+        <select
+          value={value}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          style={{ width: "100%" }}
+        >
+          {
+            //si la columna actual es la de department_id y ya se cargaron los departamentos}
+            key === "department_id" &&
+              departmentsData &&
+              //se mapean los departamentos para mostrarlos en el select
+
+              departmentsData.map((department) => (
+                <option key={department.id} value={department.id}>
+                  {department.name}
+                </option>
+              ))
+          }
+          {
+            //si la columna actual es la de user_id y ya se cargaron los pacientes}
+            key === "user_id" &&
+              patientsData &&
+              //se mapean los pacientes para mostrarlos en el select
+              patientsData.map((patient) => (
+                <option key={patient.id} value={patient.id}>
+                  {patient.name}
+                </option>
+              ))
+          }
+          {
+            //si la columna actual es la de medical_record_id y ya se cargaron los registros médicos}
+            key === "medical_record_id" &&
+              medicalRecordsData &&
+              //se mapean los registros médicos para mostrarlos en el select
+              medicalRecordsData.map((medicalRecord) => (
+                <option key={medicalRecord.id} value={medicalRecord.id}>
+                  {medicalRecord.id}
+                </option>
+              ))
+          }
+        </select>
+      );
+    }
+
+    return (
+      <input
+        type={inputType}
+        value={inputType === "checkbox" ? undefined : value}
+        checked={inputType === "checkbox" ? value : false}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        style={{ width: "100%" }}
+      />
+    );
+  };
+
+  const theme = useTheme({
+    HeaderRow: `background-color: #eaf5fd;`,
+    Row: `
+      &:nth-of-type(odd) { background-color: #d2e9fb; }
+      &:nth-of-type(even) { background-color: #eaf5fd; }
+    `,
+    Table: `--data-table-library_grid-template-columns:${DASHBOARD_HEADERS[
+      section
+    ]
+      .map(() => "1fr")
+      .join(" ")} 1fr;`,
+  });
+
+  if (!cookies.user) {
+    return <div>Debes iniciar sesión para acceder a esta página</div>;
+  }
+  if (isPending) return <div>Loading...</div>;
+  if (isPatientsPending) return <div>Loading patients...</div>;
+  if (isDoctorsPending) return <div>Loading doctors...</div>;
+  if (isMedicalRecordsPending) return <div>Loading medical records...</div>;
+  if (isDepartmentsPending) return <div>Loading departments...</div>;
+
+  if (error) {
+    console.error(error);
+    return <div>{JSON.stringify(error)}</div>;
+  }
 
   return (
-    <main id="dashboardMain">
-      <h1>Dashboard de {section}</h1>
-      {data && data.length > 0 ? (
-        <table>
-          <thead>
-            <tr>
-              {Object.keys(data[0]).map((key, index) => (
-                <th key={key + index}>{key}</th>
-              ))}
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row) => (
-              <tr key={row.id}>
-                {editRow === row.id
-                  ? Object.keys(row).map((key, index) => (
-                      <td key={key + index}>
-                        <input {...register(key)} defaultValue={row[key]} />
-                      </td>
-                    ))
-                  : Object.values(row).map((value, index) => (
-                      <td key={value + index}>{value}</td>
-                    ))}
-                <td>
-                  {editRow === row.id ? (
-                    <button onClick={handleSubmit(onSubmit)}>Save</button>
-                  ) : (
-                    <>
-                      {" "}
-                      <button onClick={() => handleEditClick(row)}>Edit</button>
-                      <button onClick={() => handleDeleteClick(row)}>
+    <main>
+      <Table data={{ nodes: data }} layout={{ custom: true }} theme={theme}>
+        {(tableList) => (
+          <>
+            <Header>
+              <HeaderRow>
+                <HeaderCell>Actions</HeaderCell>
+                {DASHBOARD_HEADERS[section].map((header) => (
+                  <HeaderCell key={header}>{header}</HeaderCell>
+                ))}
+              </HeaderRow>
+            </Header>
+            <Body>
+              <Row id="saveRow" item={newRow}>
+                <Cell>
+                  <button id="addButton" onClick={handleNewRowSave}>
+                    Save
+                  </button>
+                </Cell>
+                {DASHBOARD_HEADERS[section].map((key) => (
+                  <Cell key={key}>{renderCellContent(newRow, key, true)}</Cell>
+                ))}
+              </Row>
+
+              {tableList.length > 0 &&
+                tableList.map((item) => (
+                  <Row key={item.id} item={item}>
+                    <Cell>
+                      <button onClick={() => handleDelete(item.id)}>
                         Delete
                       </button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No hay data bro 😲</p>
-      )}
+                    </Cell>
+                    {DASHBOARD_HEADERS[section].map((key) => (
+                      <Cell key={key}>{renderCellContent(item, key)}</Cell>
+                    ))}
+                  </Row>
+                ))}
+            </Body>
+          </>
+        )}
+      </Table>
     </main>
   );
 };

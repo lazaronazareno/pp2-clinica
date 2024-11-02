@@ -3,7 +3,6 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
 const LoginForm = () => {
-  
   const [cookies, setCookie] = useCookies(["user"]);
   const navigate = useNavigate();
   const {
@@ -23,16 +22,13 @@ const LoginForm = () => {
       cors: "cors",
     })
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
-        console.dir(data);
         Object.keys(data).forEach((key) => {
           if (key != "detail") setCookie(key, data[key]);
         });
         navigate("/");
-        console.log(data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -76,7 +72,7 @@ const LoginForm = () => {
         )}
 
         <section>
-          <button type="submit" id="accessButton">
+          <button type="submit" id="loginButton">
             Ingresar
           </button>
           <button type="reset" id="cancelButton">

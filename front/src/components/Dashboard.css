@@ -1,43 +1,49 @@
-#dashboardMain {
-  display: grid;
-  grid-template-columns: 1fr;
-  padding-top: 15%;
-  display: flex;
-  justify-content: flex-start;
-}
-table {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto;
-  border-collapse: collapse;
-  border: 1px solid rgb(255, 208, 208);
-  font-family: sans-serif;
-  font-size: small;
-  letter-spacing: 0.2px;
+/* 
+
+Styles for the table component in the Dashboard:
+
+- table: 
+  - Sets the table width to 100%.
+  - Collapses table borders.
+  - Adds a top margin of 20px.
+
+- th (table header):
+  - Sets the background color to a light gray (#f2f2f2).
+  - Sets the text color to dark gray (#333).
+
+- th, td (table header and table data cells):
+  - Adds a 1px solid border with a light gray color (#f2f2f2).
+  - Adds 8px padding.
+  - Centers the text.
+
+- tr:nth-child(even) (even table rows):
+  - Sets the background color to light gray (#f2f2f2).
+
+- tr:nth-child(odd) (odd table rows):
+  - Sets the background color to white (#fff).
+*/
+table{
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-thead,
-tfoot {
-  background-color: rgba(55, 183, 238, 0.671);
+th{
+    background-color: #f2f2f2;
+    color: #333;
 }
 
-th,
-td {
-  border: 1px solid rgb(148, 148, 148);
-  word-wrap: break-word;
-  text-align: center;
-}
-tbody {
-  background-color: rgb(208, 211, 207);
-}
-td:last-of-type {
-  text-align: center;
+th, td{
+    border: 1px solid #f2f2f2;
+    padding: 8px;
+    text-align: center;
 }
 
-tbody > tr:nth-of-type(even) {
-  background-color: rgb(192, 96, 96);
+tr:nth-child(even){
+    background-color: #f2f2f2;
 }
 
-tbody tr {
-  background-color: rgb(146, 127, 255);
+tr:nth-child(odd){
+    background-color: #fff;
 }
+
+
