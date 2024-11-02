@@ -202,7 +202,11 @@ const Dashboard = () => {
             mode: "cors",
           });
           const tokenData = response.data;
-          setCookie("user", tokenData, { path: "/" });
+
+            Object.keys(tokenData).forEach((key) => {
+            setCookie(key, tokenData[key], { path: "/" });
+            });
+
         } catch (error) {
           console.error("Error fetching user data:", error);
           if (error.response && error.response.status === 404) {

@@ -4,7 +4,7 @@ const TRANSLATIONS = {
   DATE: "Fecha",
   REPORT: "Informe",
   USER_ID: "Usuario",
-  DEPARTMENT_ID: "Departamento",
+  DEPARTMENT_ID: "Dpto.",
   NAME: "Nombre",
   STOCK: "Stock",
   LASTNAME: "Apellido",
@@ -12,9 +12,9 @@ const TRANSLATIONS = {
   MAIL:"Email",
   PASSWORD:"Contraseña",
   DNI:"DNI",
-  DATE_BIRTH:"Fecha de nacimiento",
-  IS_ADMIN:"Administrador",
-  IS_DOCTOR:"Doctor",
+  DATE_BIRTH:"Fecha de nac.",
+  IS_ADMIN:"Admin",
+  IS_DOCTOR:"Doc",
 
 };
 
