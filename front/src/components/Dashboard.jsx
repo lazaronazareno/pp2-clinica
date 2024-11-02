@@ -198,7 +198,7 @@ const Dashboard = () => {
     doctorsData,
     medicalRecordsData,
     departmentsData,
-    suppliesData
+    suppliesData,
   ]);
 
   const handleUpdate = (value, id, property) => {
@@ -378,6 +378,9 @@ const Dashboard = () => {
       .join(" ")} 1fr;`,
   });
 
+  if (!cookies.user) {
+    return <div>Debes iniciar sesión para acceder a esta página</div>;
+  }
   if (isPending) return <div>Loading...</div>;
   if (isPatientsPending) return <div>Loading patients...</div>;
   if (isDoctorsPending) return <div>Loading doctors...</div>;
