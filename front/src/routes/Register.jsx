@@ -10,7 +10,7 @@ const RegisterForm = () => {
   } = useForm();
 
   const isDeploy = import.meta.env.VITE_IS_DEPLOY;
-  const apiUrl = isDeploy ? "https://pp2-clinica.onrender.com" : "localhost";
+  const apiUrl = isDeploy ? import.meta.env.VITE_DEPLOY_URL : "localhost";
   const navigate = useNavigate();
   const onSubmit = async (data) => {
     await fetch(`${apiUrl}/users`, {

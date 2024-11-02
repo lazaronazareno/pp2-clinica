@@ -11,7 +11,7 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm();
   const isDeploy = import.meta.env.VITE_IS_DEPLOY;
-  const apiUrl = isDeploy ? "https://pp2-clinica.onrender.com" : "localhost";
+  const apiUrl = isDeploy ? import.meta.env.VITE_DEPLOY_URL : "localhost";
   const onSubmit = async (data) => {
     await fetch(`${apiUrl}/login`, {
       method: "POST",

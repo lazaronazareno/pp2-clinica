@@ -22,7 +22,7 @@ const Dashboard = () => {
   const [cookies, setCookie] = useCookies(["user"]);
   const isDeploy = import.meta.env.VITE_IS_DEPLOY;
   const apiUrl = isDeploy
-    ? "https://pp2-clinica.onrender.com"
+    ? import.meta.env.VITE_DEPLOY_URL
     : "http://localhost";
 
   const [data, setData] = React.useState([]);
@@ -187,8 +187,10 @@ const Dashboard = () => {
   React.useEffect(() => {
     if (queryData && section === "ADMIN") setData(queryData);
     if (patientsData && section === "TURNOS") setData(patientsData);
+    console.dir(patientsData)
     if (medicalRecordsData && section === "ESTUDIOS")
       setData(medicalRecordsData);
+    console.dir(medicalRecordsData)
     if (departmentsData && section === "ESPECIALIDADES")
       setData(departmentsData);
     if (suppliesData && section === "INSUMOS") setData(suppliesData);
@@ -370,7 +372,10 @@ const Dashboard = () => {
               //se mapean los registros médicos para mostrarlos en el select
               medicalRecordsData.map((medicalRecord) => (
                 <option key={medicalRecord.id} value={medicalRecord.id}>
-                  {medicalRecord.report}
+                {departmentsData.find(
+                  (department) => department.id === medicalRecord.department_id
+                  ).name}
+
                 </option>
               ))
           }

@@ -17,7 +17,7 @@ const Dashboard = () => {
   const [cookies, setCookie] = useCookies(["user"]); // Manejar cookies
   const userId = cookies.user?.id || cookies.id; // Obtener el ID del usuario de la cookie
   const isDeploy = import.meta.env.VITE_IS_DEPLOY;
-  const apiUrl = isDeploy ? "https://pp2-clinica.onrender.com" : "localhost";
+  const apiUrl = isDeploy ? import.meta.env.VITE_DEPLOY_URL : "localhost";
   const { isPending, error, data } = useQuery({
     queryKey: ["getDashboardData", section],
     queryFn: async () => {
@@ -74,7 +74,7 @@ const Dashboard = () => {
             { mode: "cors" } // Configurar CORS
           ); // Usar el ID de la cookie
           const tokenData = response.data; // Ajusta esto según la respuesta de tu API
-          console.dir(tokenData)
+          console.dir(tokenData);
           setCookie("user", tokenData, { path: "/" }); // Guardar en la cookie
           invalidateQueries(["getDashboardData", section]); // Invalidar la consulta
         } catch (error) {
