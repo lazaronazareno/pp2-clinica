@@ -6,7 +6,7 @@ const Home = () => {
 
   return (
     <main id="homeMain">
-      <h1 id="greeting2">Bienvenidos</h1>
+      <h1 id="greeting">Bienvenidos</h1>
 
       <h2 id="greeting2">Clinica <span style={{ marginLeft: '60px' }}></span> SePrise</h2>
 
