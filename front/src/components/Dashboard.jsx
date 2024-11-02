@@ -15,6 +15,7 @@ import { useCookies } from "react-cookie";
 import DASHBOARD_HEADERS from "../constants/headers";
 import { useTheme } from "@table-library/react-table-library/theme";
 import "./Dashboard.css";
+import TRANSLATIONS from "../constants/translations";
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
@@ -187,10 +188,8 @@ const Dashboard = () => {
   React.useEffect(() => {
     if (queryData && section === "ADMIN") setData(queryData);
     if (patientsData && section === "TURNOS") setData(patientsData);
-    console.dir(patientsData)
     if (medicalRecordsData && section === "ESTUDIOS")
       setData(medicalRecordsData);
-    console.dir(medicalRecordsData)
     if (departmentsData && section === "ESPECIALIDADES")
       setData(departmentsData);
     if (suppliesData && section === "INSUMOS") setData(suppliesData);
@@ -238,6 +237,7 @@ const Dashboard = () => {
 
   const handleSave = async (data) => {
     const url = `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${data.id}`;
+    console.dir(data)
     try {
       return await axios.put(url, data, {
         headers: {
@@ -312,6 +312,7 @@ const Dashboard = () => {
       ? undefined
       : async (e) => {
           const updatedData = data.find((row) => row.id === item.id);
+          console.dir(updatedData)
           await handleSave(updatedData);
           queryClient.invalidateQueries(["getDashboardData", section]);
           console.warn(`${key} actualizado a ${updatedData[key]}`);
@@ -372,10 +373,12 @@ const Dashboard = () => {
               //se mapean los registros médicos para mostrarlos en el select
               medicalRecordsData.map((medicalRecord) => (
                 <option key={medicalRecord.id} value={medicalRecord.id}>
-                {departmentsData.find(
-                  (department) => department.id === medicalRecord.department_id
-                  ).name}
-
+                  {
+                    departmentsData.find(
+                      (department) =>
+                        department.id === medicalRecord.department_id
+                    ).name
+                  }
                 </option>
               ))
           }
@@ -429,9 +432,11 @@ const Dashboard = () => {
           <>
             <Header>
               <HeaderRow>
-                <HeaderCell>Actions</HeaderCell>
+                <HeaderCell>Acciones</HeaderCell>
                 {DASHBOARD_HEADERS[section].map((header) => (
-                  <HeaderCell key={header}>{header}</HeaderCell>
+                  <HeaderCell key={header}>
+                    {TRANSLATIONS[header.toUpperCase()] || header}
+                  </HeaderCell>
                 ))}
               </HeaderRow>
             </Header>
@@ -440,7 +445,7 @@ const Dashboard = () => {
                 <Row id="saveRow" item={newRow}>
                   <Cell>
                     <button id="addButton" onClick={handleNewRowSave}>
-                      Save
+                      Guardar
                     </button>
                   </Cell>
                   {DASHBOARD_HEADERS[section].map((key) => (
@@ -455,7 +460,7 @@ const Dashboard = () => {
                   <Row key={item.id} item={item}>
                     <Cell>
                       <button onClick={() => handleDelete(item.id)}>
-                        Delete
+                        Borrar
                       </button>
                     </Cell>
                     {DASHBOARD_HEADERS[section].map((key) => (
