@@ -240,9 +240,10 @@ const Dashboard = () => {
                             const tableData = tableList.find(
                               (row) => row.id === item.id
                             );
-                            const { data } = await handleSave(tableData);
+                            tableData[key] = event.target.checked;
+                            await handleSave(tableData);
                             alert(
-                              `${key}, ${data[key]} se actualizo a ${event.target.value}`
+                              `${key}, se actualizo a ${event.target.checked}`
                             );
                           }}
                         />
@@ -258,9 +259,9 @@ const Dashboard = () => {
                             const tableData = tableList.find(
                               (row) => row.id === item.id
                             );
-                            const { data } = await handleSave(tableData);
+                            await handleSave(tableData);
                             alert(
-                              `${key}, ${data[key]} se actualizo a ${event.target.value}`
+                              `${key}, se actualizo a ${event.target.value}`
                             );
                           }}
                         />
@@ -282,9 +283,9 @@ const Dashboard = () => {
                             const tableData = tableList.find(
                               (row) => row.id === item.id
                             );
-                            const { data } = await handleSave(tableData);
+                            await handleSave(tableData);
                             alert(
-                              `${key}, ${data[key]} se actualizo a ${event.target.value}`
+                              `${key}, se actualizo a ${event.target.value}`
                             );
                           }}
                         />
@@ -300,9 +301,9 @@ const Dashboard = () => {
                             const tableData = tableList.find(
                               (row) => row.id === item.id
                             );
-                            const { data } = await handleSave(tableData);
+                            await handleSave(tableData);
                             alert(
-                              `${key}, ${data[key]} se actualizo a ${event.target.value}`
+                              `${key}, se actualizo a ${event.target.value}`
                             );
                           }}
                         />
@@ -318,9 +319,9 @@ const Dashboard = () => {
                             const tableData = tableList.find(
                               (row) => row.id === item.id
                             );
-                            const { data } = await handleSave(tableData);
+                            await handleSave(tableData);
                             alert(
-                              `${key}, ${data[key]} se actualizo a ${event.target.value}`
+                              `${key}, se actualizo a ${event.target.value}`
                             );
                           }}
                         />

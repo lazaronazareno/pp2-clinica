@@ -46,8 +46,8 @@ const Dashboard = () => {
   });
 
   const handleEditClick = (row) => {
-        //si el row.is_admin o row.is_doctor es un array vacio, entonces se le asigna false
-    console.dir(row)
+    //si el row.is_admin o row.is_doctor es un array vacio, entonces se le asigna false
+    console.dir(row);
     setEditRow(row.id);
     Object.keys(row).forEach((key) => setValue(key, row[key]));
   };
@@ -74,7 +74,9 @@ const Dashboard = () => {
             { mode: "cors" } // Configurar CORS
           ); // Usar el ID de la cookie
           const tokenData = response.data; // Ajusta esto según la respuesta de tu API
+          console.dir(tokenData)
           setCookie("user", tokenData, { path: "/" }); // Guardar en la cookie
+          invalidateQueries(["getDashboardData", section]); // Invalidar la consulta
         } catch (error) {
           console.error("Error fetching user data:", error);
           if (error.response && error.response.status === 404) {
@@ -167,7 +169,6 @@ const Dashboard = () => {
                               type="checkbox"
                               {...register(key)}
                               defaultChecked={row[key]}
-                
                             />
                           ) : (
                             <input
