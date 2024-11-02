@@ -15,11 +15,9 @@ import { useCookies } from "react-cookie";
 import DASHBOARD_HEADERS from "../constants/headers";
 import { useTheme } from "@table-library/react-table-library/theme";
 import "./Dashboard.css";
-import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const section = window.location.pathname.replace("/", "").toUpperCase();
   const [cookies, setCookie] = useCookies(["user"]);
   const isDeploy = import.meta.env.VITE_IS_DEPLOY;
@@ -49,7 +47,6 @@ const Dashboard = () => {
       queryClient.invalidateQueries(["getDashboardData", section]);
       setEditRow(null);
       reset();
-      // navigate(0);
     },
   });
   const fetchPatients = async () => {
@@ -141,21 +138,37 @@ const Dashboard = () => {
     queryFn: fetchDepartments,
   });
 
+  const fetchSupplies = async () => {
+    const url = `${apiUrl}/supplies`;
+
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const {
+    isPending: isSuppliesPending,
+    error: suppliesError,
+    data: suppliesData,
+  } = useQuery({
+    queryKey: ["getSupplies"],
+    queryFn: fetchSupplies,
+  });
+
   React.useEffect(() => {
-    if (patientsData) {
-      setData(patientsData);
-    }
-
-    if (doctorsData) {
-      setData(doctorsData);
-    }
-
-    if (medicalRecordsData) {
+    if (queryData && section === "ADMIN") setData(queryData);
+    if (patientsData && section === "TURNOS") setData(patientsData);
+    if (doctorsData && section === "ESTUDIOS") setData(doctorsData);
+    if (medicalRecordsData && section === "ESPECIALIDADES")
       setData(medicalRecordsData);
-    }
-    if (queryData) {
-      setData(queryData);
-    }
+    if (departmentsData && section === "INSUMOS") setData(departmentsData);
+    if (suppliesData && section === "INSUMOS") setData(suppliesData);
 
     if (userId) {
       const fetchToken = async () => {
@@ -179,7 +192,14 @@ const Dashboard = () => {
     } else {
       console.warn("No user ID found in cookies.");
     }
-  }, [queryData, patientsData, doctorsData, medicalRecordsData]);
+  }, [
+    queryData,
+    patientsData,
+    doctorsData,
+    medicalRecordsData,
+    departmentsData,
+    suppliesData
+  ]);
 
   const handleUpdate = (value, id, property) => {
     setData((state) =>
@@ -363,6 +383,7 @@ const Dashboard = () => {
   if (isDoctorsPending) return <div>Loading doctors...</div>;
   if (isMedicalRecordsPending) return <div>Loading medical records...</div>;
   if (isDepartmentsPending) return <div>Loading departments...</div>;
+
   if (error) {
     console.error(error);
     return <div>{JSON.stringify(error)}</div>;
