@@ -5,15 +5,17 @@ aside {
   /* justify-content: center; */
   align-items: center;
   border-right: 3px groove #a3a3a3;
-  padding-top: 25vh;  
+  padding-top: 25vh;
+
 }
 
 aside a {
   display: flex;
   text-decoration: none;
   color: rgb(40, 41, 43);  
-  font-size: 1.6rem;
-  font-family: "Lilita One";
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-family: "MuseoModerno", sans-serif;
   padding: 15px;
     
 }
