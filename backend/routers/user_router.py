@@ -132,3 +132,14 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     db.delete(db_user)
     db.commit()
     return {"message": "Usuario eliminado"}
+
+@user_root.get("/admins", response_model=list[UserResponse])
+def get_admins(db: Session = Depends(get_db)):
+    db_users = db.query(User).filter(User.is_admin == True).all()
+    return db_users
+
+
+@user_root.get("/patients", response_model=list[UserResponse])
+def get_patients(db: Session = Depends(get_db)):
+    db_users = db.query(User).filter(User.is_admin == False, User.is_doctor == False).all()
+    return db_users

@@ -9,17 +9,24 @@ from utils.exception_handler import validation_exception_handler
 from fastapi.exceptions import RequestValidationError
 from utils.sqlalchemy_exception_handler import sqlalchemy_exception_handler
 from sqlalchemy.exc import SQLAlchemyError
+import os 
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
 
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(SQLAlchemyError, sqlalchemy_exception_handler)
 
+CORS_ORIGIN = os.getenv('CORS_ORIGIN')
+
 origins = [
     "http://localhost:3000",
     "http://localhost:5173",
     "https://front-rosy-iota.vercel.app",
-    "https://pp2-clinica.vercel.app"
+    "https://pp2-clinica.vercel.app",
+    CORS_ORIGIN
 ]
 
 app.add_middleware(
