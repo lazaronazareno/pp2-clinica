@@ -15,7 +15,6 @@ import { useCookies } from "react-cookie";
 import DASHBOARD_HEADERS from "../constants/headers";
 import { useTheme } from "@table-library/react-table-library/theme";
 import "./Dashboard.css";
-import { json } from "react-router-dom";
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
