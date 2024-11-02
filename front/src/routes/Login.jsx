@@ -1,5 +1,5 @@
 import "./LoginRegister.css";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
 const LoginForm = () => {
@@ -28,7 +28,11 @@ const LoginForm = () => {
         Object.keys(data).forEach((key) => {
           if (key != "detail") setCookie(key, data[key]);
         });
-        navigate("/");
+        //if there is a token, navigate to the dashboard
+        if (data.id) navigate("/");
+
+
+
       })
       .catch((error) => {
         console.error("Error:", error);

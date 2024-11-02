@@ -15,6 +15,7 @@ import { useCookies } from "react-cookie";
 import DASHBOARD_HEADERS from "../constants/headers";
 import { useTheme } from "@table-library/react-table-library/theme";
 import "./Dashboard.css";
+import { json } from "react-router-dom";
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
@@ -161,14 +162,38 @@ const Dashboard = () => {
     queryFn: fetchSupplies,
   });
 
+  const fetchAppointments = async () => {
+    const url = `${apiUrl}/appointments`;
+
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const {
+    isPending: isAppointmentsPending,
+    error: appointmentsError,
+    data: appointmentsData,
+  } = useQuery({
+    queryKey: ["getAppointments"],
+    queryFn: fetchAppointments,
+  });
+
   React.useEffect(() => {
     if (queryData && section === "ADMIN") setData(queryData);
     if (patientsData && section === "TURNOS") setData(patientsData);
-    if (doctorsData && section === "ESTUDIOS") setData(doctorsData);
-    if (medicalRecordsData && section === "ESPECIALIDADES")
+    if (medicalRecordsData && section === "ESTUDIOS")
       setData(medicalRecordsData);
-    if (departmentsData && section === "INSUMOS") setData(departmentsData);
+    if (departmentsData && section === "ESPECIALIDADES")
+      setData(departmentsData);
     if (suppliesData && section === "INSUMOS") setData(suppliesData);
+    if (appointmentsData && section === "TURNOS") setData(appointmentsData);
 
     if (userId) {
       const fetchToken = async () => {
@@ -199,6 +224,7 @@ const Dashboard = () => {
     medicalRecordsData,
     departmentsData,
     suppliesData,
+    appointmentsData,
   ]);
 
   const handleUpdate = (value, id, property) => {
@@ -242,6 +268,7 @@ const Dashboard = () => {
 
   const handleNewRowSave = async () => {
     await handleCreate(newRow);
+    console.dir(newRow);
     setNewRow(
       DASHBOARD_HEADERS[section].reduce((acc, key) => {
         acc[key] = key === "date_birth" ? "" : key === "boolean" ? false : "";
@@ -267,7 +294,6 @@ const Dashboard = () => {
   };
 
   const renderCellContent = (item, key, isNewRow = false) => {
-    console.dir(isNewRow);
     const handleChange = isNewRow
       ? (e) =>
           handleNewRowChange(
@@ -295,7 +321,7 @@ const Dashboard = () => {
     const inputType =
       typeof value === "boolean"
         ? "checkbox"
-        : ["is_admin", "is_doctor"].includes(key)
+        : ["is_admin", "is_doctor", "active"].includes(key)
         ? "checkbox"
         : ["date_birth", "date"].includes(key)
         ? "date"
@@ -310,10 +336,10 @@ const Dashboard = () => {
     if (inputType === "select") {
       return (
         <select
-          value={value}
           onChange={handleChange}
           onBlur={handleBlur}
           style={{ width: "100%" }}
+          value={value}
         >
           {
             //si la columna actual es la de department_id y ya se cargaron los departamentos}
@@ -345,7 +371,7 @@ const Dashboard = () => {
               //se mapean los registros médicos para mostrarlos en el select
               medicalRecordsData.map((medicalRecord) => (
                 <option key={medicalRecord.id} value={medicalRecord.id}>
-                  {medicalRecord.id}
+                  {medicalRecord.report}
                 </option>
               ))
           }
@@ -406,17 +432,20 @@ const Dashboard = () => {
               </HeaderRow>
             </Header>
             <Body>
-              <Row id="saveRow" item={newRow}>
-                <Cell>
-                  <button id="addButton" onClick={handleNewRowSave}>
-                    Save
-                  </button>
-                </Cell>
-                {DASHBOARD_HEADERS[section].map((key) => (
-                  <Cell key={key}>{renderCellContent(newRow, key, true)}</Cell>
-                ))}
-              </Row>
-
+              {
+                <Row id="saveRow" item={newRow}>
+                  <Cell>
+                    <button id="addButton" onClick={handleNewRowSave}>
+                      Save
+                    </button>
+                  </Cell>
+                  {DASHBOARD_HEADERS[section].map((key) => (
+                    <Cell key={key}>
+                      {renderCellContent(newRow, key, true)}
+                    </Cell>
+                  ))}
+                </Row>
+              }
               {tableList.length > 0 &&
                 tableList.map((item) => (
                   <Row key={item.id} item={item}>
