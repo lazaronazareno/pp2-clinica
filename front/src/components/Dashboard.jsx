@@ -1,4 +1,3 @@
-import * as React from "react";
 import DASHBOARD_ENDPOINTS from "../constants/endpoints";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -16,6 +15,7 @@ import DASHBOARD_HEADERS from "../constants/headers";
 import { useTheme } from "@table-library/react-table-library/theme";
 import "./Dashboard.css";
 import TRANSLATIONS from "../constants/translations";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
@@ -26,8 +26,8 @@ const Dashboard = () => {
     ? import.meta.env.VITE_DEPLOY_URL
     : "http://localhost";
 
-  const [data, setData] = React.useState([]);
-  const [newRow, setNewRow] = React.useState(
+  const [data, setData] = useState([]);
+  const [newRow, setNewRow] = useState(
     DASHBOARD_HEADERS[section].reduce((acc, key) => {
       acc[key] = key === "date_birth" ? "" : key === "boolean" ? false : "";
       return acc;
@@ -185,7 +185,7 @@ const Dashboard = () => {
     queryFn: fetchAppointments,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (queryData && section === "ADMIN") setData(queryData);
     if (patientsData && section === "TURNOS") setData(patientsData);
     if (medicalRecordsData && section === "ESTUDIOS")
@@ -237,7 +237,7 @@ const Dashboard = () => {
 
   const handleSave = async (data) => {
     const url = `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${data.id}`;
-    console.dir(data)
+    console.dir(data);
     try {
       return await axios.put(url, data, {
         headers: {
@@ -312,7 +312,7 @@ const Dashboard = () => {
       ? undefined
       : async (e) => {
           const updatedData = data.find((row) => row.id === item.id);
-          console.dir(updatedData)
+          console.dir(updatedData);
           await handleSave(updatedData);
           queryClient.invalidateQueries(["getDashboardData", section]);
           console.warn(`${key} actualizado a ${updatedData[key]}`);
