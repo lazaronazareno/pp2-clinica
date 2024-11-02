@@ -1,23 +1,34 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
-import { useCookies } from "react-cookie"; // Importar useCookies
+import * as React from "react";
 import DASHBOARD_ENDPOINTS from "../constants/endpoints";
-import "./Dashboard.css";
-import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import {
+  Table,
+  Header,
+  HeaderRow,
+  Body,
+  Row,
+  HeaderCell,
+  Cell,
+} from "@table-library/react-table-library/table";
+import { useCookies } from "react-cookie";  
+import DASHBOARD_HEADERS from "../constants/headers";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const section = window.location.pathname.replace("/", "").toUpperCase();
-  const queryClient = useQueryClient();
-  const [editRow, setEditRow] = useState(null);
-  const { register, handleSubmit, setValue, reset } = useForm();
-  const [cookies, setCookie] = useCookies(["user"]); // Manejar cookies
-  const userId = cookies.user?.id || cookies.id; // Obtener el ID del usuario de la cookie
+  const [cookies] = useCookies(["user"]);
   const isDeploy = import.meta.env.VITE_IS_DEPLOY;
-  const apiUrl = isDeploy ? "https://pp2-clinica.onrender.com" : "localhost";
-  const { isPending, error, data } = useQuery({
+  const apiUrl = isDeploy
+    ? "https://pp2-clinica.onrender.com"
+    : "http://localhost";
+
+  const [data, setData] = React.useState([]);
+
+  const {
+    isPending,
+    error,
+    data: queryData,
+  } = useQuery({
     queryKey: ["getDashboardData", section],
     queryFn: async () => {
       const res = await axios.get(`${apiUrl}/${DASHBOARD_ENDPOINTS[section]}`);
@@ -25,167 +36,134 @@ const Dashboard = () => {
     },
   });
 
-  const mutation = useMutation({
-    mutationFn: async (updatedRow) => {
-      return axios.put(
-        `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${updatedRow.id}`,
-        updatedRow
-      );
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["getDashboardData", section]);
-      setEditRow(null);
-      reset();
-      navigate(0);
-    },
-  });
-
-  const handleEditClick = (row) => {
-    setEditRow(row.id);
-    Object.keys(row).forEach((key) => setValue(key, row[key]));
-  };
-
-  const handleDeleteClick = async (row) => {
-    const response = await axios.delete(
-      `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${row.id}`
-    ); // Asegúrate de tener el endpoint correcto
-    navigate(0);
-  };
-
-  const onSubmit = (updatedRow) => {
-    mutation.mutate(updatedRow);
-  };
-
-  // Actualizar cookies en cada renderizado
-  useEffect(() => {
-    // Verificar si el ID del usuario está disponible
-    if (userId) {
-      const fetchToken = async () => {
-        try {
-          const response = await axios.get(
-            `${apiUrl}/users/${userId}`,
-            { mode: "cors" } // Configurar CORS
-          ); // Usar el ID de la cookie
-          const tokenData = response.data; // Ajusta esto según la respuesta de tu API
-          setCookie("user", tokenData, { path: "/" }); // Guardar en la cookie
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          if (error.response && error.response.status === 404) {
-            // Limpiar todas las cookies si no se encuentra el usuario
-            Object.keys(cookies).forEach((key) => {
-              setCookie(key, "", { path: "/" });
-            });
-          }
-        }
-      };
-
-      fetchToken();
-    } else {
-      console.warn("No user ID found in cookies.");
+  React.useEffect(() => {
+    if (queryData) {
+      setData(queryData);
     }
-  }, []);
+  }, [queryData]);
 
-  if (isPending) return `Loading ${DASHBOARD_ENDPOINTS[section]} data...`;
+  const handleUpdate = (value, id, property) => {
+    setData((state) =>
+      state.map((item) =>
+        item.id === id ? { ...item, [property]: value } : item
+      )
+    );
+  };
 
-  if (error) return "An error has occurred: " + error.message;
+  const handleSave = async (data) => {
+    const url = `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${data.id}`;
+    try {
+      return await axios.put(url, data, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  const headers =
-    data && data.length > 0 ? Object.keys(data[0]) : ["id", "name", "email"]; // Default headers
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    console.error(error);
+    return <div>{JSON.stringify(error)}</div>;
+  }
 
   return (
-    <main id="dashboardMain">
-      <h1>Dashboard de {section}</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Actions</th>
-            {headers.map((key, index) => (
-              <th key={key + index}>{key}</th>
+    <Table data={{ nodes: data }}>
+      {(tableList) => (
+        <>
+          <Header>
+            <HeaderRow>
+              {DASHBOARD_HEADERS[section].map((header) => (
+                <HeaderCell key={header}>{header}</HeaderCell>
+              ))}
+            </HeaderRow>
+          </Header>
+          <Body>
+            {tableList.map((item) => (
+              <Row key={item.id} item={item}>
+                {DASHBOARD_HEADERS[section].map((key) => (
+                  <Cell key={key}>
+                    {typeof item[key] === "boolean" ? (
+                      <input
+                        type="checkbox"
+                        checked={item[key]}
+                        onChange={(event) =>
+                          handleUpdate(event.target.checked, item.id, key)
+                        }
+                        onClick={async (event) => {
+                          const tableData = tableList.find(
+                            (row) => row.id === item.id
+                          );
+                          const { data } = await handleSave(tableData);
+                          alert(
+                            `${key}, ${data[key]} se actualizo a ${event.target.value}`
+                          );
+                        }}
+                      />
+                    ) : key === "date_birth" ? (
+                      <input
+                        type="date"
+                        style={{
+                          width: "100%",
+                          border: "none",
+                          fontSize: "1rem",
+                          padding: 0,
+                          margin: 0,
+                        }}
+                        value={item[key]}
+                        onChange={(event) =>
+                          handleUpdate(event.target.value, item.id, key)
+                        }
+                        onBlur={async (event) => {
+                          event.target.style.width = "100%";
+                          const tableData = tableList.find(
+                            (row) => row.id === item.id
+                          );
+                          const { data } = await handleSave(tableData);
+                          alert(
+                            `${key}, ${data[key]} se actualizo a ${event.target.value}`
+                          );
+                        }}
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        style={{
+                          width: "100%",
+                          border: "none",
+                          fontSize: "1rem",
+                          padding: 0,
+                          margin: 0,
+                        }}
+                        value={item[key]}
+                        onChange={(event) =>
+                          handleUpdate(event.target.value, item.id, key)
+                        }
+                        onBlur={async (event) => {
+                          event.target.style.width = "100%";
+                          const tableData = tableList.find(
+                            (row) => row.id === item.id
+                          );
+                          const { data } = await handleSave(tableData);
+                          alert(
+                            `${key}, ${data[key]} se actualizo a ${event.target.value}`
+                          );
+                        }}
+                      />
+                    )}
+                  </Cell>
+                ))}
+              </Row>
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data && data.length > 0 ? (
-            data.map((row) => (
-              <tr key={row.id}>
-                <td>
-                  {editRow === row.id ? (
-                    <button onClick={handleSubmit(onSubmit)}>Save</button>
-                  ) : (
-                    <>
-                      <button onClick={() => handleEditClick(row)}>Edit</button>
-                      <button onClick={() => handleDeleteClick(row)}>
-                        Delete
-                      </button>
-                    </>
-                  )}
-                </td>
-                {editRow === row.id
-                  ? Object.keys(row).map((key, index) => (
-                      <td key={key + index}>
-                        {key === "is_admin" || key === "is_doctor" ? (
-                          <input
-                            type="checkbox"
-                            {...register(key)}
-                            defaultChecked={row[key]}
-                          />
-                        ) : (
-                          <input
-                            {...register(key)}
-                            defaultValue={row[key]}
-                            type={
-                              key === "password"
-                                ? "password"
-                                : key === "date_birth"
-                                ? "date"
-                                : key === "dni"
-                                ? "number"
-                                : "text"
-                            }
-                          />
-                        )}
-                      </td>
-                    ))
-                  : Object.keys(row)?.map((key, index) => (
-                      <td key={key + index}>
-                        {key === "is_admin" || key === "is_doctor"
-                          ? row[key]
-                            ? "✅"
-                            : "❌"
-                          : row[key]}
-                      </td>
-                    ))}
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={headers.length + 1}>No data available</td>
-            </tr>
-          )}
-          <tr>
-            <td>
-              <button onClick={handleSubmit(onSubmit)}>Add</button>
-            </td>
-            {headers.map((key, index) => (
-              <td key={key + index}>
-                <input
-                  {...register(key)}
-                  type={
-                    key === "password"
-                      ? "password"
-                      : key === "date_birth"
-                      ? "date"
-                      : key === "dni"
-                      ? "number"
-                      : "text"
-                  }
-                />
-              </td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
-    </main>
+          </Body>
+        </>
+      )}
+    </Table>
   );
 };
 
