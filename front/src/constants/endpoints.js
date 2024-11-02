@@ -3,6 +3,7 @@ const DASHBOARD_ENDPOINTS = {
     TURNOS: 'appointments',
     INSUMOS: 'supplies',
     ESTUDIOS: 'medical-records',
+    ESPECIALIDADES: 'departments',
   }
   
   export default DASHBOARD_ENDPOINTS

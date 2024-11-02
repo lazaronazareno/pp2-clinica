@@ -3,7 +3,6 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
 const LoginForm = () => {
-  
   const [cookies, setCookie] = useCookies(["user"]);
   const navigate = useNavigate();
   const {
@@ -73,7 +72,7 @@ const LoginForm = () => {
         )}
 
         <section>
-          <button type="submit" id="accessButton">
+          <button type="submit" id="loginButton">
             Ingresar
           </button>
           <button type="reset" id="cancelButton">
