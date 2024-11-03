@@ -18,7 +18,13 @@ MYSQL_HOST=localhost
 MYSQL_PORT=3306
 ```
 
-3. Run application
+3. Run seeder
+
+```bash
+python seed.py
+```
+
+4. Run application
 
 ```bash
 uvicorn main:app --reload

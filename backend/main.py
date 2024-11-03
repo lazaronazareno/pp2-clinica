@@ -11,6 +11,14 @@ from utils.sqlalchemy_exception_handler import sqlalchemy_exception_handler
 from sqlalchemy.exc import SQLAlchemyError
 import os 
 from dotenv import load_dotenv
+from models import userTest, department, medical_record, supply, appointment
+from db.database import engine
+
+userTest.base.metadata.create_all(bind=engine)
+department.base.metadata.create_all(bind=engine)
+medical_record.base.metadata.create_all(bind=engine)
+supply.base.metadata.create_all(bind=engine)
+appointment.base.metadata.create_all(bind=engine)
 
 load_dotenv()
 

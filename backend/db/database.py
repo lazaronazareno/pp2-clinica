@@ -17,3 +17,10 @@ engine = create_engine(f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HO
 localsesion = sessionmaker(autoflush=False, autocommit=False, bind=engine)
 
 base = declarative_base()
+
+def get_db():
+    db = localsesion()
+    try:
+        yield db
+    finally:
+        db.close()

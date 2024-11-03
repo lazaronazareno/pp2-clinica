@@ -3,20 +3,11 @@ from sqlalchemy.orm import Session
 from models import userTest
 from models.userTest import User
 from schemas.user_schema import UserCreate, UserResponse, UserLogin, Token, UserUpdate
-from db.database import engine, localsesion
 import jwt
 from datetime import datetime, timedelta, timezone
 import os
+from db.database import get_db
 
-userTest.base.metadata.create_all(bind=engine)
-
-
-def get_db():
-    db = localsesion()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 user_root = APIRouter()
