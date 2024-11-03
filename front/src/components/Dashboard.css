@@ -1,43 +1,154 @@
-#dashboardMain {
-  display: grid;
-  grid-template-columns: 1fr;
-  padding-top: 15%;
-  display: flex;
-  justify-content: flex-start;
-}
+/* 
+
+Styles for the table component in the Dashboard:
+
+- table: 
+  - Sets the table width to 100%.
+  - Collapses table borders.
+  - Adds a top margin of 20px.
+
+- th (table header):
+  - Sets the background color to a light gray (#f2f2f2).
+  - Sets the text color to dark gray (#333).
+
+- th, td (table header and table data cells):
+  - Adds a 1px solid border with a light gray color (#f2f2f2).
+  - Adds 8px padding.
+  - Centers the text.
+
+- tr:nth-child(even) (even table rows):
+  - Sets the background color to light gray (#f2f2f2).
+
+- tr:nth-child(odd) (odd table rows):
+  - Sets the background color to white (#fff).
+*/
 table {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto;
   border-collapse: collapse;
-  border: 1px solid rgb(255, 208, 208);
-  font-family: sans-serif;
-  font-size: small;
-  letter-spacing: 0.2px;
+  margin-top: 20px;
 }
 
-thead,
-tfoot {
-  background-color: rgba(55, 183, 238, 0.671);
+table  button {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  min-width: 5rem;
+  border-style: groove ;
+  border-width: 8px;
+  border-radius: 7px;
+  border-color: rgb(0, 0, 0);
+  background: none;
+  color: #000000;
+  cursor: pointer;
+  font-size: 0.6em;
+  font-weight: 600;
+  transition: color 1s;
+  animation: glow 3.5s ease-in-out infinite;
+
+}
+
+table input{
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  border: solid;
+  border-width: 1px;
+  border-color: grey;
+  background: #cad7e4a8;
+  border-radius: 5px;
+  color: #000000;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 1s;
+  
+}
+
+table div{
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  border: solid;
+  border-width: 1px;
+  border-color: grey;
+  background: rgba(239, 248, 255, 0.781);
+  border-radius: 5px;
+  color: #000000;
+  cursor: pointer;
+  font-size: 0,9rem;
+  font-weight: 500;
+  transition: color 1s;
+}
+
+option{
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  border: solid;
+  border-width: 1px;
+  border-color: grey;
+  background: rgb(219, 219, 219);
+  border-radius: 5px;
+  color: #000000;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 400;
+  transition: color 1s;
+}
+
+select{
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  border: solid;
+  border-width: 1px;
+  border-color: grey;
+  background: rgb(219, 219, 219);
+  border-radius: 5px;
+  color: #000000;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: color 1s;
+}
+
+
+th {
+  background-color: #f2f2f2;
+  color: #333;
 }
 
 th,
 td {
-  border: 1px solid rgb(148, 148, 148);
-  word-wrap: break-word;
-  text-align: center;
-}
-tbody {
-  background-color: rgb(208, 211, 207);
-}
-td:last-of-type {
+  border: 1px solid #f2f2f2;
+  padding: 8px;
   text-align: center;
 }
 
-tbody > tr:nth-of-type(even) {
-  background-color: rgb(192, 96, 96);
+tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
 
-tbody tr {
-  background-color: rgb(146, 127, 255);
+tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+
+@keyframes glow {
+  0%, 100% { text-shadow: 0 0 5px #ffffff, 0 0 10px #838383, 0 0 15px #3f3f3f, 0 0 20px #000000; }
+  50% { text-shadow: 0 0 5px #4e4e4e, 0 0 10px #8f8f8f, 0 0 15px #d8d8d8, 0 0 20px #ffffff; }
+}
+
+@keyframes aparecerYSubir {
+  0% {
+    opacity: 0;
+    top: 5rem; 
+  }
+  100% {
+    opacity: 1;
+    top: -5rem; 
+  }
 }

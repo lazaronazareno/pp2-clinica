@@ -34,6 +34,7 @@ def update_appointment(appointment_id: int, appointment: AppointmentEdit, db: Se
         raise HTTPException(status_code=404, detail="Turno no encontrado")
     db_appointment.date = appointment.date
     db_appointment.active = appointment.active
+    db_appointment.medical_record_id  = appointment.medical_record_id 
     db.commit()
     db.refresh(db_appointment)
     return db_appointment

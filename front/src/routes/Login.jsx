@@ -1,9 +1,8 @@
 import "./LoginRegister.css";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
 const LoginForm = () => {
-  
   const [cookies, setCookie] = useCookies(["user"]);
   const navigate = useNavigate();
   const {
@@ -12,7 +11,7 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm();
   const isDeploy = import.meta.env.VITE_IS_DEPLOY;
-  const apiUrl = isDeploy ? "https://pp2-clinica.onrender.com" : "localhost";
+  const apiUrl = isDeploy ? import.meta.env.VITE_DEPLOY_URL : "localhost";
   const onSubmit = async (data) => {
     await fetch(`${apiUrl}/login`, {
       method: "POST",
@@ -29,7 +28,11 @@ const LoginForm = () => {
         Object.keys(data).forEach((key) => {
           if (key != "detail") setCookie(key, data[key]);
         });
-        navigate("/");
+        //if there is a token, navigate to the dashboard
+        if (data.id) navigate("/");
+
+
+
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -73,7 +76,7 @@ const LoginForm = () => {
         )}
 
         <section>
-          <button type="submit" id="accessButton">
+          <button type="submit" id="loginButton">
             Ingresar
           </button>
           <button type="reset" id="cancelButton">
