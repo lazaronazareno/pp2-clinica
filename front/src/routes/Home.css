@@ -73,9 +73,10 @@ h2 {
   border-radius: 10px;
   opacity: 0;
   animation: aparecerYSubir 3s forwards 4s;
- } /* Empieza después de 2s */
+}
 
-#text_in {
+
+h3{
   font-family: "MuseoModerno", sans-serif;
   text-align: center;
   opacity: 0; 
@@ -84,8 +85,8 @@ h2 {
 }
 
 @keyframes glow {
-  0%, 100% { text-shadow: 0 0 5px #cacaca, 0 0 10px #cacaca, 0 0 15px #cacaca, 0 0 20px #cacaca; }
-  50% { text-shadow: 0 0 5px #000000, 0 0 10px #2196f3, 0 0 15px #afafaf, 0 0 20px #adadad; }
+  0%, 100% { text-shadow: 0 0 5px #ffffff, 0 0 10px #838383, 0 0 15px #3f3f3f, 0 0 20px #000000; }
+  50% { text-shadow: 0 0 5px #4e4e4e, 0 0 10px #8f8f8f, 0 0 15px #d8d8d8, 0 0 20px #ffffff; }
 }
 
 @keyframes fadeIn {
@@ -112,5 +113,4 @@ h2 {
     opacity: 1;
     top: -5rem; /* Termina en el centro */
   }
-}
 }

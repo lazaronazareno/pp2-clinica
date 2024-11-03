@@ -1,12 +1,15 @@
 nav{
-  border-bottom: 3px groove #a3a3a3;
+  border-bottom: 2px groove #e6e6e6;
+  align-content: center;
 }
 
 nav ul {
   display: flex;
   flex-direction: row;
-  text-decoration: none;
+  align-items: center;
   justify-content: flex-start;
+  text-decoration: none;
+  margin: 0;
 }
 
 nav ul li {
@@ -31,7 +34,7 @@ nav a{
   font-size: 2rem;
   margin: 2px;
   padding: 2px;
-  font-family: "Poppins", sans-serif;
+  font-family: "MuseoModerno", sans-serif;
   filter: drop-shadow(0 0 4px rgb(255, 255, 255));
   opacity: 0;
   transform: translateX(-100%);
@@ -40,12 +43,19 @@ nav a{
 
 @keyframes slideIn {
   to {
-    opacity: 1; /* Al final de la animación, la opacidad es 1 */
-    transform: translateX(0); /* Mueve el texto a su posición original */
+    opacity: 1; 
+    transform: translateX(0); 
   }
 }
 
-
+#cat_user {
+  width: 60px;
+  height: 70px;
+  margin-right: 1px;
+  align-self: center;
+  vertical-align: middle; 
+  
+  }
 
 
 #cat_doc {
@@ -53,19 +63,25 @@ width: 70px;
 height: 70px;
 margin-right: 1px;
 align-self: center;
-vertical-align: middle; /* Asegúrate de que esté alineado verticalmente */
-
+vertical-align: middle; 
 }
 
 #logout_button{
-  font-family: "Metal Mania", system-ui;
+  font-family: "MuseoModerno", sans-serif;
   font-size: 1.4rem;
-  background-color: rgba(228, 81, 70, 0.205);
-  filter: drop-shadow(0 0 4px rgb(231, 31, 31));
-
+  background-color: rgba(248, 248, 248, 0.205);
+  filter: drop-shadow(0 0 4px rgb(255, 255, 255));
+}
+#logout_button:hover{
+  background-color: #eb19193d; /* Cambia el color al pasar el ratón */
+  border-radius: 20%;
+  filter: drop-shadow(0 0 4px rgb(255, 255, 255));
+  transform: scale(1.2);
+  
 }
 
 #welcome_user{
+  margin: 0;
   font-size: 1.9rem;
   line-height: 0rem;
   font-family: "Lilita One", "Spicy Rice", "Metal Mania", serif;
@@ -75,3 +91,4 @@ vertical-align: middle; /* Asegúrate de que esté alineado verticalmente */
   filter: drop-shadow(0 0 4px rgb(255, 255, 255));
 
 }
+
