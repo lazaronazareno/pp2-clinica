@@ -3,16 +3,7 @@ from sqlalchemy.orm import Session
 from models import supply
 from models.supply import Supply
 from schemas.supply_schema import SupplyCreate, SupplyResponse
-from db.database import engine, localsesion
-
-supply.base.metadata.create_all(bind=engine)
-
-def get_db():
-    db = localsesion()
-    try:
-        yield db
-    finally:
-        db.close()
+from db.database import get_db
 
 supply_router = APIRouter()
 

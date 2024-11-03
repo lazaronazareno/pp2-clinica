@@ -3,17 +3,8 @@ from sqlalchemy.orm import Session
 from models import medical_record
 from models.medical_record import MedicalRecord
 from schemas.medical_record_schema import MedicalRecordCreate, MedicalRecordResponse, MedicalRecordUpdate
-from db.database import engine, localsesion
+from db.database import get_db
 from datetime import datetime, timezone
-
-medical_record.base.metadata.create_all(bind=engine)
-
-def get_db():
-    db = localsesion()
-    try:
-        yield db
-    finally:
-        db.close()
 
 medical_record_router = APIRouter()
 

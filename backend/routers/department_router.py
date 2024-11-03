@@ -3,16 +3,7 @@ from sqlalchemy.orm import Session
 from models import department
 from models.department import Department
 from schemas.department_schema import DepartmentCreate, DepartmentResponse
-from db.database import engine, localsesion
-
-department.base.metadata.create_all(bind=engine)
-
-def get_db():
-    db = localsesion()
-    try:
-        yield db
-    finally:
-        db.close()
+from db.database import get_db
 
 department_root = APIRouter()
 
