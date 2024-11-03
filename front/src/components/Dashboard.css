@@ -27,12 +27,12 @@ table {
   margin-top: 20px;
 }
 
-table  button {
+table button {
   font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
   min-width: 5rem;
-  border-style: groove ;
+  border-style: groove;
   border-width: 8px;
   border-radius: 7px;
   border-color: rgb(0, 0, 0);
@@ -43,10 +43,9 @@ table  button {
   font-weight: 600;
   transition: color 1s;
   animation: glow 3.5s ease-in-out infinite;
-
 }
 
-table input{
+table input {
   font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
@@ -62,10 +61,9 @@ table input{
   font-size: 1rem;
   font-weight: 500;
   transition: color 1s;
-  
 }
 
-table div{
+table div {
   font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
@@ -78,12 +76,12 @@ table div{
   border-radius: 5px;
   color: #000000;
   cursor: pointer;
-  font-size: 0,9rem;
+  font-size: 0, 9rem;
   font-weight: 500;
   transition: color 1s;
 }
 
-option{
+option {
   font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
@@ -99,7 +97,7 @@ option{
   transition: color 1s;
 }
 
-select{
+select {
   font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
@@ -114,7 +112,6 @@ select{
   font-weight: 400;
   transition: color 1s;
 }
-
 
 th {
   background-color: #f2f2f2;
@@ -136,19 +133,25 @@ tr:nth-child(odd) {
   background-color: #fff;
 }
 
-
 @keyframes glow {
-  0%, 100% { text-shadow: 0 0 5px #ffffff, 0 0 10px #838383, 0 0 15px #3f3f3f, 0 0 20px #000000; }
-  50% { text-shadow: 0 0 5px #4e4e4e, 0 0 10px #8f8f8f, 0 0 15px #d8d8d8, 0 0 20px #ffffff; }
+  0%,
+  100% {
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #838383, 0 0 15px #3f3f3f,
+      0 0 20px #000000;
+  }
+  50% {
+    text-shadow: 0 0 5px #4e4e4e, 0 0 10px #8f8f8f, 0 0 15px #d8d8d8,
+      0 0 20px #ffffff;
+  }
 }
 
 @keyframes aparecerYSubir {
   0% {
     opacity: 0;
-    top: 5rem; 
+    top: 5rem;
   }
   100% {
     opacity: 1;
-    top: -5rem; 
+    top: -5rem;
   }
 }

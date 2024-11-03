@@ -262,11 +262,14 @@ const Dashboard = () => {
   const handleCreate = async (newData) => {
     const url = `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}`;
     try {
-      const response = await axios.post(url, newData, {
-        headers: {
-          Authorization: `Bearer ${cookies.user}`,
-        },
-      });
+      toast.info("Creando nuevo registro...");
+      const response = await axios
+        .post(url, newData, {
+          headers: {
+            Authorization: `Bearer ${cookies.user}`,
+          },
+        })
+        .then(() => toast.success("Registro creado correctamente"));
       setData((prevData) => [...prevData, response.data]);
     } catch (error) {
       console.error(error);
@@ -290,13 +293,15 @@ const Dashboard = () => {
   const handleDelete = async (id) => {
     const url = `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${id}`;
     try {
-      await axios.delete(url, {
-        headers: {
-          Authorization: `Bearer ${cookies.user}`,
-        },
-      });
+      toast.info("Eliminando registro...");
+      await axios
+        .delete(url, {
+          headers: {
+            Authorization: `Bearer ${cookies.user}`,
+          },
+        })
+        .then(() => toast.success("Registro eliminado correctamente"));
       setData((prevData) => prevData.filter((row) => row.id !== id));
-      alert(`Se eliminó el registro con id: ${id}`);
       queryClient.invalidateQueries(["getDashboardData", section]);
     } catch (error) {
       console.error(error);
@@ -321,15 +326,9 @@ const Dashboard = () => {
       ? undefined
       : async (e) => {
           const updatedData = data.find((row) => row.id === item.id);
-          console.dir(updatedData);
-          console.dir(e.target.checked);
-          console.dir(item[key]);
-          console.dir(e.target.value);
-
           await handleSave(updatedData);
           queryClient.invalidateQueries(["getDashboardData", section]);
           console.warn(`${key} actualizado a ${updatedData[key]}`);
-
         };
 
     const value = isNewRow ? newRow[key] : item[key];
@@ -365,7 +364,7 @@ const Dashboard = () => {
 
               departmentsData.map((department) => (
                 <option key={department.id} value={department.id}>
-                  {department.name}
+                  {department?.name}
                 </option>
               ))
           }
@@ -376,7 +375,7 @@ const Dashboard = () => {
               //se mapean los pacientes para mostrarlos en el select
               patientsData.map((patient) => (
                 <option key={patient.id} value={patient.id}>
-                  {patient.name}
+                  {patient?.name}
                 </option>
               ))
           }
@@ -391,7 +390,7 @@ const Dashboard = () => {
                     departmentsData.find(
                       (department) =>
                         department.id === medicalRecord.department_id
-                    ).name
+                    )?.name
                   }
                 </option>
               ))
