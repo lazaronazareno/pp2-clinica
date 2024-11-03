@@ -13,7 +13,7 @@
   font-size: x-large;
   display: grid;
   grid-template-areas:
-    "aside nav nav"
+    "nav nav nav"
     "aside main main";
   grid-template-rows: 10% auto;
   grid-template-columns: 15% auto auto;
@@ -29,11 +29,11 @@ main {
 }
 
 nav {
-  background-color: rgba(97, 94, 94, 0.493);
+  background-color: rgba(184, 175, 175, 0.493);
   grid-area: nav;
 }
 
 aside {
-  background-color: rgba(97, 94, 94, 0.5);
+  background-color: rgba(66, 92, 114, 0.842);
   grid-area: aside;
 }
