@@ -7,7 +7,6 @@ import Home from "./routes/Home";
 import Register from "./routes/Register";
 import Login from "./routes/Login";
 import Dashboard from "./components/Dashboard";
-import BackgroundMusic from "./components/BackgroundMusic";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +16,6 @@ const router = createBrowserRouter([
         <Nav />
         <Aside />
         <Outlet />
-        <BackgroundMusic />
       </>
     ),
     children: [
@@ -58,7 +56,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider  router={router} />;
+  return <RouterProvider router={router} />;
 }
 
 export default App;

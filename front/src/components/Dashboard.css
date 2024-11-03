@@ -24,7 +24,7 @@ Styles for the table component in the Dashboard:
 */
 table {
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: 2rem;
 }
 
 table button {
