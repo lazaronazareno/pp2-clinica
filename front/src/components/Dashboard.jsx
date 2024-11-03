@@ -204,7 +204,7 @@ const Dashboard = () => {
             mode: "cors",
           });
           const tokenData = response.data;
-
+          queryClient.invalidateQueries(["getDashboardData", section]);
           Object.keys(tokenData).forEach((key) => {
             setCookie(key, tokenData[key], { path: "/" });
           });
