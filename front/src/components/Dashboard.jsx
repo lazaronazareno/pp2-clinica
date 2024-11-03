@@ -16,6 +16,8 @@ import { useTheme } from "@table-library/react-table-library/theme";
 import "./Dashboard.css";
 import TRANSLATIONS from "../constants/translations";
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
@@ -203,11 +205,11 @@ const Dashboard = () => {
           });
           const tokenData = response.data;
 
-            Object.keys(tokenData).forEach((key) => {
+          Object.keys(tokenData).forEach((key) => {
             setCookie(key, tokenData[key], { path: "/" });
-            });
-
+          });
         } catch (error) {
+          toast.error("Error al obtener los datos del usuario");
           console.error("Error fetching user data:", error);
           if (error.response && error.response.status === 404) {
             Object.keys(cookies).forEach((key) => {
@@ -219,6 +221,7 @@ const Dashboard = () => {
 
       fetchToken();
     } else {
+      toast.error("No se encontró el ID del usuario en las cookies.");
       console.warn("No user ID found in cookies.");
     }
   }, [
@@ -243,11 +246,14 @@ const Dashboard = () => {
     const url = `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${data.id}`;
 
     try {
-      return await axios.put(url, data, {
-        headers: {
-          Authorization: `Bearer ${cookies.user}`,
-        },
-      });
+      toast.info("Guardando cambios...");
+      return await axios
+        .put(url, data, {
+          headers: {
+            Authorization: `Bearer ${cookies.user}`,
+          },
+        })
+        .then(() => toast.success("Registro actualizado correctamente"));
     } catch (error) {
       console.error(error);
     }
@@ -300,24 +306,30 @@ const Dashboard = () => {
   const renderCellContent = (item, key, isNewRow = false) => {
     const handleChange = isNewRow
       ? (e) =>
-        handleNewRowChange(
-          e.target.type === "checkbox" ? e.target.checked : e.target.value,
-          key
-        )
+          handleNewRowChange(
+            e.target.type === "checkbox" ? e.target.checked : e.target.value,
+            key
+          )
       : (e) =>
-        handleUpdate(
-          e.target.type === "checkbox" ? e.target.checked : e.target.value,
-          item.id,
-          key
-        );
+          handleUpdate(
+            e.target.type === "checkbox" ? e.target.checked : e.target.value,
+            item.id,
+            key
+          );
 
     const handleBlur = isNewRow
       ? undefined
       : async (e) => {
           const updatedData = data.find((row) => row.id === item.id);
+          console.dir(updatedData);
+          console.dir(e.target.checked);
+          console.dir(item[key]);
+          console.dir(e.target.value);
+
           await handleSave(updatedData);
           queryClient.invalidateQueries(["getDashboardData", section]);
           console.warn(`${key} actualizado a ${updatedData[key]}`);
+
         };
 
     const value = isNewRow ? newRow[key] : item[key];
@@ -326,16 +338,16 @@ const Dashboard = () => {
       typeof value === "boolean"
         ? "checkbox"
         : ["is_admin", "is_doctor", "active"].includes(key)
-          ? "checkbox"
-          : ["date_birth", "date"].includes(key)
-            ? "date"
-            : ["dni", "stock"].includes(key)
-              ? "number"
-              : key === "mail"
-                ? "mail"
-                : ["user_id", "department_id", "medical_record_id"].includes(key)
-                  ? "select"
-                  : "text";
+        ? "checkbox"
+        : ["date_birth", "date"].includes(key)
+        ? "date"
+        : ["dni", "stock"].includes(key)
+        ? "number"
+        : key === "mail"
+        ? "mail"
+        : ["user_id", "department_id", "medical_record_id"].includes(key)
+        ? "select"
+        : "text";
 
     if (inputType === "select") {
       return (
@@ -348,41 +360,41 @@ const Dashboard = () => {
           {
             //si la columna actual es la de department_id y ya se cargaron los departamentos}
             key === "department_id" &&
-            departmentsData &&
-            //se mapean los departamentos para mostrarlos en el select
+              departmentsData &&
+              //se mapean los departamentos para mostrarlos en el select
 
-            departmentsData.map((department) => (
-              <option key={department.id} value={department.id}>
-                {department.name}
-              </option>
-            ))
+              departmentsData.map((department) => (
+                <option key={department.id} value={department.id}>
+                  {department.name}
+                </option>
+              ))
           }
           {
             //si la columna actual es la de user_id y ya se cargaron los pacientes}
             key === "user_id" &&
-            patientsData &&
-            //se mapean los pacientes para mostrarlos en el select
-            patientsData.map((patient) => (
-              <option key={patient.id} value={patient.id}>
-                {patient.name}
-              </option>
-            ))
+              patientsData &&
+              //se mapean los pacientes para mostrarlos en el select
+              patientsData.map((patient) => (
+                <option key={patient.id} value={patient.id}>
+                  {patient.name}
+                </option>
+              ))
           }
           {
             //si la columna actual es la de medical_record_id y ya se cargaron los registros médicos}
             key === "medical_record_id" &&
-            medicalRecordsData &&
-            //se mapean los registros médicos para mostrarlos en el select
-            medicalRecordsData.map((medicalRecord) => (
-              <option key={medicalRecord.id} value={medicalRecord.id}>
-                {
-                  departmentsData.find(
-                    (department) =>
-                      department.id === medicalRecord.department_id
-                  ).name
-                }
-              </option>
-            ))
+              medicalRecordsData &&
+              //se mapean los registros médicos para mostrarlos en el select
+              medicalRecordsData.map((medicalRecord) => (
+                <option key={medicalRecord.id} value={medicalRecord.id}>
+                  {
+                    departmentsData.find(
+                      (department) =>
+                        department.id === medicalRecord.department_id
+                    ).name
+                  }
+                </option>
+              ))
           }
         </select>
       );
@@ -412,13 +424,8 @@ const Dashboard = () => {
       .map(() => "1fr")
       .join(" ")} 1fr;`,
 
-    Cell:
-      "border: 1px solid #d2e9fb; display: flex; align-items: center; background-color: #b7b7b7; font-family: 'MuseoModerno', sans-serif;",
+    Cell: "border: 1px solid #d2e9fb; display: flex; align-items: center; background-color: #b7b7b7; font-family: 'MuseoModerno', sans-serif;",
     HeaderCell: "solid #d2e9fb; font-size: 1rem;",
-
-
-
-
   });
 
   if (!cookies.user) {
@@ -482,6 +489,7 @@ const Dashboard = () => {
           </>
         )}
       </Table>
+      <ToastContainer />
     </main>
   );
 };
