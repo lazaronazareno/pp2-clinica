@@ -28,7 +28,6 @@ const LoginForm = () => {
         Object.keys(data).forEach((key) => {
           if (key != "detail") setCookie(key, data[key]);
         });
-        //if there is a token, navigate to the dashboard
         if (data.id) navigate("/");
 
 
