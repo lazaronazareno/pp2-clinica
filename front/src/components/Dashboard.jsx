@@ -1,4 +1,3 @@
-import * as React from "react";
 import DASHBOARD_ENDPOINTS from "../constants/endpoints";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -15,6 +14,10 @@ import { useCookies } from "react-cookie";
 import DASHBOARD_HEADERS from "../constants/headers";
 import { useTheme } from "@table-library/react-table-library/theme";
 import "./Dashboard.css";
+import TRANSLATIONS from "../constants/translations";
+import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
@@ -25,8 +28,8 @@ const Dashboard = () => {
     ? import.meta.env.VITE_DEPLOY_URL
     : "http://localhost";
 
-  const [data, setData] = React.useState([]);
-  const [newRow, setNewRow] = React.useState(
+  const [data, setData] = useState([]);
+  const [newRow, setNewRow] = useState(
     DASHBOARD_HEADERS[section].reduce((acc, key) => {
       acc[key] = key === "date_birth" ? "" : key === "boolean" ? false : "";
       return acc;
@@ -184,13 +187,11 @@ const Dashboard = () => {
     queryFn: fetchAppointments,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (queryData && section === "ADMIN") setData(queryData);
     if (patientsData && section === "TURNOS") setData(patientsData);
-    console.dir(patientsData)
     if (medicalRecordsData && section === "ESTUDIOS")
       setData(medicalRecordsData);
-    console.dir(medicalRecordsData)
     if (departmentsData && section === "ESPECIALIDADES")
       setData(departmentsData);
     if (suppliesData && section === "INSUMOS") setData(suppliesData);
@@ -203,8 +204,12 @@ const Dashboard = () => {
             mode: "cors",
           });
           const tokenData = response.data;
-          setCookie("user", tokenData, { path: "/" });
+
+          Object.keys(tokenData).forEach((key) => {
+            setCookie(key, tokenData[key], { path: "/" });
+          });
         } catch (error) {
+          toast.error("Error al obtener los datos del usuario");
           console.error("Error fetching user data:", error);
           if (error.response && error.response.status === 404) {
             Object.keys(cookies).forEach((key) => {
@@ -216,6 +221,7 @@ const Dashboard = () => {
 
       fetchToken();
     } else {
+      toast.error("No se encontró el ID del usuario en las cookies.");
       console.warn("No user ID found in cookies.");
     }
   }, [
@@ -238,12 +244,16 @@ const Dashboard = () => {
 
   const handleSave = async (data) => {
     const url = `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${data.id}`;
+
     try {
-      return await axios.put(url, data, {
-        headers: {
-          Authorization: `Bearer ${cookies.user}`,
-        },
-      });
+      toast.info("Guardando cambios...");
+      return await axios
+        .put(url, data, {
+          headers: {
+            Authorization: `Bearer ${cookies.user}`,
+          },
+        })
+        .then(() => toast.success("Registro actualizado correctamente"));
     } catch (error) {
       console.error(error);
     }
@@ -269,7 +279,6 @@ const Dashboard = () => {
 
   const handleNewRowSave = async () => {
     await handleCreate(newRow);
-    console.dir(newRow);
     setNewRow(
       DASHBOARD_HEADERS[section].reduce((acc, key) => {
         acc[key] = key === "date_birth" ? "" : key === "boolean" ? false : "";
@@ -312,9 +321,15 @@ const Dashboard = () => {
       ? undefined
       : async (e) => {
           const updatedData = data.find((row) => row.id === item.id);
+          console.dir(updatedData);
+          console.dir(e.target.checked);
+          console.dir(item[key]);
+          console.dir(e.target.value);
+
           await handleSave(updatedData);
           queryClient.invalidateQueries(["getDashboardData", section]);
           console.warn(`${key} actualizado a ${updatedData[key]}`);
+
         };
 
     const value = isNewRow ? newRow[key] : item[key];
@@ -372,10 +387,12 @@ const Dashboard = () => {
               //se mapean los registros médicos para mostrarlos en el select
               medicalRecordsData.map((medicalRecord) => (
                 <option key={medicalRecord.id} value={medicalRecord.id}>
-                {departmentsData.find(
-                  (department) => department.id === medicalRecord.department_id
-                  ).name}
-
+                  {
+                    departmentsData.find(
+                      (department) =>
+                        department.id === medicalRecord.department_id
+                    ).name
+                  }
                 </option>
               ))
           }
@@ -406,6 +423,9 @@ const Dashboard = () => {
     ]
       .map(() => "1fr")
       .join(" ")} 1fr;`,
+
+    Cell: "border: 1px solid #d2e9fb; display: flex; align-items: center; background-color: #b7b7b7; font-family: 'MuseoModerno', sans-serif;",
+    HeaderCell: "solid #d2e9fb; font-size: 1rem;",
   });
 
   if (!cookies.user) {
@@ -429,9 +449,11 @@ const Dashboard = () => {
           <>
             <Header>
               <HeaderRow>
-                <HeaderCell>Actions</HeaderCell>
+                <HeaderCell>Acciones</HeaderCell>
                 {DASHBOARD_HEADERS[section].map((header) => (
-                  <HeaderCell key={header}>{header}</HeaderCell>
+                  <HeaderCell key={header}>
+                    {TRANSLATIONS[header.toUpperCase()] || header}
+                  </HeaderCell>
                 ))}
               </HeaderRow>
             </Header>
@@ -440,7 +462,7 @@ const Dashboard = () => {
                 <Row id="saveRow" item={newRow}>
                   <Cell>
                     <button id="addButton" onClick={handleNewRowSave}>
-                      Save
+                      Guardar
                     </button>
                   </Cell>
                   {DASHBOARD_HEADERS[section].map((key) => (
@@ -455,7 +477,7 @@ const Dashboard = () => {
                   <Row key={item.id} item={item}>
                     <Cell>
                       <button onClick={() => handleDelete(item.id)}>
-                        Delete
+                        Borrar
                       </button>
                     </Cell>
                     {DASHBOARD_HEADERS[section].map((key) => (
@@ -467,6 +489,7 @@ const Dashboard = () => {
           </>
         )}
       </Table>
+      <ToastContainer />
     </main>
   );
 };

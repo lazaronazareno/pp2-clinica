@@ -22,44 +22,62 @@ section {
   transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
   font-size: 1.5rem;
   filter: drop-shadow(0 0 4px rgb(253, 255, 253));
-  font-family: "Lilita One";
+  font-family: "MuseoModerno", sans-serif;
   letter-spacing: 2px;
 
 }
+
+
+
 
 h2 {
   margin-top: 10rem;
   font-size: x-large;
 }
 
-#greeting {
-  font-size: small;
-  padding: 1rem;
+#greeting, #greeting2 {
+  opacity: 0;
+  position: relative;
 }
 
-h3 {
-  font-size: 1.5rem;
-  font-family: "Lilita one";
-  letter-spacing: 2px;  
+#greeting {
+  font-family: "MuseoModerno", sans-serif;
+  font-size: 4rem;
+  font-weight: 500;
+  filter: drop-shadow(0 0 6px rgb(255, 255, 255));
+  margin: '0';
+  padding-left: 10px;
+  padding-right: 10px;
+  letter-spacing: 4px;  
+  border: rgb(204, 204, 204);
+  border-style:groove;
+  border-radius: 10px;
+  opacity: 1;
+  animation: desaparecer 2s forwards 2s;
 }
 
 
 
 #greeting2 {
   font-family: "MuseoModerno", sans-serif;
-  font-size: 3.2rem;
+  text-align: center;
+  font-size: 4rem;
   font-weight: 500;
   filter: drop-shadow(0 0 6px rgb(255, 255, 255));
-  margin-top: 5rem;
   margin: '0';
-  padding: '0';
-  letter-spacing: 5px;  
+  padding-left: 10px;
+  padding-right: 10px;
+  letter-spacing: 4px;  
   border: rgb(204, 204, 204);
   border-style:groove;
-  border-radius: 10px
+  border-radius: 10px;
+  opacity: 0;
+  animation: aparecerYSubir 3s forwards 4s;
 }
 
-#text_in{
+
+h3{
+  font-family: "MuseoModerno", sans-serif;
   text-align: center;
   opacity: 0; 
   animation: fadeIn 4s forwards, glow 3.5s ease-in-out infinite;
@@ -67,12 +85,32 @@ h3 {
 }
 
 @keyframes glow {
-  0%, 100% { text-shadow: 0 0 5px #cacaca, 0 0 10px #cacaca, 0 0 15px #cacaca, 0 0 20px #cacaca; }
-  50% { text-shadow: 0 0 5px #000000, 0 0 10px #2196f3, 0 0 15px #afafaf, 0 0 20px #adadad; }
+  0%, 100% { text-shadow: 0 0 5px #ffffff, 0 0 10px #838383, 0 0 15px #3f3f3f, 0 0 20px #000000; }
+  50% { text-shadow: 0 0 5px #4e4e4e, 0 0 10px #8f8f8f, 0 0 15px #d8d8d8, 0 0 20px #ffffff; }
 }
 
 @keyframes fadeIn {
   to {
     opacity: 1; 
+  }
+}
+
+@keyframes desaparecer {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes aparecerYSubir {
+  0% {
+    opacity: 0;
+    top: 5rem; /* Inicia más abajo */
+  }
+  100% {
+    opacity: 1;
+    top: -5rem; /* Termina en el centro */
   }
 }

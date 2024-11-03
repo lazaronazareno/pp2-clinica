@@ -20,7 +20,7 @@ const Nav = () => {
         {cookies.user ? (
           <>
             <li>
-              <p>Bienvenido {cookies.user.name || cookies.user}</p>
+              <p id="welcome_user">Bienvenido {cookies.user.name || cookies.user} <img id="cat_user" src="./cat_user.png"></img></p>
             </li>
             <li>
               <button id="logout_button" onClick={handleLogout}>
