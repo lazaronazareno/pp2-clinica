@@ -241,7 +241,7 @@ const Dashboard = () => {
 
   const handleSave = async (data) => {
     const url = `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}/${data.id}`;
-    console.dir(data);
+
     try {
       return await axios.put(url, data, {
         headers: {
@@ -273,7 +273,6 @@ const Dashboard = () => {
 
   const handleNewRowSave = async () => {
     await handleCreate(newRow);
-    console.dir(newRow);
     setNewRow(
       DASHBOARD_HEADERS[section].reduce((acc, key) => {
         acc[key] = key === "date_birth" ? "" : key === "boolean" ? false : "";
@@ -316,7 +315,6 @@ const Dashboard = () => {
       ? undefined
       : async (e) => {
           const updatedData = data.find((row) => row.id === item.id);
-          console.dir(updatedData);
           await handleSave(updatedData);
           queryClient.invalidateQueries(["getDashboardData", section]);
           console.warn(`${key} actualizado a ${updatedData[key]}`);
