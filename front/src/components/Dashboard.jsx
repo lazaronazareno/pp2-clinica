@@ -35,7 +35,7 @@ const Dashboard = () => {
       return acc;
     }, {})
   );
-  const userId = cookies.user?.id || cookies.id; // Obtener el ID del usuario de la cookie
+  const userId = cookies.user?.id || cookies.id;
   const {
     isPending,
     error,
@@ -263,14 +263,14 @@ const Dashboard = () => {
     const url = `${apiUrl}/${DASHBOARD_ENDPOINTS[section]}`;
     try {
       toast.info("Creando nuevo registro...");
-      const response = await axios
-        .post(url, newData, {
-          headers: {
-            Authorization: `Bearer ${cookies.user}`,
-          },
-        })
-        .then(() => toast.success("Registro creado correctamente"));
+      const response = await axios.post(url, newData, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
       setData((prevData) => [...prevData, response.data]);
+      toast.success("Registro creado correctamente");
+     // setData((prevData) => [...prevData, response.data]);
     } catch (error) {
       console.error(error);
     }
@@ -327,7 +327,6 @@ const Dashboard = () => {
       : async (e) => {
           const updatedData = data.find((row) => row.id === item.id);
           await handleSave(updatedData);
-          queryClient.invalidateQueries(["getDashboardData", section]);
           console.warn(`${key} actualizado a ${updatedData[key]}`);
         };
 
