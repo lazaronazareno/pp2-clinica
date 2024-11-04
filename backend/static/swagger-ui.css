@@ -242,3 +242,29 @@ body {
   border-bottom: 1px solid rgba(59, 65, 81, 0.9);
   margin: 0 0 5px;
 }
+
+.opblock-summary-description {
+  display: flex;
+  flex-grow: 1;
+  background: url('/static/images/cat-doc.png');
+  height: 40px;
+  background-size: contain;
+  animation: moveX 5s linear infinite;
+  font-weight: 700px;
+}
+@keyframes moveX {
+  0% {
+    background-position-x: 0;
+  }
+  100% {
+    background-position-x: 400px;
+  }
+}
+
+.swagger-ui a.nostyle,
+.swagger-ui a.nostyle:visited {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: inherit;
+  font-size: 20px;
+}

@@ -58,7 +58,7 @@ def authenticate_user(db: Session, user: UserCreate):
     return db_user
 
 
-@user_root.post("/users", response_model=UserResponse, tags=["users"])
+@user_root.post("/users", response_model=UserResponse, tags=["users"], description="![alt text](/static/images/cat-doc.png)")
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     try:
         db_user = post_user(db=db, user=user)
