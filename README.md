@@ -4,7 +4,7 @@ La clínica de humanos que, por alguna razón inexplicable, tiene una temática 
 
 Este proyecto está dividido en dos partes: backend (nuestro pequeño motor que guarda todos los datos y lógica) y frontend (la cara bonita donde los usuarios interactúan).
 
-Para poner en marcha este sistema, sigue los pasos a continuación. ¡Pronto tendrás a esta clínica humana de gatitos funcionando en tu máquina!
+Para poner en marcha este sistema, sigue los pasos a continuación. ¡Pronto tendrás a esta clínica humana de gatitos funcionando en tu máquina! Nya! 🐾
 
 ## Paso 1: Configura el Backend (FastAPI) 😺
 
@@ -16,7 +16,7 @@ Abre una terminal, navega hasta la carpeta `backend`, y corre el siguiente coman
 pip install -r requirements.txt
 ```
 
-Esto instala todos los paquetes necesarios, desde FastAPI hasta el conector de MySQL. Sin estos ingredientes, nuestra API no funciona.
+Esto instala todos los paquetes necesarios, desde FastAPI hasta el conector de MySQL. Sin estos ingredientes, nuestra API no funciona. Meow!
 
 ### Configura la base de datos
 
@@ -46,7 +46,7 @@ Corre este comando en la carpeta `backend`:
 uvicorn main:app --reload
 ```
 
-La API de FastAPI ahora estará en marcha en [http://localhost:8000](http://localhost:8000). ¡Los gatitos detrás de la pantalla están maullando de felicidad! 🐾
+La API de FastAPI ahora estará en marcha en [http://localhost:8000](http://localhost:8000). ¡Los gatitos detrás de la pantalla están maullando de felicidad! Meow! 🐾
 
 ## Paso 2: Configura el Frontend (Vite + React) 🐈
 
@@ -66,11 +66,11 @@ Para ver el frontend en acción, ejecuta:
 npm run dev
 ```
 
-Esto pondrá el servidor de desarrollo en [http://localhost:5173](http://localhost:5173) (o el puerto que Vite elija). ¡Tendrás a la clínica humana gatuna lista para que los usuarios se registren y gestionen citas!
+Esto pondrá el servidor de desarrollo en [http://localhost:5173](http://localhost:5173) (o el puerto que Vite elija). ¡Tendrás a la clínica humana gatuna lista para que los usuarios se registren y gestionen citas! Nya! 🐾
 
 ## Notas finales
 
 - **Frontend**: Vite usa React y algunas bibliotecas geniales como React Hook Form y React Query.
 - **Backend**: FastAPI, conectado a una base de datos MySQL usando SQLAlchemy y autenticación JWT.
 
-¿Problemas? Si tu pantalla muestra errores, es posible que los gatitos hayan tropezado con algún cable. ¡Revisa las conexiones y vuelve a intentarlo! 🐾
+¿Problemas? Si tu pantalla muestra errores, es posible que los gatitos hayan tropezado con algún cable. ¡Revisa las conexiones y vuelve a intentarlo! Meow! 🐾
