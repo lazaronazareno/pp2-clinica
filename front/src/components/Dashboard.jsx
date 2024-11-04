@@ -247,13 +247,11 @@ const Dashboard = () => {
 
     try {
       toast.info("Guardando cambios...");
-      return await axios
-        .put(url, data, {
-          headers: {
-            Authorization: `Bearer ${cookies.user}`,
-          },
-        })
-        .then(() => toast.success("Registro actualizado correctamente"));
+      return await axios.put(url, data, {
+        headers: {
+          Authorization: `Bearer ${cookies.user}`,
+        },
+      });
     } catch (error) {
       console.error(error);
     }
@@ -270,8 +268,8 @@ const Dashboard = () => {
       });
       setData((prevData) => [...prevData, response.data]);
       toast.success("Registro creado correctamente");
-     // setData((prevData) => [...prevData, response.data]);
     } catch (error) {
+      toast.error("Error al crear el registro");
       console.error(error);
     }
   };
@@ -374,7 +372,7 @@ const Dashboard = () => {
               //se mapean los pacientes para mostrarlos en el select
               patientsData.map((patient) => (
                 <option key={patient.id} value={patient.id}>
-                  {patient?.name}
+                  {patient?.name} {patient?.lastname}
                 </option>
               ))
           }
