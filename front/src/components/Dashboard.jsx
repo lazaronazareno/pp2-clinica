@@ -373,7 +373,7 @@ const Dashboard = () => {
               //se mapean los pacientes para mostrarlos en el select
               patientsData.map((patient) => (
                 <option key={patient.id} value={patient.id}>
-                  {patient?.name}
+                  {patient?.name} {patient?.lastname}
                 </option>
               ))
           }
