@@ -35,7 +35,7 @@ const Dashboard = () => {
       return acc;
     }, {})
   );
-  const userId = cookies.user?.id || cookies.id; // Obtener el ID del usuario de la cookie
+  const userId = cookies.user?.id || cookies.id;
   const {
     isPending,
     error,
