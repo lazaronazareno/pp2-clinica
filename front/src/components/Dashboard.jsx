@@ -270,7 +270,6 @@ const Dashboard = () => {
       });
       setData((prevData) => [...prevData, response.data]);
       toast.success("Registro creado correctamente");
-     // setData((prevData) => [...prevData, response.data]);
     } catch (error) {
       console.error(error);
     }
