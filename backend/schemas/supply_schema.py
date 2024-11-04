@@ -12,4 +12,3 @@ class SupplyResponse(SupplyBase):
 
     class Config:
         from_attributes = True
-

@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from models import supply
 from models.supply import Supply
 from schemas.supply_schema import SupplyCreate, SupplyResponse
 from db.database import get_db
@@ -20,23 +19,22 @@ def post_supply(db: Session, supply: SupplyCreate):
     db.refresh(db_supply)
     return db_supply
 
-@supply_router.post("/supplies", response_model=SupplyResponse)
+@supply_router.post("/supplies", response_model=SupplyResponse, tags=["supplies"])
 def create_supply(supply: SupplyCreate, db: Session = Depends(get_db)):
     return post_supply(db=db, supply=supply)
 
-@supply_router.get("/supplies/{supply_id}", response_model=SupplyResponse)
+@supply_router.get("/supplies/{supply_id}", response_model=SupplyResponse, tags=["supplies"])
 def read_supply(supply_id: int, db: Session = Depends(get_db)):
     db_supply = get_supply_by_id(db, supply_id=supply_id)
     if db_supply is None:
         raise HTTPException(status_code=404, detail="Insumo no encontrado")
     return db_supply
 
-@supply_router.get("/supplies")
+@supply_router.get("/supplies", response_model=list[SupplyResponse], tags=["supplies"])
 def get_supplies(db: Session = Depends(get_db)):
-    db_supplies = get_all_supplies(db)
-    return db_supplies
+    return get_all_supplies(db)
 
-@supply_router.put("/supplies/{supply_id}", response_model=SupplyResponse)
+@supply_router.put("/supplies/{supply_id}", response_model=SupplyResponse, tags=["supplies"])
 def update_supply(supply_id: int, supply: SupplyCreate, db: Session = Depends(get_db)):
     db_supply = get_supply_by_id(db, supply_id=supply_id)
     if db_supply is None:
@@ -47,11 +45,11 @@ def update_supply(supply_id: int, supply: SupplyCreate, db: Session = Depends(ge
     db.refresh(db_supply)
     return db_supply
 
-@supply_router.delete("/supplies/{supply_id}")
+@supply_router.delete("/supplies/{supply_id}", tags=["supplies"])
 def delete_supply(supply_id: int, db: Session = Depends(get_db)):
     db_supply = get_supply_by_id(db, supply_id=supply_id)
     if db_supply is None:
         raise HTTPException(status_code=404, detail="Insumo no encontrado")
     db.delete(db_supply)
     db.commit()
-    return {"message": "Insumo eliminado"}
+    return {"message": "Insumo eliminado exitosamente"}

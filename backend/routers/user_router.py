@@ -9,7 +9,6 @@ import os
 from db.database import get_db
 
 
-
 user_root = APIRouter()
 
 
@@ -28,9 +27,8 @@ def post_user(db: Session, user: UserCreate):
     db.refresh(db_user)
     return db_user
 
-
-def get_user_doctor(db: Session):
-    return db.query(User).filter(User.is_doctor == True).all()
+def get_user_by_role(db: Session, role: str):
+    return db.query(User).filter(User.role == role).all()
 
 
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -60,7 +58,7 @@ def authenticate_user(db: Session, user: UserCreate):
     return db_user
 
 
-@user_root.post("/users", response_model=UserResponse)
+@user_root.post("/users", response_model=UserResponse, tags=["users"])
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     try:
         db_user = post_user(db=db, user=user)
@@ -69,7 +67,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@user_root.get("/users/{user_id}", response_model=UserResponse)
+@user_root.get("/users/{user_id}", response_model=UserResponse, tags=["users"])
 def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = get_user_by_id(db, user_id=user_id)
     if db_user is None:
@@ -77,13 +75,13 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@user_root.get("/users", response_model=list[UserResponse])
+@user_root.get("/users", response_model=list[UserResponse], tags=["users"])
 def get_users(db: Session = Depends(get_db)):
     db_users = get_all_users(db)
     return db_users
 
 
-@user_root.post("/login", response_model=Token)
+@user_root.post("/login", response_model=Token, tags=["login"])
 def login_for_access_token(user: UserLogin, db: Session = Depends(get_db)):
     db_user = authenticate_user(db, user)
     if db_user == "usuario no encontrado":
@@ -98,12 +96,6 @@ def login_for_access_token(user: UserLogin, db: Session = Depends(get_db)):
             detail="Contraseña incorrecta",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    if not db_user:
-        raise HTTPException(
-            status_code=401,
-            detail="Incorrect email or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": db_user.mail}, expires_delta=access_token_expires
@@ -113,38 +105,29 @@ def login_for_access_token(user: UserLogin, db: Session = Depends(get_db)):
         "token_type": "Bearer",
         "id": db_user.id,
         "user": db_user.name,
-        "is_admin": db_user.is_admin,
-        "is_doctor": db_user.is_doctor,
+        "role": db_user.role
     }
 
 
-@user_root.get("/doctors", response_model=list[UserResponse])
+@user_root.get("/doctors", response_model=list[UserResponse], tags=["users"])
 def get_doctors(db: Session = Depends(get_db)):
-    db_users = get_user_doctor(db)
+    db_users = get_user_by_role(db, role="DOCTOR")
     return db_users
 
 
-@user_root.put("/users/{user_id}", response_model=UserResponse)
+@user_root.put("/users/{user_id}", response_model=UserResponse, tags=["users"])
 def update_user(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
     db_user = get_user_by_id(db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    db_user.name = user.name
-    #? Faltaba lastname y vamos a ver si cambiamos contraseñas
-    db_user.password = user.password
-    db_user.lastname = user.lastname
-    #? Faltaba lastname y vamos a ver si cambiamos contraseñas
-    db_user.mail = user.mail
-    db_user.phone = user.phone
-    db_user.date_birth = user.date_birth
-    db_user.is_admin = user.is_admin
-    db_user.is_doctor = user.is_doctor
+    for key, value in user.model_dump(exclude_unset=True).items():
+        setattr(db_user, key, value)
     db.commit()
     db.refresh(db_user)
     return db_user
 
 
-@user_root.delete("/users/{user_id}")
+@user_root.delete("/users/{user_id}", tags=["users"])
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = get_user_by_id(db, user_id=user_id)
     if db_user is None:
@@ -154,15 +137,13 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     return {"message": "Usuario eliminado"}
 
 
-@user_root.get("/admins", response_model=list[UserResponse])
+@user_root.get("/admins", response_model=list[UserResponse], tags=["users"])
 def get_admins(db: Session = Depends(get_db)):
-    db_users = db.query(User).filter(User.is_admin == True).all()
+    db_users = get_user_by_role(db, role="ADMIN")
     return db_users
 
 
-@user_root.get("/patients", response_model=list[UserResponse])
+@user_root.get("/patients", response_model=list[UserResponse], tags=["users"])
 def get_patients(db: Session = Depends(get_db)):
-    db_users = (
-        db.query(User).filter(User.is_admin == False, User.is_doctor == False).all()
-    )
+    db_users = get_user_by_role(db, role="PATIENT")
     return db_users

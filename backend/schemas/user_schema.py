@@ -2,7 +2,12 @@ from pydantic import BaseModel, field_validator
 from datetime import date
 from typing import Optional
 import re
-
+from enum import Enum
+from schemas.department_schema import DepartmentResponse
+class RoleEnum(str, Enum):
+    ADMIN = "ADMIN"
+    PATIENT = "PATIENT"
+    DOCTOR = "DOCTOR"
 
 class UserBase(BaseModel):
     dni: int
@@ -12,8 +17,8 @@ class UserBase(BaseModel):
     mail: str
     phone: Optional[str]
     date_birth: date
-    is_admin: Optional[bool] = False
-    is_doctor: Optional[bool] = False
+    role: Optional[RoleEnum] = RoleEnum.PATIENT
+    department_id: Optional[int] = None
     
     
     @field_validator("dni")
@@ -54,10 +59,11 @@ class UserUpdate(BaseModel):
     lastname: str
     password: Optional[str] = None
     mail: str
-    phone: Optional[str]
+    phone: Optional[str] = None
     date_birth: date
-    is_admin: Optional[bool] = False
-    is_doctor: Optional[bool] = False
+    role: Optional[RoleEnum] = None
+    department_id: Optional[int] = None
+
 class UserResponse(BaseModel):
     id: int
     dni: int
@@ -66,22 +72,20 @@ class UserResponse(BaseModel):
     mail: str
     phone: Optional[str]
     date_birth: date
-    is_admin: Optional[bool] = False
-    is_doctor: Optional[bool] = False
+    role: RoleEnum
+    department_id: Optional[int] = None
+    department: Optional[DepartmentResponse] = None
 
     class Config:
         from_attributes = True
 
-
 class UserLogin(BaseModel):
     mail: str
     password: str
-
 
 class Token(BaseModel):
     access_token: str
     token_type: str
     id: int
     user: str
-    is_admin: bool
-    is_doctor: bool
+    role: RoleEnum
