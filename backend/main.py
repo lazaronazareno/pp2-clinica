@@ -13,6 +13,12 @@ import os
 from dotenv import load_dotenv
 from models import userTest, department, medical_record, supply, appointment
 from db.database import engine
+from fastapi.openapi.docs import (
+    get_redoc_html,
+    get_swagger_ui_html,
+    get_swagger_ui_oauth2_redirect_html,
+)
+from fastapi.staticfiles import StaticFiles
 
 userTest.base.metadata.create_all(bind=engine)
 department.base.metadata.create_all(bind=engine)
@@ -22,7 +28,39 @@ appointment.base.metadata.create_all(bind=engine)
 
 load_dotenv()
 
-app = FastAPI()
+app = FastAPI(
+    docs_url=None,
+    redoc_url=None,
+    title='PP2 CLINIC API',
+    description='Api de una clinica para la materia de PP2',
+    version='0.2'
+    )
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/docs", include_in_schema=False)
+async def custom_swagger_ui_html():
+    return get_swagger_ui_html(
+        openapi_url=app.openapi_url,
+        title=app.title + " - Swagger UI",
+        oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
+        swagger_js_url="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js",
+        swagger_css_url="/static/swagger-ui.css"    
+        )
+
+
+@app.get(app.swagger_ui_oauth2_redirect_url, include_in_schema=False)
+async def swagger_ui_redirect():
+    return get_swagger_ui_oauth2_redirect_html()
+
+
+@app.get("/redoc", include_in_schema=False)
+async def redoc_html():
+    return get_redoc_html(
+        openapi_url=app.openapi_url,
+        title=app.title + " - ReDoc",
+        redoc_js_url="https://unpkg.com/redoc@next/bundles/redoc.standalone.js",
+    )
 
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(SQLAlchemyError, sqlalchemy_exception_handler)
